@@ -1,13 +1,15 @@
 
 OPTIONS= -s -t html -V lang=en --embed-resources --mathml
 
-all: lecture2
+all: lecture2.html
 
-lecture2: lecture2.tex fig2_1.tikz
+lecture2.html: lecture2.tex fig2_1.tikz
 	pdflatex fig2_1.tikz
 	pdf2svg fig2_1.pdf fig2_1.svg 
 	pandoc $(OPTIONS) lecture2.tex -o lecture2.html
-#latexmk -shell-escape lecture2.tex
+
+view: lecture2.html
+	open lecture2.html
 
 clean:
 	$(RM) *.log *.aux *.pdf
