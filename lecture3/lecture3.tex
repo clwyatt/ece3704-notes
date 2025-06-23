@@ -10,16 +10,169 @@
 \date{\today}
 \maketitle
 
-Today's lecture is a review of material from ECE 2714. We will review convolution in CT and DT, associated properties, and do some examples.
+In today's lecture we continue our review of material from ECE 2714. We will review convolution in CT and DT, associated properties, and do some examples.
 
 \section{Convolution in CT}
 
-Recall from ECE 2714 that linearity and time-invariance, plus the sifting property of the delta function leads directly to the convolution integral for CT systems analysis. We consider an input signal $x(t)$ to be composed of an uncountbly infinite linear combination of weighted delta functions 
+Recall from ECE 2714 that linearity and time-invariance, plus the sifting property of the delta function leads directly to the convolution integral for CT systems analysis. We consider an input signal $x(t)$ to be composed of an unaccountably infinite linear combination of weighted delta functions 
 
 \begin{equation}
   x(t) = \int\limits_{-\infty}^{\infty} x(\tau)\delta(t-\tau)\; d\tau
 \end{equation}
 
+By linearity then the output is given by
 
+\begin{equation}
+  y(t) = \int\limits_{-\infty}^{\infty} x(\tau)h(t-\tau)\; d\tau \equiv x * h = h * x
+\end{equation}
+
+where the signal $h(t)$ is the impulse response of the system.
+
+This approach to analysis works for any CT LTI system, stable or unstable, as long as the convolution integral converges.
+
+We can build up a table of convolutions by evaluating the convolution integral for a set of primitive functions. Some examples
+
+Example 1: Convolution of delta with any function:
+
+\begin{align}
+  \delta(t) * x(t) &= \int\limits_{-\infty}^{\infty} \delta(\tau)x(t-\tau)\; d\tau & \text{ from definition of convolution}\\
+  &= x(t) & \text{ by the sifting property of delta function}
+\end{align}
+
+Example 2: Convolution of two step functions:
+
+\begin{align}
+u(t) * u(t) &= \left\{\begin{array}{cc}
+  0 & t < 0\\
+  \int\limits_{0}^{t} d\tau & t \geq 0
+\end{array}\right.\\
+&= \left\{\begin{array}{cc}
+  0 & t < 0\\
+  t & t \geq 0
+\end{array}\right.\\
+&= t\cdot u(t)
+\end{align}
+
+Example 3: Convolution of causal exponential $e^{a t}$, $a \neq 0$, and unit step:
+
+\begin{align}
+e^{a t}u(t) * u(t) &= \left\{\begin{array}{cc}
+  0 & t < 0\\
+  \int\limits_{0}^{t} e^{a \tau}d\tau & t \geq 0
+\end{array}\right.\\
+&= \left\{\begin{array}{cc}
+  0 & t < 0\\
+  \frac{1}{a}\left(e^{at} - 1\right)  & t \geq 0
+\end{array}\right.\\
+&= \frac{e^{at} - 1}{a}\cdot u(t)
+\end{align}
+
+Such tables of precomputed integrals plus a set of properties allows us to preform convolution on a wide array of signals without integrating directly. Given aribrary signals $x_1(t), x_2(t)$, etc.
+
+\begin{itemize}
+\item commutivity: $x_1(t) * x_2(t) = x_2(t) * x_1(t)$
+\item distributivity: $x_1(t) * [x_2(t) + x_3(t)] = [x_1(t)*x_2(t)] + [x_1(t)*x_3(t)]$
+\item associativity: $x_1(t) * [x_2(t) * x_3(t)] = [x_1(t)*x_2(t)] * x_3(t)$
+\item time shift: $x_1(t-\tau_1)*x_2(t-\tau_2) = \left. [x_1 * x_2](t) \right|_{t\rightarrow \tau_1 + \tau_2}$
+\item multiplicative scaling, $a,b\in\mathbb{C}$: $[ax_1(t)]*[bx_2(t)] = ab[x_1(t) * x_2(t)]$ 
+\end{itemize}
+
+An example: let $x_1(t) = 5e^{4t}u(t) + 7e^{-t}u(t-1)$ and $x_2(t) = u(t)$. Then
+
+\begin{align}
+  (x_1 * x_2)(t) &= \left[ 5e^{4t}u(t) + 7e^{-t}u(t-1) \right] * u(t) &\\
+  &= \left[ 5e^{4t}u(t) \right] * u(t) + \left[ 7e^{-t}u(t-1) \right] * u(t) & \text{distribution property}\\
+  &= 5\left[e^{4t}u(t) \right] * u(t) + 7\left[e^{-t}u(t-1) \right] * u(t) & \text{scaling property}\\
+  &= 5\left[e^{4t}u(t) \right] * u(t) + 7e^{-1}\left. \left[e^{-t}u(t) \right] * u(t)\right|_{t\rightarrow t-1} & \text{time shift property}\\
+  &= 5 \frac{e^{4t} - 1}{4}\cdot u(t) + 7e^{-1}\left. \frac{e^{-t} - 1}{-1}\cdot u(t)\right|_{t\rightarrow t-1} & \text{table application}\\
+  &= \frac{5}{4}\left(e^{4t} -1 \right)u(t) 7e^{-1} \left(e^{-(t-1)} -1 \right)u(t-1) & \text{simplify}
+\end{align}
+
+Recall that an important convolution is when the input is the complex exponentia; $x(t) = e^{st}, s\in\mathbb{C}$ and the impulse response is a arbitrary function $h(t)$. Then the output is given by
+
+\begin{align}
+  y(t) &= h(t) * e^{st}\\
+  &= \int\limits_{-\infty}^{\infty} h(\tau)e^{s(t-\tau)}\; d\tau \\
+  &= e^{st} \int\limits_{-\infty}^{\infty} h(\tau)e^{s\tau)}\; d\tau \\
+  &= e^{st} H(s) \text{ for } s\in A \subseteq \mathbb{C}
+\end{align}
+where $H(s)$
+
+\begin{itemize}
+\item is the Eigenvalue for the signal $e^{st}$, 
+\item is called the Transfer Function or System Function,
+\item is the Laplace transform of the impulse response, and
+\item is defined for the subset of the complex plane called the region-of-convergence.
+\end{itemize}
+
+The Laplace transform will be a major focus of this course, where we will see how to apply it to signals other than the complex exponential.
+
+CT block diagrams and convolution are related for the following motifs:
+
+\begin{itemize}
+\item basic block
+    \begin{figure}
+    \centering
+    \includegraphics[alt="block diagram for basic block"]{fig3_1.svg}
+    \caption{$y(t) = h(t)*x(t)$}
+  \end{figure}
+  \item series motif
+    \begin{figure}
+    \centering
+    \includegraphics[alt="block diagram for series motif"]{fig3_2.svg}
+    \caption{$y(t) = [h_1(t)*h_2(t)]*x(t)$}
+    \end{figure}
+  \item parallel motif
+    \begin{figure}
+    \centering
+    \includegraphics[alt="block diagram for parallel motif"]{fig3_3.svg}
+    \caption{$y(t) = [h_1(t) + h_2(t)]*x(t)$}
+    \end{figure}
+  \item feedback motif
+    \begin{figure}
+      \centering
+    \includegraphics[alt="block diagram for feedback motif"]{fig3_4.svg}
+    \caption{$y(t) = h_3(t)*h_1(t)*x(t)$ where $h_3$ is the inverse system of $\delta(t) + h_1(t)*h_2(t)$}
+    \end{figure}
+\end{itemize}
+
+One of the most useful parts of the Laplace methods developed in this course is the simplification of block diagram manipulations, in particular the feedback motif.
+
+The most basic building block for CT systems is the integrator:
+
+\begin{figure}
+  \centering
+  \includegraphics[alt="block diagram for integrator blocks"]{fig3_5.svg}
+  \caption{Three common ways to represet the integrator block.}
+\end{figure}
+    
+Block diagrams and the related signal flow graphs are a good way to visualize and manipulate more complex systems. For example in controls the following block diagram describes the classic PID (proportional, integral, derivative) controller for a system "plant" whose impulse response is $h_p(t)$:
+
+\begin{figure}
+  \centering
+  \includegraphics[alt="block diagram for PID controller"]{fig3_6.svg}
+  \caption{Example of system with PID control.}
+\end{figure}
+
+By the end of the course we will be better able to analyze and design systems of this complexity, including determining their stability.
+
+\section{DT Convolution}
+
+For DT systems the convolution integral of CT system thory becomes an countably infinite sum. Using the sifting propery of the DT delta function we can write an input signal as the sum of weighted, time-shifted impulse functions
+
+\begin{equation}
+  x[n] = \sum\limits_{m = -\infty}^{\infty} x[m]\delta[n-m]
+\end{equation}
+
+By linearity and time-invariance then the output is given by
+
+\begin{equation}
+y[n] = \sum\limits_{m = -\infty}^{\infty} x[m]h[n-m]
+\end{equation}
+where $h[n]$ is the impulse response of the DT system.
+
+As for CT systems, this analysis works for any DT LTI system as long as the sum converges.
+
+RESTART HERE
 
 \end{document}

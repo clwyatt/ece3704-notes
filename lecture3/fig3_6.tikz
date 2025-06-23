@@ -1,0 +1,52 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+
+\begin{tikzpicture}[auto, node distance=1.5cm,>=latex',scale=1, every node/.style={transform shape}]
+  
+  \node[block] at (4,1.5) (block1) {$K_1$};
+  \node[block] at (4,0) (block2) {$K_2 \int$};
+  \node[block] at (4,-1.5) (block3) {$K_3 \frac{d}{dt}$};
+  \node[block] at (8,0) (plant) {$h_p(t)$};
+  
+  \node[sum] at (2,0) (sum1) {$\Sigma$};
+  \node[sum] at (6,0) (sum2) {$\Sigma$};
+
+  \node [input, name=input] at (0,0) {};
+  \node [input, name=w] at (3,0) {};
+  \node [input, name=f] at (3,-3) {};
+  \node [input, name=output1] at (9,0) {};
+  \node [input, name=output2] at (10,0) {};
+
+  \node at (-0.5,0) {$x(t)$};
+  \node at (10.5,0) {$y(t)$};
+    
+  \draw [->] (input) -- (sum1);
+  \draw (sum1) -- (w);
+  \draw [->] (w) |- (block1);
+  \draw [->] (w) -- (block2);
+  \draw [->] (w) |- (block3);
+  \draw [->] (block1) -| (sum2);
+  \draw [->] (block2) -- (sum2);
+  \draw [->] (block3) -| (sum2);
+  \draw [->] (sum2) -- (plant);
+  \draw (plant) -- (output1);
+  \draw (output1) |- (f);
+  \draw [->] (f) -| node[pos=0.95] {$-$} (sum1);
+  \draw [->] (output1) -- (output2);
+\end{tikzpicture}
+
+\end{document}
