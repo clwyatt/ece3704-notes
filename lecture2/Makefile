@@ -8,6 +8,8 @@ DEPS= fig2_1.svg
 
 OPTIONS= -s -t html -V lang=en --embed-resources --mathml
 
+.SECONDARY: # prevent removal of intermediate files
+
 all: $(TARGET)
 
 %.pdf: %.tikz
