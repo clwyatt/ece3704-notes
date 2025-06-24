@@ -1,0 +1,33 @@
+# build html from tex files and tikz figures
+
+# set final output file
+TARGET= lectureN.html
+
+# list figure svg files
+DEPS= figN_1.svg
+
+OPTIONS= -s -t html -V lang=en --embed-resources --mathml
+
+all: $(TARGET)
+
+%.pdf: %.tikz
+	pdflatex $<
+
+%.svg: %.pdf
+	pdf2svg $< $@
+
+%.html: %.tex $(DEPS) 
+	pandoc $(OPTIONS) $< -o $@
+
+view: $(TARGET)
+	open $<
+
+clean:
+	$(RM) *.log *.aux *.pdf
+
+realclean: clean
+	$(RM) *.svg *.html
+
+
+
+
