@@ -1,15 +1,26 @@
+# build html from tex files and tikz figures
+
+# set final output file
+TARGET=lecture2.html
+
+# list figure svg files
+DEPS= fig2_1.svg
 
 OPTIONS= -s -t html -V lang=en --embed-resources --mathml
 
-all: lecture2.html
+all: $(TARGET)
 
-lecture2.html: lecture2.tex fig2_1.tikz
-	pdflatex fig2_1.tikz
-	pdf2svg fig2_1.pdf fig2_1.svg 
-	pandoc $(OPTIONS) lecture2.tex -o lecture2.html
+%.pdf: %.tikz
+	pdflatex $<
 
-view: lecture2.html
-	open lecture2.html
+%.svg: %.pdf
+	pdf2svg $< $@
+
+%.html: %.tex $(DEPS) 
+	pandoc $(OPTIONS) $< -o $@
+
+view: $(TARGET)
+	open $<
 
 clean:
 	$(RM) *.log *.aux *.pdf
