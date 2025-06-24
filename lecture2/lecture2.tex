@@ -222,17 +222,59 @@ We will address these issues this semester by building on two aspects of ECE 271
   \end{equation}
   \textbf{Solution:} We note
   \[
-  Q(D) = D^3 + 6D^2 + 11D + 6
+  Q(D) = D^3 + 6D^2 + 11D + 6 = (D+1)(D+2)(D+3)
   \]
-  TODO
-
+  \[
+  P(D) = 0D^2 + D + 1
+  \]
+  The homogeneous solution is of the form
+  \[
+  y_h(t) = C_1e^{-t} + C_2e^{-2t} + C_3e^{-3t} 
+  \]
+  We will also need tthe first and second derivatives:
+  \[
+  D y_h(t) = -C_1e^{-t} -2 C_2e^{-2t} -3 C_3e^{-3t} 
+  \]
+  \[
+  D^2 y_h(t) = C_1e^{-t} +4C_2e^{-2t} +9 C_3e^{-3t} 
+  \]
+  Using the special initial conditions $y_h(0) = 0$, $D y_h(0) = 0$, $D^2 y_h(0) = 1$ we obtain the system of equations:
+  \[
+  \begin{bmatrix}
+    1 & 1 & 1\\
+    -1 & -2 & -3\\
+    1 & 4 & 9
+  \end{bmatrix}
+  \begin{bmatrix}
+    C_1 \\ C_2 \\ C_3
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    0 \\ 0 \\ 1
+  \end{bmatrix}
+  \]
+  Solving this gives the constants $C_1 = \frac{1}{2}$, $C_2 = -1$, $C_3 = \frac{1}{2}$. The form of the impulse response is
+  \begin{align}
+    h(t) &= b_0\delta(t) + \left[ P(D) y_h(t) \right] u(t)\\
+      &= \left[-\frac{1}{2} e^{-t} + 2e^{-2t} - \frac{3}{2}e^{-3t} + \frac{1}{2}e^{-t} - 2e^{-2t} + \frac{1}{2}e^{-3t} \right] u(t)\\
+        &= \left[e^{-2t} - e^{-3t}\right] u(t)
+  \end{align}
+  Note the term in front of $e^{-t}$ is zero. Why? We will see that Laplace gives us intuition about solutions like this and in many cases simplifies the analysis.
+  
 \item Find the impuse response that corresponds to the block diagram
 
   \begin{figure}
     \centering
     \includegraphics[alt="block diagram for exmple problem"]{fig2_1.svg}
   \end{figure}
-  
+  \textbf{Solution:}
+  \begin{itemize}
+  \item reading the block diagram
+    \[
+    y[n] = 
+    \]
+  \end{itemize}
+
 \end{enumerate}
 
 
