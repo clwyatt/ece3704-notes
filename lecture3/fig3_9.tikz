@@ -1,0 +1,44 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+
+    \node [block] at (1.5,0) (block1) {$s^{-1}$};
+    \node [block] at (4,-0.75) (block2) {$s^{-1}$};
+
+    \node[sum] at (3,0) (sum) {$\Sigma$};
+
+    \node [input] at (0,0) (input) {};
+    \node [input] at (3,-1.5) (feedback) {};
+    \node [output] at (5,0) (output1) {};
+    \node [output] at (6,0) (output2) {};
+
+    \draw[->] (input) -- (block1);
+    \draw[->] (block1) -- (sum);
+    \draw (sum) -- (output1);
+    \draw[->] (output1) -- (output2);
+    \draw[->] (sum) -| (block2);
+    \draw (block2) |- (feedback);
+    \draw[->] (feedback) -| (sum);
+    
+    \node at (-0.5,0) {$x(t)$};
+    \node at (6.5,0) {$y(t)$};
+
+    \node at (3.25,-1.75) {$-5$};
+
+\end{tikzpicture}
+
+\end{document}
+

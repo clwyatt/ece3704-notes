@@ -1,0 +1,62 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+
+    \node [block] at (2,0) (block1) {$z^{-1}$};
+    \node [block] at (4,0) (block2) {$z^{-1}$};
+    \node [block] at (6,0) (block3) {$z^{-1}$};		
+    \node [block] at (8,0) (block4) {$z^{-1}$};	
+
+    \node[sum] at (3,-1.5) (sum1) {$\Sigma$};
+    \node[sum] at (5,-1.5) (sum2) {$\Sigma$};
+    \node[sum] at (7,-1.5) (sum3) {$\Sigma$};
+    \node[sum] at (9,-1.5) (sum4) {$\Sigma$};
+
+    \node [input] at (0,0) (input1) {};
+    \node [input] at (1,0) (input2) {};
+    \node [input] at (1,-1.5) (input3) {};
+    \node [output] at (10,-1.5) (output) {};
+
+    \draw (input1) -- (input2);
+    \draw (input2) -- (input3);
+    \draw[->] (input2) -- (block1);
+    \draw[->] (block1) -- (block2);
+    \draw[->] (block2) -- (block3);
+    \draw[->] (block3) -- (block4);
+    \draw[->] (block1) -| (sum1);
+    \draw[->] (input3) -- (sum1);
+    \draw[->] (block2) -| (sum2);
+    \draw[->] (sum1) -- (sum2);
+    \draw[->] (sum2) -- (sum3);
+    \draw[->] (block3) -| (sum3);
+    \draw[->] (sum3) -- (sum4);
+    \draw[->] (block4) -| (sum4);
+    \draw[->] (sum4) -- (output);
+
+    \node at (-0.5,0) {$x[n]$};
+    \node at (10.5,-1.5) {$y[n]$};
+
+    \node at (1.75,-1.75) {$a_1$};
+    \node at (3.25,-0.75) {$a_2$};
+    \node at (5.25,-0.75) {$a_3$};
+    \node at (7.25,-0.75) {$a_4$};
+    \node at (9.25,-0.75) {$a_5$};
+    
+\end{tikzpicture}
+
+\end{document}
+
+LaTeX finished at Tue Jun 24 12:38:53

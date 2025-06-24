@@ -53,7 +53,7 @@ u(t) * u(t) &= \left\{\begin{array}{cc}
 &= t\cdot u(t)
 \end{align}
 
-Example 3: Convolution of causal exponential $e^{a t}$, $a \neq 0$, and unit step:
+Example 3: Convolution of causal exponential $e^{a t}\, u(t)$, $a \neq 0$, and unit step:
 
 \begin{align}
 e^{a t}u(t) * u(t) &= \left\{\begin{array}{cc}
@@ -67,7 +67,7 @@ e^{a t}u(t) * u(t) &= \left\{\begin{array}{cc}
 &= \frac{e^{at} - 1}{a}\cdot u(t)
 \end{align}
 
-Such tables of precomputed integrals plus a set of properties allows us to preform convolution on a wide array of signals without integrating directly. Given aribrary signals $x_1(t), x_2(t)$, etc.
+Such tables of precomputed integrals plus a set of properties allows us to preform convolution on a wide array of signals without integrating directly. Given arbitrary signals $x_1(t), x_2(t)$, etc.
 
 \begin{itemize}
 \item commutivity: $x_1(t) * x_2(t) = x_2(t) * x_1(t)$
@@ -88,13 +88,13 @@ An example: let $x_1(t) = 5e^{4t}u(t) + 7e^{-t}u(t-1)$ and $x_2(t) = u(t)$. Then
   &= \frac{5}{4}\left(e^{4t} -1 \right)u(t) 7e^{-1} \left(e^{-(t-1)} -1 \right)u(t-1) & \text{simplify}
 \end{align}
 
-Recall that an important convolution is when the input is the complex exponentia; $x(t) = e^{st}, s\in\mathbb{C}$ and the impulse response is a arbitrary function $h(t)$. Then the output is given by
+Recall that an important convolution is when the input is the complex exponential; $x(t) = e^{st}, s\in\mathbb{C}$ and the impulse response is a arbitrary function $h(t)$. Then the output is given by
 
 \begin{align}
   y(t) &= h(t) * e^{st}\\
   &= \int\limits_{-\infty}^{\infty} h(\tau)e^{s(t-\tau)}\; d\tau \\
   &= e^{st} \int\limits_{-\infty}^{\infty} h(\tau)e^{s\tau)}\; d\tau \\
-  &= e^{st} H(s) \text{ for } s\in A \subseteq \mathbb{C}
+  &= e^{st} H(s) \text{ for } s\in \mathcal{R} \subseteq \mathbb{C}
 \end{align}
 where $H(s)$
 
@@ -143,7 +143,7 @@ The most basic building block for CT systems is the integrator:
 \begin{figure}
   \centering
   \includegraphics[alt="block diagram for integrator blocks"]{fig3_5.svg}
-  \caption{Three common ways to represet the integrator block.}
+  \caption{Three common ways to represent the integrator block.}
 \end{figure}
     
 Block diagrams and the related signal flow graphs are a good way to visualize and manipulate more complex systems. For example in controls the following block diagram describes the classic PID (proportional, integral, derivative) controller for a system "plant" whose impulse response is $h_p(t)$:
@@ -158,7 +158,7 @@ By the end of the course we will be better able to analyze and design systems of
 
 \section{DT Convolution}
 
-For DT systems the convolution integral of CT system thory becomes an countably infinite sum. Using the sifting propery of the DT delta function we can write an input signal as the sum of weighted, time-shifted impulse functions
+For DT systems the convolution integral of CT system theory becomes an countably infinite sum. Using the sifting property of the DT delta function we can write an input signal as the sum of weighted, time-shifted impulse functions
 
 \begin{equation}
   x[n] = \sum\limits_{m = -\infty}^{\infty} x[m]\delta[n-m]
@@ -173,6 +173,157 @@ where $h[n]$ is the impulse response of the DT system.
 
 As for CT systems, this analysis works for any DT LTI system as long as the sum converges.
 
-RESTART HERE
+We can build up a table of convolution results. Some examples
+
+Example 4: Convolution of delta with any function:
+
+\begin{align}
+  \delta[n] * x[n] &= \sim\limits_{m = -\infty}^{\infty} \delta[m]x[n-m] & \text{ from definition of convolution}\\
+  &= x[n] & \text{ by the sifting property of delta function}
+\end{align}
+
+Example 5: Convolution of two step functions:
+
+\begin{align}
+u[n] * u[n] &= \left\{\begin{array}{cc}
+  0 & n < 0\\
+  \sum\limits_{m = 0}^{n} (1) & n \geq 0
+\end{array}\right.\\
+&= \left\{\begin{array}{cc}
+  0 & n < 0\\
+  n+1 & n \geq 0
+\end{array}\right.\\
+&= n\cdot u[n]
+\end{align}
+
+Example 6: Convolution of causal real exponential $\gamma^{n}\, u[n]$, $\gamma \neq 1$, and unit step:
+
+\begin{align}
+\gamma^{n}u[n] * u[n] &= \left\{\begin{array}{cc}
+  0 & n < 0\\
+  \sum\limits_{m = 0}^{n} \gamma^{m} & n \geq 0
+\end{array}\right.\\
+&= \left\{\begin{array}{cc}
+  0 & n < 0\\
+  \frac{\gamma^{n+1} - 1}{\gamma - 1}  & n \geq 0
+\end{array}\right.\\
+&= \frac{\gamma^{n+1} - 1}{\gamma - 1} \cdot u[n]
+\end{align}
+
+Such tables of precomputed sums plus a set of properties allows us to preform convolution on a wide array of signals without integrating directly. Given arbitrary signals $x_1[n], x_2[n]$, etc.
+
+\begin{itemize}
+\item commutivity: $x_1[n] * x_2[n] = x_2[n] * x_1[n]$
+\item distributivity: $x_1[n] * (x_2[n] + x_3[n]) = (x_1[n]*x_2[n]) + [x_1[n]*x_3[n]]$
+\item associativity: $x_1[n] * (x_2[n] * x_3[n]) = (x_1[n]*x_2[n]) * x_3[n]$
+\item index shift: $x_1[n-m_1)*x_2[n-m_2] = \left. [x_1 * x_2][n] \right|_{n\rightarrow m_1 + m_2}$
+\item multiplicative scaling, $a,b\in\mathbb{C}$: $(ax_1[n])*(bx_2[n]) = ab(x_1[n] * x_2[n])$ 
+\end{itemize}
+
+An example. Let $x_1[n] = 2^nu[n-4]$ and $x_2[n] = 5u[n+1]$. Then
+
+\begin{align}
+  x_1 * x_2 &= \left\{ 2^nu[n-4]\right\}* \left\{ 5u[n+1] \right\}\\
+  &= \left\{ 2^4 2^{n-4}u[n-4]\right\}* \left\{ 5u[n+1] \right\}\\
+  &= \left. 2^4 (5)\left\{ 2^{n}u[n]\right\}* \left\{u[n] \right\}\right|_{n \rightarrow n-3}\\
+  &= \left. 80 \left\{ \frac{2^{n+1} - 1}{2 - 1}u[n]\right\}\right|_{n \rightarrow n-3}\\
+  &= 80\left( 2^{n-2} - 1\right)u[n-3]
+\end{align}
+
+Another important example is when the input is the complex exponential, $x[n] = z^n\; z\in\mathbb{C}$. Given an impulse response of the system $h[n]$ then the output is given by:
+
+\begin{align}
+  y[n] &= h[n] * z^{n}\\
+  &= \sum\limits_{m = -\infty}^{\infty} h[m]\, z^{n-m} \\
+  &= z^{n} \sum\limits_{m = -\infty}^{\infty} h[m]z^{-m} \\
+  &= z^{n} H(z) \text{ for } z\in \mathcal{R} \subseteq \mathbb{C}
+\end{align}
+where $H(z)$
+
+\begin{itemize}
+\item is the Eigenvalue for the signal $z^{n}$, 
+\item is called the Transfer Function or System Function,
+\item is the Z transform of the impulse response, and
+\item is defined for the subset of the complex plane called the region-of-convergence.
+\end{itemize}
+
+The Z transform will be a major focus of this course, where we will see how to apply it to signals other than the complex exponential.
+
+DT systems can also be represented by block diagrams. The basic motifs and properties are the same as for CT systems with the convolution being discrete.
+
+The most basic block for DT systems is the unit delay:
+
+\begin{figure}
+  \centering
+  \includegraphics[alt="block diagram for delay blocks"]{fig3_7.svg}
+  \caption{Three common ways to represent the delay block.}
+\end{figure}
+
+As for CT systems, block diagrams and the related signal flow graphs are a good way to visualize and manipulate more complex systems. For example in DSP a 4th order finite impulse response (FIR) filter has the block diagram:
+
+\begin{figure}
+  \centering
+  \includegraphics[alt="block diagram for fourth order FIR filter"]{fig3_8.svg}
+  \caption{Fourth order FIR filter.}
+\end{figure}
+
+\section{Example Problems}
+
+\begin{enumerate}
+\item
+  Given the CT system below where $x(t) = e^{-5t}u(t)$. Find $y(t)$.
+
+  \begin{figure}
+  \centering
+  \includegraphics[alt="block diagram for example 1"]{fig3_9.svg}
+  \end{figure}
+
+  \textbf{Solution:}
+  \begin{itemize}
+  \item reading the block diagram: $y(t) = -5\int y + \int x$
+  \item taking the derivative of both sides: $y^\prime = -5y + x$
+  \item in standard LCCDE form: $y^\prime + 5y = x$
+  \item the corresponding impulse response: $h(t) = e^{-5t}u(t)$
+  \item output using convolution and table
+    \begin{align}
+      y(t) &= h(t) * x(t)\\
+      &=\left\{ e^{-5t}u(t) \right\}*\left\{ x(t) \right\}\\
+      &=\left\{ e^{-5t}u(t) \right\}*\left\{ e^{-5t}u(t) \right\}\\
+      &= te^{-5t}u(t)
+    \end{align}
+  \end{itemize}
+
+\item
+  Given the 4th order FIR filter block diagram above, find the output $y[n]$ if $x[n] = u[n] - u[n-5]$.\\
+  \textbf{Solution:}
+  \begin{itemize}
+  \item reading the block diagram
+    \[
+    y[n] = a_5 x[n-4] + a_4 x[n-3] + a_3 x[n-2] + a_4 x[n-1] + a_1 x[n]
+    \]
+  \item the corresponding impulse response
+    \[
+    h[n] = a_5 \delta[n-4] + a_4 \delta[n-3] + a_3 \delta[n-2] + a_4 \delta[n-1] + a_1 \delta[n]
+    \]
+  \item the output
+    \begin{align}
+      y[n] &= h[n]*x[n]\\
+      &= a_5\delta[n-4]*u[n] - a_5\delta[n-4]*u[n-5]\\
+      &\quad + a_4\delta[n-3]*u[n] - a_4\delta[n-3]*u[n-5]\\
+      &\quad + a_3\delta[n-2]*u[n] - a_3\delta[n-2]*u[n-5]\\
+      &\quad + a_2\delta[n-1]*u[n] - a_2\delta[n-1]*u[n-5]\\
+      &\quad + a_1\delta[n]*u[n] - a_1\delta[n]*u[n-5]\\
+      &= a_5u[n-4] - a_5u[n-9]\\
+      &\quad + a_4u[n-3] - a_4u[n-8]\\
+      &\quad + a_3u[n-2] - a_3u[n-7]\\
+      &\quad + a_2u[n-1] - a_2u[n-6]\\
+      &\quad + a_1u[n] - a_1u[n-5]\\
+    \end{align}
+
+  \end{itemize}
+  
+\end{enumerate}
+
+
 
 \end{document}
