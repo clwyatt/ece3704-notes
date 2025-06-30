@@ -1,6 +1,8 @@
 ---
 title: "Modeling and Characterization of Signals and Systems"
+subtitle: "ECE 3704"
 author: "C.L. Wyatt"
+date: "Fall 2025"
 ---
 
 Today's lecture is a review of material from ECE 2714. We will review
