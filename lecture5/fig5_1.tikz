@@ -1,0 +1,69 @@
+\documentclass{standalone}
+\usepackage{circuitikz}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{circuitikz}[scale=1.2, transform shape]
+
+% Define node spacing
+\def\hspacing{2}
+\def\vspacing{1.5}
+
+% Top horizontal line with R resistors
+\draw (0,0) to[R, l=$R$] (\hspacing,0);
+\draw (\hspacing,0) to[R, l=$R$] (2*\hspacing,0);
+\draw (2*\hspacing,0) to[R, l=$R$] (3*\hspacing,0);
+\draw (3*\hspacing,0) to[R, l=$R$] (4*\hspacing,0);
+\draw (4*\hspacing,0) to[R, l=$R$] (5*\hspacing,0);
+\draw (5*\hspacing,0) to[R, l=$R$] (6*\hspacing,0);
+
+% Vertical R resistors to bit inputs
+\draw (0,0) to[R, l=$2R$] (0,-\vspacing);
+\draw (\hspacing,0) to[R, l=$2R$] (\hspacing,-\vspacing);
+\draw (2*\hspacing,0) to[R, l=$2R$] (2*\hspacing,-\vspacing);
+\draw (3*\hspacing,0) to[R, l=$2R$] (3*\hspacing,-\vspacing);
+\draw (4*\hspacing,0) to[R, l=$2R$] (4*\hspacing,-\vspacing);
+\draw (5*\hspacing,0) to[R, l=$2R$] (5*\hspacing,-\vspacing);
+
+% Final 2R resistor to ground
+\draw (6*\hspacing,0) to[R, l=$2R$] (6*\hspacing,-\vspacing);
+\draw (6*\hspacing,-\vspacing) node[ground] {};
+
+% Bit input labels
+\draw (0,-\vspacing) node[below] {$b_0$};
+\draw (\hspacing,-\vspacing) node[below] {$b_1$};
+\draw (2*\hspacing,-\vspacing) node[below] {$b_2$};
+\draw (3*\hspacing,-\vspacing) node[below] {$b_3$};
+\draw (4*\hspacing,-\vspacing) node[below] {$b_{N-2}$};
+\draw (5*\hspacing,-\vspacing) node[below] {$b_{N-1}$};
+
+% Connection dots
+\filldraw (0,0) circle (2pt);
+\filldraw (\hspacing,0) circle (2pt);
+\filldraw (2*\hspacing,0) circle (2pt);
+\filldraw (3*\hspacing,0) circle (2pt);
+\filldraw (4*\hspacing,0) circle (2pt);
+\filldraw (5*\hspacing,0) circle (2pt);
+\filldraw (6*\hspacing,0) circle (2pt);
+
+% Dots indicating continuation
+\draw (3.5*\hspacing,0.2) node {$\cdots$};
+\draw (3.5*\hspacing,-\vspacing-0.3) node {$\cdots$};
+
+% Op-amp buffer
+\draw (6*\hspacing,0) -- (7*\hspacing,0);
+\draw (7*\hspacing,0) node[op amp, anchor=-] (opamp) {};
+\draw (opamp.+) -- ++(0,-0.5) node[ground] {};
+
+% Feedback connection
+\draw (opamp.out) -- ++(0.5,0) coordinate (feedback);
+\draw (feedback) -- ++(0,2) coordinate (feedback2);
+\draw (feedback2) -| (opamp.-);
+
+% Output
+\draw (feedback) -- ++(1,0) node[right] {$V_o$};
+
+\end{circuitikz}
+
+\end{document}
