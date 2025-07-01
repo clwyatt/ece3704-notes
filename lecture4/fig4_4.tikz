@@ -1,0 +1,36 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, >=latex',scale=1, every node/.style={transform shape}]
+
+  \node[shape=coordinate] at (0,0) (input) {};
+  \node[sum] at (4,0) (sum) {$\Sigma$};
+  \node[block] at (2,-1) (block1) {$z^{-1}$};
+  \node[block] at (2,-2) (block2) {$z^{-1}$};
+  \node[shape=coordinate] at (4,-3) (feedforward) {};
+  \node[shape=coordinate] at (6,0) (output) {};
+  
+  \draw[->] (input) -- (sum);
+  \draw[->] (input) -| (block1);
+  \draw[->] (block1) -- (block2);
+  \draw (block2) |- (feedforward);
+  \draw[->] (feedforward) -| (sum);
+  \draw[->] (sum) -- (output);
+
+  \node at (-0.5,0) {$v[n]$};
+  \node at (6.5,0) {$y[n]$};
+  \node at (3,-2.7) {$-\frac{1}{4}$};
+\end{tikzpicture}
+\end{document}
