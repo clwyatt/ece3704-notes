@@ -4,9 +4,11 @@
 TARGET= lecture4.html
 
 # list figure svg files
-DEPS= fig4_1.svg fig4_2.svg
+DEPS= fig4_1.svg fig4_2.svg fig4_3.svg
 
-OPTIONS= -s -t html -V lang=en --embed-resources --mathml
+CSS=../style/style.css
+
+OPTIONS= -s -t html --css=$(CSS) -V lang=en --embed-resources --mathml
 
 .SECONDARY: # prevent removal of intermediate files
 
@@ -18,7 +20,7 @@ all: $(TARGET)
 %.svg: %.pdf
 	pdf2svg $< $@
 
-%.html: %.tex $(DEPS) 
+%.html: %.tex $(DEPS) $(CSS)
 	pandoc $(OPTIONS) $< -o $@
 
 view: $(TARGET)
