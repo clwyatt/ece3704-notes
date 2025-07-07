@@ -1,0 +1,147 @@
+\documentclass{article}
+
+\usepackage{url}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,svg}
+
+\begin{document}
+\title{Lecture 7\\ Complex Analysis II}
+\author{C.L. Wyatt}
+\date{\today}
+\maketitle
+
+In today's lecture we continue our introduction to complex analysis by defining analytic complex functions, the complex derivative, and looking closer at rational complex functions.
+
+\section{Complex Derivatives}
+
+A complex function $f(s)$ is \textit{analytic} in some domain $R\subset\mathbb{C}$ of the function is
+
+\begin{itemize}
+\item single valued, and
+\item has a finite complex derivative $f^\prime(s) \equiv \frac{df}{ds}$ for all $s\in R$.
+\end{itemize}
+
+Let $f(s) = f(x + jy) = u(x,y) + jv(x,y)$. The function has a complex derivative if and only if
+
+\[
+\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}  
+\]
+and
+\[
+\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}  
+\]
+These are called the Cauchy-Riemann conditions. If these conditions are met then the complex dericative is given by
+
+\[
+f^\prime(s) = \frac{\partial u}{\partial x} + j \frac{\partial v}{\partial x} = \frac{\partial v}{\partial y} - j \frac{\partial u}{\partial y}
+\]
+
+If a complex function is analytic over the entire complex plane, i.e. $R = \mathbb{C}$, it is called an \textit{entire} function.
+
+If a complex function is not analytic at a point $s_0$, but is analytic in the neighborhood of $s_0$, then the point is called a \texit{singularity} or a \textit{singular point} of the function.
+
+\subsection{Examples}
+
+\textbf{Example 1:} Let $s = x+jy$ and define
+
+\[
+f(s) = e^s = f(x+jy) = e^{x+jy} = e^x e^{jy}
+\]
+Using Euler's relation
+
+\[
+f(x+jy) = \underbrace{e^x\cos(y)}_{u(x,y)} + j\underbrace{e^x \sin(y)}_{v(x,y)}
+\]
+Checking the Cauchy-Riemann conditions
+
+\[
+\frac{\partial u}{\partial x} = e^x\cos(y)
+\]
+
+\[
+\frac{\partial u}{\partial y} = -e^x\sin(y)
+\]
+
+\[
+\frac{\partial v}{\partial x} = e^x\sin(y)
+\]
+\[
+\frac{\partial v}{\partial y} = e^x\cos(y)
+\]
+Thus $\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y} = e^x\cos(y)$ and $\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x} = -e^x\sin(y)$ and the function is analytic everywhere and thus an entire function. The complex derivative is
+
+\[
+f^\prime(s) = e^x\cos(y) + je^x\sin(y) = e^x e^{jy} = e^{x+jy} = e^s
+\]
+just as if $s$ was real and $f$ a real function.
+
+\textbf{Example 2:} Let $f(s) = \frac{1}{s}$, for $|s| > 0$, i.e. $s \neq 0$. Then
+
+\[
+f(s) = f(x+jy) = \frac{1}{x+jy} = \frac{1}{x+jy} \cdot \frac{x-jy}{x-jy} = \frac{x-jy}{x^2 + y^2} = \underbrace{\frac{x}{x^2 + y^2}}_{u(x,y)} + j \underbrace{\frac{-y}{x^2 + y^2}}_{v(x,y)}
+\]
+
+Checking the Cauchy-Riemann conditions
+
+\[
+\frac{\partial u}{\partial x} = \frac{-x^2 + y^2}{(x^2 + y^2)^2}
+\]
+
+\[
+\frac{\partial u}{\partial y} = \frac{-2xy}{(x^2 + y^2)^2}
+\]
+
+\[
+\frac{\partial v}{\partial x} = \frac{2xy}{(x^2 + y^2)^2}
+\]
+
+\[
+\frac{\partial v}{\partial y} = \frac{-x^2 + y^2}{(x^2 + y^2)^2}
+\]
+
+we we see that the function is analytic for $s \in \mathbb{C} - (0 + j0)$ and
+
+\[
+f^\prime(s) = \frac{-x^2 + y^2}{(x^2 + y^2)^2} + j \frac{2xy}{(x^2 + y^2)^2}
+\]
+
+With some work you can show this is the same as
+
+\[
+f^\prime(s) = -\frac{1}{s^2}
+\]
+
+again, just as if $s$ was real and $f$ a real function.
+
+\textbf{Example 3:} Now for a counter-example. Consider
+
+\[
+f(s) = s^* = f(x + jy) = x - jy
+\]
+Thus $u(x,y) = x$ and $v(x,y) = -y$. Checking the Cauchy-Riemann conditions,
+
+\[
+\frac{\partial u}{\partial x} = 1
+\]
+
+\[
+\frac{\partial u}{\partial y} = 0
+\]
+
+\[
+\frac{\partial v}{\partial x} = 0
+\]
+
+\[
+\frac{\partial v}{\partial y} = -1
+\]
+
+we see $\frac{\partial u}{\partial x} = 1 \neq \frac{\partial v}{\partial y} = -1$ thus the function is not analytic and no derivative exists.
+
+\textbf{Example 4:} Show that $s_0 = -1$ is a singularity of
+\[
+f(s) = \frac{1}{s+1} = f(x +jy) = \frac{1}{(1+x) + jy}
+\]
+
+\end{document}
+
