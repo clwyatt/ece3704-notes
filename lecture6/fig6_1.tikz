@@ -1,0 +1,33 @@
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
+\usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}
+
+  \draw[<->] (0,-2) -- (0,2) {};
+  \draw[<->] (-2,0) -- (2,0) {};
+  \node at (0,2.2) {$\text{Im}(s)$};
+  \node at (2.5,0) {$\text{Re}(s)$};
+
+  \node[fill=black,circle,inner sep=1pt] at (1.5,1.5) {};
+  \node at (1.7,1.7) {$s$};
+  \draw[->] (0,0) -- (1.48,1.48) {};
+
+  \node at (0.8,1.1) {$r$};
+  \node at (1.1,0.5) {$\theta$};
+  \draw[->] (1,0) arc (0:45:1);
+
+  \node at (1.5, -0.2) {$x$};
+  \node at (-0.2, 1.5) {$y$};
+
+  \draw[dotted] (1.5,1.5) -- (1.5,0) {};
+  \draw[dotted] (1.5,1.5) -- (0,1.5) {};
+\end{tikzpicture}
+\end{document}
