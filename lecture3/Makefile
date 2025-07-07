@@ -8,7 +8,7 @@ DEPS= fig3_1.svg fig3_2.svg fig3_3.svg fig3_4.svg fig3_5.svg fig3_6.svg fig3_7.s
 
 CSS=../style/style.css
 
-OPTIONS= -s -t html --css=$(CSS) -V lang=en --embed-resources --mathml
+OPTIONS= -s -t html --toc=true --css=$(CSS) -V lang=en --embed-resources --mathml
 
 .SECONDARY: # prevent removal of intermediate files
 
