@@ -4,7 +4,7 @@
 TARGET= lecture6.html
 
 # list figure svg files
-DEPS= fig6_1.svg fig6_2.svg fig6_3.svg fig6_4.svg fig6_5.svg fig6_6.svg fig6_7.svg fig6_8.svg
+DEPS= fig6_1.svg fig6_2.svg fig6_3.svg fig6_4.svg fig6_5.svg fig6_6.svg fig6_7.svg fig6_8.svg fig6_9.svg fig6_10.svg fig6_11.svg
 
 CSS=../style/style.css
 
