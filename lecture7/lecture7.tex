@@ -30,7 +30,7 @@ and
 \[
 \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}  
 \]
-These are called the Cauchy-Riemann conditions. If these conditions are met then the complex dericative is given by
+These are called the Cauchy-Riemann conditions. If these conditions are met then the complex derivative is given by
 
 \[
 f^\prime(s) = \frac{\partial u}{\partial x} + j \frac{\partial v}{\partial x} = \frac{\partial v}{\partial y} - j \frac{\partial u}{\partial y}
@@ -138,10 +138,252 @@ Thus $u(x,y) = x$ and $v(x,y) = -y$. Checking the Cauchy-Riemann conditions,
 
 we see $\frac{\partial u}{\partial x} = 1 \neq \frac{\partial v}{\partial y} = -1$ thus the function is not analytic and no derivative exists.
 
-\textbf{Example 4:} Show that $s_0 = -1$ is a singularity of
+\textbf{Example 4:} Show that $s_0 = -1$ is a singularity of an analytic complex function
 \[
 f(s) = \frac{1}{s+1} = f(x +jy) = \frac{1}{(1+x) + jy}
 \]
+Rearranging to get the real part and imaginary part
+
+\[
+\frac{1}{(1+x) + jy}\frac{(1+x) - jy}{(1+x) - jy} = \underbrace{\frac{1+x}{(1+x)^2 + y^2}}_{u(x,y)} + j \underbrace{\frac{-y}{(1+x)^2 + y^2}}_{v(x,y)}
+\]
+
+Checking the Cauchy-Riemann conditions,
+
+\[
+\frac{\partial u}{\partial x} = \frac{-(1+x)^2 + y^2}{[(1+x)^2 + y^2]^2}
+\]
+
+\[
+\frac{\partial u}{\partial y} = \frac{-2(1+x)y}{[(1+x)^2 + y^2]^2}
+\]
+
+\[
+\frac{\partial v}{\partial x} = \frac{2(1+x)y}{[(1+x)^2 + y^2]^2}
+\]
+
+\[
+\frac{\partial v}{\partial y} = \frac{-(1+x)^2 + y^2}{[(1+x)^2 + y^2]^2}
+\]
+
+we see that $\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}$ and $\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$ except at $x=-1, y = 0$ where
+
+\[
+\frac{-(1+x)^2 + y^2}{[(1+x)^2 + y^2]^2} = \frac{0}{0} = \text{undefined}
+\]
+
+Thus the function is analytic except at $s_0 = -1 + j0 = -1$.
+
+\section{Rational Complex Functions}
+
+The previous example is a \textit{rational function}, a ratio of polynomials in $s$. These will be very important later in the course. We will need to be very adept at doing manipulations of such functions. The general case can be written as
+
+\[
+f(s) = \frac{\sum\limits_{k=0}^M b_k s^k}{\sum\limits_{k=0}^N a_k s^k} \equiv \frac{P(s)}{Q(s)}
+\]
+
+\begin{itemize}
+\item If $M < N$ the ratio is said to be \textit{strictly proper}.
+\item If $M \leq N$ the ratio is \textit{proper}.
+\item If $M > N$ the ratio is \textit{improper}.
+\end{itemize}
+
+Example: $M = 2, N=3$
+
+\[
+f(s) = \frac{b_0 + b_1 s + b_2 s^2}{a_0 + a_1 s + a_2 s^2 + a_3 s^3}
+\]
+is a strictly proper rational function.
+
+
+The roots of the denominator polynomial $Q(s)$ are the singularities of $f$. We will often be interested in writing rational functions as a \textit{partial fraction expansion} of the factors of the denominator.
+
+\subsection{Partial Fraction Expansion}
+
+A ratio of polynomials that is improper can be written as the sum of a polynomial and a strictly proper rational function. Example
+
+\[
+f(s) = \frac{2s^3 + 9s^2 + 11s + 2}{s^2 + 4s + 3} = (2s+1) + \frac{s-1}{s^2 + 4s + 3}
+\]
+
+Once a rational function is proper we can expand it in terms of the factors of $Q(s)$. Example
+
+\[
+f(s) = \frac{1}{s^2 + 3s +2} = \frac{1}{(s+1)(s+2)} = \frac{A}{s+1} + \frac{B}{s+2}
+\]
+
+To find $A$ and $B$ we can "clear" the fractions
+
+\[
+\frac{A}{s+1} + \frac{B}{s+2} = \frac{1}{(s+1)(s+2)} = \frac{A(s+2) + B(s+1)}{(s+1)(s+2)}
+\]
+which gives the equation for the numerator
+\[
+A(s+2) + B(s+1) = 1 + 0s
+\]
+which requires $A = 1$ and $B = -1$, so that
+\[
+f(s) = \frac{1}{s+1} + \frac{-1}{s+2}
+\]
+
+Clearing fractions can be tedious with higher order systems. A shortcut is to use the Heaviside "cover-up" method, or finding the \textit{residues}.
+
+\textbf{Case \#1:} non-repeated singularities
+\[
+f(s) = \frac{P(s)}{(s-\alpha_1)(s-\alpha_2)\cdots (s-\alpha_N)}
+\]
+where $\alpha_i$ are the distinct singularities (roots of $Q(s)$). Then
+\[
+f(s) = \frac{K_1}{s-\alpha_1} + \frac{K_1}{s-\alpha_1} + \cdots + \frac{K_N}{s-\alpha_N} 
+\]
+
+To find the $K_i$ values we multiply through by that term ($s-\alpha_i$) and evaluate the result when $s = \alpha_i$
+\[
+K_i = \left. (s-\alpha_i)f(s) \right|_{s = \alpha_i} 
+\]
+
+Example:
+
+\[
+f(s) = \frac{s^2 + 2s + 7}{(s_1)(s-3)(s+5)} = \frac{K_1}{s+1} + \frac{K_2}{s-3} + \frac{K_3}{s+5}
+\]
+
+We note that $M = 2$ and $N = 3$ so that the function is strictly proper. To find the constants
+
+\[
+K_1 = \left. \frac{s^2 + 2s + 7}{(s-3)(s+5)} \right|_{s = -1} = -\frac{3}{8}
+\]
+
+\[
+K_2 = \left. \frac{s^2 + 2s + 7}{(s+1)(s+5)} \right|_{s = 3} = \frac{11}{16}
+\]
+
+\[
+K_3 = \left. \frac{s^2 + 2s + 7}{(s+1)(s-3)} \right|_{s = -5} = \frac{11}{16}
+\]
+
+This works even if the roots are complex. For example:
+
+\[
+f(s) = \frac{1}{(s + 1 + j)(s + 1 -j)} = \frac{K_1}{s + 1 + j} + \frac{K_2}{s + 1 -j}
+\]
+
+\[
+K_1 = \left. \frac{1}{s + 1 - j} \right|_{s = -1-j} = -\frac{1}{2j}
+\]
+
+\[
+K_2 = \left. \frac{1}{s + 1 + j} \right|_{s = -1+j} = \frac{1}{2j}
+\]
+
+\textbf{Case \#2:} However we will often want to avoid working with complex roots directly. Another approach is to combine them into a quadratic term. Here is an example:
+
+\[
+f(s) = \frac{s+2}{s^3 + 3s^2 + 4s + 2} = \frac{s+2}{(s+1)(s+1 +j)(s +1 -j)} = \frac{s+2}{(s+1)(s^2 +2s + 2)} = \frac{A}{s+1} + \frac{Bs + C}{s^2 + 2s + 2}
+\]
+
+To find $A$ we use the same residue method
+
+\[
+A = \left. \frac{s+2}{s^2 + 2s + 2} \right|_{s = -1} = 1
+\]
+
+To find $B$ and $C$ we can clear fractions or use another shortcut. To find $C$, let $s = 0$. We get
+
+\[
+\frac{A}{1} + \frac{C}{2} = 1
+\]
+which implies that $C = 0$. To find $B$ multiply through by $s$ and let $s\rightarrow \infty$.
+
+\[
+\frac{As}{s+1} + \frac{Bs^2 + Cs}{s^2 + 2s + 2} = \frac{s^2 + 2s}{s^3 + 3s^2 + 4s + 2}
+\]
+
+In the first term divide top and bottom by $s$, in the second term by $s^2$, and on the right-hand side by $s^3$:
+
+
+\[
+\frac{A}{1+s^{-1}} + \frac{B + Cs^{-1}}{1 + 2s^{-1} + 2s^{-2}} = \frac{s^{-1} + 2s^{-2}}{1 + 3s^{-1} + 4s^{-2} + 2s^{-3}}
+\]
+
+Now let $s\rightarrow \infty$. We get
+
+\[
+\frac{A}{1} + \frac{B}{1} = \frac{0}{1} = 0
+\]
+which implies $B = -1$.
+
+Or you can just clear the fractions and substitute for $A$ and $C$.
+
+\begin{align}
+  As^2 + 2As + 2A + Bs^2 + Cs + Bs + C &= s+2\\
+  (A+B)s^2 + (2A + B + c)s + 2A +C = s+2\\
+\end{align}
+We only need one equation, so lets use $2A + B + C = 1$. Solving for $B$ and substituting for $A.C$ gives $B = -1$ as above.
+
+Thus the final result is
+
+\[
+f(s) = \frac{1}{s+1} + \frac{-s}{s^2 + 2s + 2}
+\]
+
+\textbf{Case \# 3:} One other complication is when we have repeated roots (a root $\lambda$, repeated $r > 1$ times).
+
+\[
+f(s) \frac{P(s)}{(s-\lambda)^r\, (s-\alpha_1)(s-\alpha_2)\cdots(s-\alpha_{N-r})}
+\]
+
+To handle this case we expand the ratio as
+
+\[
+f(s) = \frac{a_0}{(s-\lambda)^r} + \frac{a_1}{(s-\lambda)^{r-1}} + \cdots + \frac{a_{r-1}}{s-\lambda} + \frac{K_1}{s-\alpha_1} + + \frac{K_2}{s-\alpha_2} + \cdots + + \frac{K_{N-r}}{s-\alpha_{N-r}} 
+\]
+
+The $K_i$ values are determined using the same residue method as before. The $a_i$ values are found using a variation on the residue method:
+
+\[
+a_i = \left. \frac{1}{i!}\frac{d^i}{ds^i}[(s-\lambda)^r f(s)] \right|_{s = \lambda}
+\]
+
+That is rather complicated so lets finish up with an example. Find the partial fraction expansion of
+
+\[
+f(s) = \frac{s+3}{(s+1)^2(s+2)}
+\]
+
+Using the pattern above we expand the terms as
+
+\[
+f(s) = \frac{K_1}{s+2} + \frac{a_0}{(s+1)^2} + \frac{a_1}{s+1}
+\]
+then find the residues
+
+\[
+K_1 = \left. \frac{s+3}{(s+1)^2} \right|_{s = -2} = 1
+\]
+
+\[
+a_0 = \left. \frac{1}{0!}\frac{d^0}{ds^0}\left[\frac{s+3}{s+2}\right] \right|_{s = -1} = 2
+\]
+
+\[
+a_1 = \left. \frac{1}{1!}\frac{d}{ds}\left[\frac{s+3}{s+2}\right] \right|_{s = -1} = \left. \frac{(s+2)(1) - (s+3)(1)}{(s+2)^2} \right|_{s = -1} = -1
+\]
+
+Thus the result is
+
+\[
+f(s) = \frac{1}{s+2} + \frac{2}{(s+1)^2} + \frac{-1}{s+1}
+\]
+
+As you might expect there are computational tools that do this job for you.
+
+\begin{itemize}
+\item Mathematica: \texttt{Apart} function
+\item Matlab (using symbolic toolbox) and Maxima: \texttt{partfrac} function
+\end{itemize}
+
+You can use this to check work and help on homework, but you will need to be able to do this by hand on exams.
 
 \end{document}
 
