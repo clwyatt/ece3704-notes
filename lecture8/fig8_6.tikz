@@ -1,0 +1,49 @@
+\documentclass{standalone}
+\usepackage{amsmath,tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}
+
+  \draw[<->] (0,-3) -- (0,3) {};
+  \draw[<->] (-2,0) -- (2,0) {};
+  \node at (0,3.2) {$\text{Im}(s)$};
+  \node at (2.5,0) {$\text{Re}(s)$};
+
+  \draw[->, thick] (1,-1.8) -- (1,0.5) {};
+  \draw[thick] (1,0.5) -- (1,1.8) {};
+  \node at (1.2,-0.2) {$\gamma$};
+  \node at (1.4,0.5) {$C_1$};
+
+  \draw[->, thick] (1,1.8) -- (0.5,1.8) {};
+  \draw[thick] (0.5,1.8) -- (0,1.8) {};
+  \node at (-0.2,2) {$a$};
+  \node at (0.5,2.2) {$C_2$};
+
+  \draw[thick, decoration={markings, mark=at position 0.3 with {\arrow{>}}},
+    postaction={decorate}] (0,1.8) arc (90:270:1.8);
+
+  \node at (-0.3,-2) {$-a$};
+  \node at (-1.8,1.5) {$C_3$};
+
+  \draw[->, thick] (0,-1.8) -- (0.5,-1.8) {};
+  \draw[thick] (0.5,-1.8) -- (1,-1.8) {};
+  \node at (0.5,-2.2) {$C_4$};
+
+  \node[fill=black,circle,inner sep=1pt] at (1,1.8) {};
+  \node[fill=black,circle,inner sep=1pt] at (0,1.8) {};
+  \node[fill=black,circle,inner sep=1pt] at (0,-1.8) {};
+  \node[fill=black,circle,inner sep=1pt] at (1,-1.8) {};
+  
+\end{tikzpicture}
+\end{document}

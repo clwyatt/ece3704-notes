@@ -302,13 +302,32 @@ Notice the contour for the inverse Laplace transform is not written as as closed
 \int\limits_{\gamma -j\infty}^{\gamma + j\infty} X(s) e^{st} ds
 \]
 
-where $gamma$ is larger than the largest singularity of $X(s)$. This can be visualized as the linear contour
+where $\gamma$ is larger than the largest singularity of $X(s)$. This can be visualized as the linear contour
 
-TODO FIGURE
+\[
+s(p) = \gamma + jp \text{ for } p\in\mathbb{R}
+\]
 
-To convert this to a closed integral so we can apply the residue theorem we need to define the \textit{Bromwitch contour}.
+\begin{figure}
+  \centering
+  \includegraphics[alt={linear contour of integration for the Laplace transform}]{fig8_5.svg}
+\end{figure}
 
-TODO FIGURE
+Recall however that there is only one point at infinity for complex numbers. To convert this to a closed integral so we can apply the residue theorem we need to define the \textit{Bromwitch contour}.
 
+\begin{figure}
+  \centering
+  \includegraphics[alt={Bromwitch contour of integration for the Laplace transform}]{fig8_6.svg}
+\end{figure}
+
+This closed contour consists of four piecewise contours. To make this contour be the closed equivalent of the one above we let the value of $a$, where the contour crosses the imaginary axis approach infinity. The integral that corresponds to the inverse Laplace transform then becomes
+
+\[
+\int\limits_{\gamma -j\infty}^{\gamma + j\infty} X(s) e^{st} ds = \lim_{a \rightarrow \infty} \int_{C_1} X(s) e^{st} ds + \int_{C_2} X(s) e^{st} ds + \int_{C_3} X(s) e^{st} ds + \int_{C_4} X(s) e^{st} ds = \oint_C X(s) e^{st} ds 
+\]
+
+I think of this as the contour goes off to infinity, and comes back in from the other side, but this is just a mental convenience.
+
+We will see several examples of this contour over the next week.
 
 \end{document}
