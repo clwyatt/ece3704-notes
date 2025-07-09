@@ -1,0 +1,31 @@
+\documentclass{standalone}
+\usepackage{amsmath,tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}
+
+  \draw[<->] (0,-2) -- (0,2) {};
+  \draw[<->] (-2,0) -- (2,0) {};
+  \node at (0,2.2) {$\text{Im}(s)$};
+  \node at (2.5,0) {$\text{Re}(s)$};
+
+  \node[fill=black,circle,inner sep=1pt] at (-1,-1) {};
+  \node[fill=black,circle,inner sep=1pt] at (1,1) {};
+  \draw[->] (-1,-1) -- (0.9,0.9) {};
+  
+  \node at (1.2, 1.3) {$s(1)$};
+  \node at (-1.2, -1.3) {$s(-1)$};
+
+\end{tikzpicture}
+\end{document}

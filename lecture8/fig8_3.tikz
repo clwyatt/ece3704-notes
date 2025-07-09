@@ -1,0 +1,39 @@
+\documentclass{standalone}
+\usepackage{amsmath,tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}
+
+  \draw[<->] (0,-2) -- (0,2) {};
+  \draw[<->] (-2,0) -- (2,0) {};
+  \node at (0,2.2) {$\text{Im}(s)$};
+  \node at (2.5,0) {$\text{Re}(s)$};
+
+  \draw[decoration={markings, mark=at position 0.7 with {\arrow{>}}},
+        postaction={decorate}] (-1,0) arc (180:0:1);
+
+  \draw[decoration={markings, mark=at position 0.7 with {\arrow{>}}},
+        postaction={decorate}] (-1,0) arc (-180:0:1);
+
+  \node[fill=black,circle,inner sep=1pt] at (1,0) {};
+  \node[fill=black,circle,inner sep=1pt] at (-1,0) {};
+
+  \node at (-1.4, 0.3) {$-r$};
+  \node at (1.4, -0.3) {$r$};
+
+  \node at (1, 1.1) {$C_1$};
+  \node at (1, -1.1) {$C_2$};
+    
+\end{tikzpicture}
+\end{document}
