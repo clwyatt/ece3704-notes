@@ -21,5 +21,7 @@ deploy: build-all
   done
   cd index && make && cd ..;
   cp index/index.html docs
-  
+  git add docs
+  git commit -m "publish site"
+  git push
 
