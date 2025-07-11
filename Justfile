@@ -8,13 +8,18 @@ build-all:
     cd $dir && make && cd ..; \
   done
 
-clean-all:
-  for dir in `find ./ -name "lecture*" -type d -print`; do \
-    cd $dir && make clean && cd ..; \
-  done
-
-reset:
+clean:
   for dir in `find ./ -name "lecture*" -type d -print`; do \
     cd $dir && make realclean && cd ..; \
   done
+  cd index && make clean && cd ..;
+  
+deploy: build-all
+  rm -rf docs/*
+  for dir in `find ./ -name "lecture*" -type d -print`; do \
+    cp ${dir}/${dir}.html docs; \
+  done
+  cd index && make && cd ..;
+  cp index/index.html docs
+  
 
