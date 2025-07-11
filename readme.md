@@ -4,7 +4,9 @@ This is a set of supplementary notes and examples for ECE 3704 in the Bradley De
 
 Written in LaTeX, Tikz, Aymptote, then converted to accessible html+mathml+svg.
 
-The published version of these notes is at [](https://clwyatt.github.io/ece3704-notes/).
+The published version of these notes is at:
+
+[clwyatt.github.io/ece3704-notes](https://clwyatt.github.io/ece3704-notes/).
 
 ## License
 
