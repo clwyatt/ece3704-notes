@@ -13,14 +13,16 @@ clean:
     cd $dir && make realclean && cd ..; \
   done
   cd index && make clean && cd ..;
-  
-deploy: build-all
+
+render: build-all
   rm -rf docs/*
   for dir in `find ./ -name "lecture*" -type d -print`; do \
     cp ${dir}/${dir}.html docs; \
   done
   cd index && make && cd ..;
   cp index/index.html docs
+
+deploy: render
   git add docs
   git commit -m "publish site"
   git push
