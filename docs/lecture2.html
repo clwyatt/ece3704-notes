@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-07-11" />
+  <title>Lecture 2 Modeling and Characterization of Signals and Systems</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+</style>
+  <style type="text/css">html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #444;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 14px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: left;
+}
+.date {
+font-size: 1.2em;
+text-align: left;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Lecture 2<br />
+Modeling and Characterization of Signals and Systems</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-07-11</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#signals" id="toc-signals">Signals</a></li>
+<li><a href="#systems" id="toc-systems">Systems</a></li>
+<li><a href="#example-problems" id="toc-example-problems">Example
+Problems</a></li>
+</ul>
+</nav>
+<p>Today’s lecture is a review of material from ECE 2714. We will review
+the modeling and characterization of continuous-time and discrete-time
+signals and systems.</p>
+<h1 id="signals">Signals</h1>
+<p>Signals are modeled as functions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mi>A</mi><mo>→</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">f: A \rightarrow B</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+are sets.</p>
+<p>Examples of some commonly encountered signals:</p>
+<ul>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">A\in \mathbb{R}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">B\in \mathbb{R}</annotation></semantics></math>:
+CT (Analog) signals</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><mi>ℤ</mi></mrow><annotation encoding="application/x-tex">A\in \mathbb{Z}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">B\in \mathbb{R}</annotation></semantics></math>:
+DT real-valued signals</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><mi>ℤ</mi></mrow><annotation encoding="application/x-tex">A\in \mathbb{Z}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>∈</mo><mi>ℂ</mi></mrow><annotation encoding="application/x-tex">B\in \mathbb{C}</annotation></semantics></math>:
+DT complex-valued signals</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">A\in \mathbb{R}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>∈</mo><msup><mi>ℝ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">B\in \mathbb{R}^2</annotation></semantics></math>:
+two-channel CT (Analog Stereo) signals</p></li>
+</ul>
+<p>To model signals we can build them up from primitive signals using
+transformations and combinations.</p>
+<p>Some examples of primitive CT signals:</p>
+<ul>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\delta(t)</annotation></semantics></math>,
+the delta function</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(t)</annotation></semantics></math>,
+the step function</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mrow><mi>s</mi><mi>t</mi></mrow></msup><mspace width="0.278em"></mspace><mi>s</mi><mo>∈</mo><mi>ℂ</mi></mrow><annotation encoding="application/x-tex">e^{st}\; s\in\mathbb{C}</annotation></semantics></math>,
+the complex exponential</p></li>
+</ul>
+<p>Recall the important relations for the complex exponential. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mi>α</mi><mo>+</mo><mi>j</mi><mi>β</mi></mrow><annotation encoding="application/x-tex">s = \alpha + j\beta</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>,</mo><mi>β</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">\alpha, \beta \in \mathbb{R}</annotation></semantics></math>,
+then</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mrow><mi>s</mi><mi>t</mi></mrow></msup><mo>=</mo><msup><mi>e</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo>+</mo><mi>j</mi><mi>β</mi><mo stretchy="false" form="postfix">)</mo><mi>t</mi></mrow></msup><mo>=</mo><msup><mi>e</mi><mrow><mi>α</mi><mi>t</mi></mrow></msup><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>j</mi><mi>β</mi><mi>t</mi></mrow></msup><mo>=</mo><msup><mi>e</mi><mrow><mi>α</mi><mi>t</mi></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>cos</mi><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>j</mi><mi>sin</mi><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">e^{st} = e^{(\alpha + j\beta)t} = e^{\alpha t}\, e^{j\beta t} = e^{\alpha t}\left(\cos(\beta t) + j\sin(\beta t) \right)</annotation></semantics></math></p>
+<p>By combining primitive signals we can create other signals. For
+example, the cosine function can be written as the weighted, linear
+combination of two complex exponentials</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>cos</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>e</mi><mrow><mi>j</mi><msub><mi>ω</mi><mn>0</mn></msub><mi>t</mi></mrow></msup><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>e</mi><mrow><mi>−</mi><mi>j</mi><msub><mi>ω</mi><mn>0</mn></msub><mi>t</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\cos(\omega t) = \frac{1}{2} e^{j\omega_0 t} + \frac{1}{2} e^{-j\omega_0 t}</annotation></semantics></math></p>
+<p>A similar example is the Fourier Series representation of periodic CT
+signals,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">x(t)</annotation></semantics></math>,
+that meet the Direchlet conditions. It is an infinite weighted, linear
+combination of complex exponentials</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mi>−</mi><mi>∞</mi></mrow><mo accent="false">∞</mo></munderover><msub><mi>a</mi><mi>k</mi></msub><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>j</mi><mi>k</mi><msub><mi>ω</mi><mn>0</mn></msub><mspace width="0.167em"></mspace><mi>t</mi></mrow></msup></mrow><annotation encoding="application/x-tex">x(t) = \sum\limits_{k = -\infty}^{\infty} a_k\, e^{jk\omega_0\, t}</annotation></semantics></math></p>
+<p>We can also think about decomposing complex signals into primitive
+functions rather than building them up. Recall the CT Fourier
+decomposition (transform) of a signal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">x(t)</annotation></semantics></math>
+is given by the improper, definite integral:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munderover><mo>∫</mo><mrow><mi>−</mi><mi>∞</mi></mrow><mo accent="false">∞</mo></munderover><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msup><mi>e</mi><mrow><mi>j</mi><mi>ω</mi><mspace width="0.167em"></mspace><mi>t</mi></mrow></msup><mspace width="0.278em"></mspace><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">X(\omega) = \int\limits_{-\infty}^{\infty} x(t) e^{j\omega\, t}\; dt</annotation></semantics></math></p>
+<p>which applies to many, but not all, signals.</p>
+<p>Some example primitives for DT signals are:</p>
+<ul>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\delta[n]</annotation></semantics></math>,
+the discrete delta function</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">u[n]</annotation></semantics></math>,
+the discrete unit step</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>z</mi><mi>n</mi></msup><mo>,</mo><mspace width="0.278em"></mspace><mi>z</mi><mo>∈</mo><mi>ℂ</mi></mrow><annotation encoding="application/x-tex">z^n,\; z\in\mathbb{C}</annotation></semantics></math>,
+the complex exponential</p></li>
+</ul>
+<p>Recall the DT complex exponential can be written as follows. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mi>r</mi><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>j</mi><mi>θ</mi></mrow></msup><mo>,</mo><mspace width="0.167em"></mspace><mi>r</mi><mo>,</mo><mi>θ</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">z = r\, e^{j\theta}, \, r,\theta\in\mathbb{R}</annotation></semantics></math>,
+then</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>z</mi><mi>n</mi></msup><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>j</mi><mi>θ</mi></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>r</mi><mi>n</mi></msup><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>j</mi><mi>θ</mi><mspace width="0.167em"></mspace><mi>n</mi></mrow></msup><mo>=</mo><msup><mi>r</mi><mi>n</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>cos</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mspace width="0.167em"></mspace><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>j</mi><mi>sin</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mspace width="0.167em"></mspace><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">z^n = \left( r\, e^{j\theta} \right)^n = r^n\, e^{j\theta\, n} = r^n\left(\cos(\theta\, n) + j\sin(\theta\, n) \right)</annotation></semantics></math></p>
+<p>Note: the type of signal, DT or CT, real-valued or complex valued,
+etc. can usually be inferred. To make this easier we use square brackets
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[]</annotation></semantics></math>
+to define DT signals and parenthesis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">()</annotation></semantics></math>
+to define CT signals.</p>
+<p>As before, we can construct more complex DT signals by taking
+products and weighted linear combinations of these primitive signals,
+for example:</p>
+<ul>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mspace width="0.278em"></mspace><mi>u</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mspace width="0.278em"></mspace><mi>γ</mi><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">\left(\gamma\right)^n\; u[n],\; \gamma\in\mathbb{R}</annotation></semantics></math></p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mspace width="0.167em"></mspace><mrow><mi>cos</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>ω</mi><mn>0</mn></msub><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.278em"></mspace><mi>u</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mspace width="0.278em"></mspace><mi>γ</mi><mo>,</mo><msub><mi>ω</mi><mn>0</mn></msub><mo>∈</mo><mi>ℝ</mi></mrow><annotation encoding="application/x-tex">\left(\gamma\right)^n\,\cos(\omega_0 n)\; u[n],\; \gamma,\omega_0\in\mathbb{R}</annotation></semantics></math></p></li>
+</ul>
+<p>In many cases the same signals can be expressed in different forms.
+In the last example above</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mspace width="0.167em"></mspace><mrow><mi>cos</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>ω</mi><mn>0</mn></msub><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.278em"></mspace><mi>u</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>z</mi><mo>*</mo></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">\left(\gamma\right)^n\,\cos(\omega_0 n)\; u[n] = \left(z\right)^n + \left(z^*\right)^n</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mfrac><mi>γ</mi><mn>2</mn></mfrac><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>j</mi><mi>θ</mi></mrow></msup></mrow><annotation encoding="application/x-tex">z = \frac{\gamma}{2}\, e^{j\theta}</annotation></semantics></math>.</p>
+<p>The corresponding Fourier decomposition for a DT signal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">x[n]</annotation></semantics></math>
+is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>−</mi><mi>∞</mi></mrow><mo accent="false">∞</mo></munderover><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><msup><mi>e</mi><mrow><mi>j</mi><mi>ω</mi><mspace width="0.167em"></mspace><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">X(\omega) = \sum\limits_{-\infty}^{\infty} x[n] e^{j\omega\, n}</annotation></semantics></math></p>
+<p>a periodic function in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>,
+which may or may not exist for any given signal of interest.</p>
+<p>Major classifications of signals are:</p>
+<ul>
+<li><p>casual, anti-causal, or neither</p></li>
+<li><p>periodic or aperiodic</p></li>
+<li><p>even, odd, or neither</p></li>
+<li><p>energy, power, or neither</p></li>
+</ul>
+<h1 id="systems">Systems</h1>
+<p>Systems either</p>
+<ol>
+<li><p>produce signals</p></li>
+<li><p>measure signals</p></li>
+<li><p>transform signals (inputs) into other signals (outputs)</p></li>
+</ol>
+<ul>
+<li><p>CT systems transform CT signals to CT signals.</p></li>
+<li><p>DT systems transform DT signals to DT signals.</p></li>
+<li><p>Hybrid systems convert between CT and DT signals.</p></li>
+</ul>
+<p>Major classifications of systems are:</p>
+<ul>
+<li><p>memory-less or dynamic</p></li>
+<li><p>casual or non-causal</p></li>
+<li><p>invertable or non-invertable</p></li>
+<li><p>BIBO stable or unstable</p></li>
+<li><p>time-varying or time-invariant</p></li>
+<li><p>linear or nonlinear</p></li>
+</ul>
+<p>The focus of ECE 2714 and this course is Linear, Time-Invariant (LTI)
+systems in CT and DT.</p>
+<p>CT systems are in general represented by differential equations, e.g.
+the driven, damped pendulum</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mover><mi>y</mi><mo accent="true">̈</mo></mover><mo>+</mo><mi>b</mi><mover><mi>(</mi><mo accent="true">̇</mo></mover><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>c</mi><mrow><mi>sin</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a\ddot{y} + b\dot(y) + c\sin(y) = x(t)</annotation></semantics></math></p>
+<p>CT LTI systems, stable or unstable, can be represented by</p>
+<ul>
+<li><p>linear, constant-coefficient differential equations (LCCDE) with
+zero initial conditions</p></li>
+<li><p>impulse response
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(t)</annotation></semantics></math></p></li>
+<li><p>block diagram</p></li>
+<li><p>Eigenvalue or Transfer Function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(s)</annotation></semantics></math>
+(this concept is developed more in this course)</p></li>
+</ul>
+<p>Stable CT LIT systems can be also be represented by their frequency
+response</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>j</mi><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>Y</mi><mo stretchy="false" form="prefix">(</mo><mi>j</mi><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>X</mi><mo stretchy="false" form="prefix">(</mo><mi>j</mi><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><mi>ℱ</mi><mrow><mo stretchy="true" form="prefix">{</mo><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">}</mo></mrow></mrow><annotation encoding="application/x-tex">H(j\omega) = \frac{Y(j\omega)}{X(j\omega)} = \mathcal{F} \left\{ h(t) \right\}</annotation></semantics></math></p>
+<p>DT systems can in general be represented by difference equations,
+e.g. logistic equation</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mi>a</mi><mspace width="0.167em"></mspace><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y[n+1] = a\, x[n]\, (1-x[n])</annotation></semantics></math></p>
+<p>DT LTI systems, stable or unstable, can be represented by</p>
+<ul>
+<li><p>linear, constant-coefficient difference equations (LCCDE) with
+zero auxiliary conditions</p></li>
+<li><p>impulse response
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">h[n]</annotation></semantics></math></p></li>
+<li><p>block diagram</p></li>
+<li><p>Eigenvalue or Transfer Function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(z)</annotation></semantics></math>
+(this is developed more in this course)</p></li>
+</ul>
+<p>Stable DT LTI systems can also be represented by their frequency
+response</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mi>j</mi><mi>ω</mi></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mi>j</mi><mi>ω</mi></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>X</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mi>j</mi><mi>ω</mi></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>=</mo><mi>ℱ</mi><mrow><mo stretchy="true" form="prefix">{</mo><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="true" form="postfix">}</mo></mrow></mrow><annotation encoding="application/x-tex">H\left(e^{j\omega}\right) = \frac{Y\left(e^{j\omega}\right)}{X\left(e^{j\omega}\right)} = \mathcal{F}\left\{ h[n] \right\}</annotation></semantics></math></p>
+<p>ECE 2714 leaves open two major questions:</p>
+<ol>
+<li><p>how do we deal with signals that do not have Fourier
+transforms</p></li>
+<li><p>(related) how do we deal with unstable systems</p></li>
+</ol>
+<p>The first question is seemingly not that important we signals without
+Fourier transforms grow faster than is practically useful.</p>
+<p>The second question is more relevant since we might want to know</p>
+<ul>
+<li><p>how do we prevent unstable systems when designing</p></li>
+<li><p>how can we stabilize an unstable system</p></li>
+</ul>
+<p>The first and second questions are related since the impulse response
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">h(t), h[n]</annotation></semantics></math>
+of unstable systems do not have Fourier transforms.</p>
+<p>We will address these issues this semester by building on two aspects
+of ECE 2714 only lightly covered:</p>
+<ul>
+<li><p>Laplace Transform</p></li>
+<li><p>Z Transform</p></li>
+</ul>
+<h1 id="example-problems">Example Problems</h1>
+<ol>
+<li><p>Given the following LCCDE using operator notation for
+time-derivatives, determine the impulse response,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(t)</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>D</mi><mn>3</mn></msup><mi>y</mi><mo>+</mo><mn>6</mn><msup><mi>D</mi><mn>2</mn></msup><mi>y</mi><mo>+</mo><mn>11</mn><mi>D</mi><mi>y</mi><mo>+</mo><mn>6</mn><mi>y</mi><mo>=</mo><mi>D</mi><mi>x</mi><mo>+</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">D^3y + 6D^2y + 11Dy + 6y = Dx + x</annotation></semantics></math>
+<strong>Solution:</strong> We note
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>D</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>D</mi><mn>3</mn></msup><mo>+</mo><mn>6</mn><msup><mi>D</mi><mn>2</mn></msup><mo>+</mo><mn>11</mn><mi>D</mi><mo>+</mo><mn>6</mn><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>D</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>D</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>D</mi><mo>+</mo><mn>3</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Q(D) = D^3 + 6D^2 + 11D + 6 = (D+1)(D+2)(D+3)</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>D</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><msup><mi>D</mi><mn>2</mn></msup><mo>+</mo><mi>D</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">P(D) = 0D^2 + D + 1</annotation></semantics></math>
+The homogeneous solution is of the form
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>C</mi><mn>1</mn></msub><msup><mi>e</mi><mrow><mi>−</mi><mi>t</mi></mrow></msup><mo>+</mo><msub><mi>C</mi><mn>2</mn></msub><msup><mi>e</mi><mrow><mi>−</mi><mn>2</mn><mi>t</mi></mrow></msup><mo>+</mo><msub><mi>C</mi><mn>3</mn></msub><msup><mi>e</mi><mrow><mi>−</mi><mn>3</mn><mi>t</mi></mrow></msup></mrow><annotation encoding="application/x-tex">y_h(t) = C_1e^{-t} + C_2e^{-2t} + C_3e^{-3t}</annotation></semantics></math>
+We will also need tthe first and second derivatives:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><msub><mi>y</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><msub><mi>C</mi><mn>1</mn></msub><msup><mi>e</mi><mrow><mi>−</mi><mi>t</mi></mrow></msup><mo>−</mo><mn>2</mn><msub><mi>C</mi><mn>2</mn></msub><msup><mi>e</mi><mrow><mi>−</mi><mn>2</mn><mi>t</mi></mrow></msup><mo>−</mo><mn>3</mn><msub><mi>C</mi><mn>3</mn></msub><msup><mi>e</mi><mrow><mi>−</mi><mn>3</mn><mi>t</mi></mrow></msup></mrow><annotation encoding="application/x-tex">D y_h(t) = -C_1e^{-t} -2 C_2e^{-2t} -3 C_3e^{-3t}</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>D</mi><mn>2</mn></msup><msub><mi>y</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>C</mi><mn>1</mn></msub><msup><mi>e</mi><mrow><mi>−</mi><mi>t</mi></mrow></msup><mo>+</mo><mn>4</mn><msub><mi>C</mi><mn>2</mn></msub><msup><mi>e</mi><mrow><mi>−</mi><mn>2</mn><mi>t</mi></mrow></msup><mo>+</mo><mn>9</mn><msub><mi>C</mi><mn>3</mn></msub><msup><mi>e</mi><mrow><mi>−</mi><mn>3</mn><mi>t</mi></mrow></msup></mrow><annotation encoding="application/x-tex">D^2 y_h(t) = C_1e^{-t} +4C_2e^{-2t} +9 C_3e^{-3t}</annotation></semantics></math>
+Using the special initial conditions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y_h(0) = 0</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><msub><mi>y</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">D y_h(0) = 0</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>D</mi><mn>2</mn></msup><msub><mi>y</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">D^2 y_h(0) = 1</annotation></semantics></math>
+we obtain the system of equations:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>3</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>4</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>9</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>C</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>C</mi><mn>2</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>C</mi><mn>3</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+    1  &amp; 1  &amp; 1  \\
+    -1 &amp; -2 &amp; -3 \\
+    1  &amp; 4  &amp; 9
+  \end{bmatrix}
+  \begin{bmatrix}
+    C_1 \\ C_2 \\ C_3
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    0 \\ 0 \\ 1
+  \end{bmatrix}</annotation></semantics></math> Solving this gives the
+constants
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mn>1</mn></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">C_1 = \frac{1}{2}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mn>2</mn></msub><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">C_2 = -1</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mn>3</mn></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">C_3 = \frac{1}{2}</annotation></semantics></math>.
+The form of the impulse response is
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>b</mi><mn>0</mn></msub><mi>δ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mrow><mo stretchy="true" form="prefix">[</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>D</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">]</mo></mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mi>−</mi><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>e</mi><mrow><mi>−</mi><mi>t</mi></mrow></msup><mo>+</mo><mn>2</mn><msup><mi>e</mi><mrow><mi>−</mi><mn>2</mn><mi>t</mi></mrow></msup><mo>−</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><msup><mi>e</mi><mrow><mi>−</mi><mn>3</mn><mi>t</mi></mrow></msup><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>e</mi><mrow><mi>−</mi><mi>t</mi></mrow></msup><mo>−</mo><mn>2</mn><msup><mi>e</mi><mrow><mi>−</mi><mn>2</mn><mi>t</mi></mrow></msup><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>e</mi><mrow><mi>−</mi><mn>3</mn><mi>t</mi></mrow></msup><mo stretchy="true" form="postfix">]</mo></mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><msup><mi>e</mi><mrow><mi>−</mi><mn>2</mn><mi>t</mi></mrow></msup><mo>−</mo><msup><mi>e</mi><mrow><mi>−</mi><mn>3</mn><mi>t</mi></mrow></msup><mo stretchy="true" form="postfix">]</mo></mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+    h(t) &amp; = b_0\delta(t) + \left[ P(D) y_h(t) \right] u(t)                                                                             \\
+    &amp; = \left[-\frac{1}{2} e^{-t} + 2e^{-2t} - \frac{3}{2}e^{-3t} + \frac{1}{2}e^{-t} - 2e^{-2t} + \frac{1}{2}e^{-3t} \right] u(t) \\
+    &amp; = \left[e^{-2t} - e^{-3t}\right] u(t)
+  
+\end{aligned}</annotation></semantics></math> Note the term in front of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>e</mi><mrow><mi>−</mi><mi>t</mi></mrow></msup><annotation encoding="application/x-tex">e^{-t}</annotation></semantics></math>
+is zero. Why? We will see that Laplace gives us intuition about
+solutions like this and in many cases simplifies the analysis.</p></li>
+<li><p>Find the impuse response that corresponds to the block
+diagram</p>
+<figure>
+<p><img role="img" aria-label="&quot;block diagram for exmple problem&quot;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMzI4LjczNnB0IiBoZWlnaHQ9IjE2MS4zODFwdCIgdmlld0JveD0iMCAwIDMyOC43MzYgMTYxLjM4MSIgdmVyc2lvbj0iMS4xIj4KPGRlZnM+CjxnPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgwLTAiPgo8cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSIiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDAtMSI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gMS4zMjgxMjUgLTAuODI4MTI1IEMgMS44NTkzNzUgLTEuNDA2MjUgMi4xNTYyNSAtMS42NTYyNSAyLjUxNTYyNSAtMS45Njg3NSBDIDIuNTE1NjI1IC0xLjk2ODc1IDMuMTI1IC0yLjUgMy40ODQzNzUgLTIuODU5Mzc1IEMgNC40Mzc1IC0zLjc4MTI1IDQuNjU2MjUgLTQuMjY1NjI1IDQuNjU2MjUgLTQuMzEyNSBDIDQuNjU2MjUgLTQuNDA2MjUgNC41NjI1IC00LjQwNjI1IDQuNTQ2ODc1IC00LjQwNjI1IEMgNC40Njg3NSAtNC40MDYyNSA0LjQ1MzEyNSAtNC4zOTA2MjUgNC4zOTA2MjUgLTQuMjk2ODc1IEMgNC4wOTM3NSAtMy44MTI1IDMuODkwNjI1IC0zLjY1NjI1IDMuNjU2MjUgLTMuNjU2MjUgQyAzLjQwNjI1IC0zLjY1NjI1IDMuMjk2ODc1IC0zLjgxMjUgMy4xNDA2MjUgLTMuOTg0Mzc1IEMgMi45NTMxMjUgLTQuMjAzMTI1IDIuNzgxMjUgLTQuNDA2MjUgMi40NTMxMjUgLTQuNDA2MjUgQyAxLjcwMzEyNSAtNC40MDYyNSAxLjI1IC0zLjQ4NDM3NSAxLjI1IC0zLjI2NTYyNSBDIDEuMjUgLTMuMjE4NzUgMS4yODEyNSAtMy4xNTYyNSAxLjM1OTM3NSAtMy4xNTYyNSBDIDEuNDUzMTI1IC0zLjE1NjI1IDEuNDY4NzUgLTMuMjAzMTI1IDEuNSAtMy4yNjU2MjUgQyAxLjY4NzUgLTMuNzM0Mzc1IDIuMjY1NjI1IC0zLjczNDM3NSAyLjM0Mzc1IC0zLjczNDM3NSBDIDIuNTQ2ODc1IC0zLjczNDM3NSAyLjczNDM3NSAtMy42NzE4NzUgMi45Njg3NSAtMy41OTM3NSBDIDMuMzc1IC0zLjQzNzUgMy40ODQzNzUgLTMuNDM3NSAzLjczNDM3NSAtMy40Mzc1IEMgMy4zNzUgLTMuMDE1NjI1IDIuNTQ2ODc1IC0yLjI5Njg3NSAyLjM1OTM3NSAtMi4xNDA2MjUgTCAxLjQ1MzEyNSAtMS4yOTY4NzUgQyAwLjc4MTI1IC0wLjYyNSAwLjQyMTg3NSAtMC4wNjI1IDAuNDIxODc1IDAuMDE1NjI1IEMgMC40MjE4NzUgMC4xMDkzNzUgMC41MzEyNSAwLjEwOTM3NSAwLjU0Njg3NSAwLjEwOTM3NSBDIDAuNjI1IDAuMTA5Mzc1IDAuNjQwNjI1IDAuMDkzNzUgMC43MDMxMjUgLTAuMDE1NjI1IEMgMC45Mzc1IC0wLjM3NSAxLjIzNDM3NSAtMC42NDA2MjUgMS41NjI1IC0wLjY0MDYyNSBDIDEuNzgxMjUgLTAuNjQwNjI1IDEuODkwNjI1IC0wLjU0Njg3NSAyLjE0MDYyNSAtMC4yNjU2MjUgQyAyLjI5Njg3NSAtMC4wNDY4NzUgMi40ODQzNzUgMC4xMDkzNzUgMi43NjU2MjUgMC4xMDkzNzUgQyAzLjc2NTYyNSAwLjEwOTM3NSA0LjM0Mzc1IC0xLjE1NjI1IDQuMzQzNzUgLTEuNDIxODc1IEMgNC4zNDM3NSAtMS40Njg3NSA0LjI5Njg3NSAtMS41MzEyNSA0LjIxODc1IC0xLjUzMTI1IEMgNC4xMjUgLTEuNTMxMjUgNC4xMDkzNzUgLTEuNDY4NzUgNC4wNzgxMjUgLTEuMzkwNjI1IEMgMy44NDM3NSAtMC43NSAzLjIwMzEyNSAtMC41NjI1IDIuODc1IC0wLjU2MjUgQyAyLjY4NzUgLTAuNTYyNSAyLjUgLTAuNjI1IDIuMjk2ODc1IC0wLjY4NzUgQyAxLjk1MzEyNSAtMC44MTI1IDEuNzk2ODc1IC0wLjg1OTM3NSAxLjU5Mzc1IC0wLjg1OTM3NSBDIDEuNTc4MTI1IC0wLjg1OTM3NSAxLjQyMTg3NSAtMC44NTkzNzUgMS4zMjgxMjUgLTAuODI4MTI1IFogTSAxLjMyODEyNSAtMC44MjgxMjUgIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgwLTIiPgo8cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNIDMuMzI4MTI1IC0zLjAxNTYyNSBDIDMuMzkwNjI1IC0zLjI2NTYyNSAzLjYyNSAtNC4xODc1IDQuMzEyNSAtNC4xODc1IEMgNC4zNTkzNzUgLTQuMTg3NSA0LjYwOTM3NSAtNC4xODc1IDQuODEyNSAtNC4wNjI1IEMgNC41MzEyNSAtNCA0LjM0Mzc1IC0zLjc2NTYyNSA0LjM0Mzc1IC0zLjUxNTYyNSBDIDQuMzQzNzUgLTMuMzU5Mzc1IDQuNDUzMTI1IC0zLjE3MTg3NSA0LjcxODc1IC0zLjE3MTg3NSBDIDQuOTM3NSAtMy4xNzE4NzUgNS4yNSAtMy4zNDM3NSA1LjI1IC0zLjc1IEMgNS4yNSAtNC4yNjU2MjUgNC42NzE4NzUgLTQuNDA2MjUgNC4zMjgxMjUgLTQuNDA2MjUgQyAzLjc1IC00LjQwNjI1IDMuNDA2MjUgLTMuODc1IDMuMjgxMjUgLTMuNjU2MjUgQyAzLjAzMTI1IC00LjMxMjUgMi41IC00LjQwNjI1IDIuMjAzMTI1IC00LjQwNjI1IEMgMS4xNzE4NzUgLTQuNDA2MjUgMC41OTM3NSAtMy4xMjUgMC41OTM3NSAtMi44NzUgQyAwLjU5Mzc1IC0yLjc2NTYyNSAwLjcwMzEyNSAtMi43NjU2MjUgMC43MTg3NSAtMi43NjU2MjUgQyAwLjc5Njg3NSAtMi43NjU2MjUgMC44MjgxMjUgLTIuNzk2ODc1IDAuODQzNzUgLTIuODc1IEMgMS4xODc1IC0zLjkzNzUgMS44NDM3NSAtNC4xODc1IDIuMTg3NSAtNC4xODc1IEMgMi4zNzUgLTQuMTg3NSAyLjcxODc1IC00LjA5Mzc1IDIuNzE4NzUgLTMuNTE1NjI1IEMgMi43MTg3NSAtMy4yMDMxMjUgMi41NDY4NzUgLTIuNTQ2ODc1IDIuMTg3NSAtMS4xNDA2MjUgQyAyLjAzMTI1IC0wLjUzMTI1IDEuNjcxODc1IC0wLjEwOTM3NSAxLjIzNDM3NSAtMC4xMDkzNzUgQyAxLjE3MTg3NSAtMC4xMDkzNzUgMC45NTMxMjUgLTAuMTA5Mzc1IDAuNzM0Mzc1IC0wLjIzNDM3NSBDIDAuOTg0Mzc1IC0wLjI5Njg3NSAxLjIwMzEyNSAtMC41IDEuMjAzMTI1IC0wLjc4MTI1IEMgMS4yMDMxMjUgLTEuMDQ2ODc1IDAuOTg0Mzc1IC0xLjEyNSAwLjg0Mzc1IC0xLjEyNSBDIDAuNTMxMjUgLTEuMTI1IDAuMjk2ODc1IC0wLjg3NSAwLjI5Njg3NSAtMC41NDY4NzUgQyAwLjI5Njg3NSAtMC4wOTM3NSAwLjc4MTI1IDAuMTA5Mzc1IDEuMjE4NzUgMC4xMDkzNzUgQyAxLjg5MDYyNSAwLjEwOTM3NSAyLjI1IC0wLjU5Mzc1IDIuMjY1NjI1IC0wLjY0MDYyNSBDIDIuMzkwNjI1IC0wLjI4MTI1IDIuNzUgMC4xMDkzNzUgMy4zNDM3NSAwLjEwOTM3NSBDIDQuMzc1IDAuMTA5Mzc1IDQuOTM3NSAtMS4xNzE4NzUgNC45Mzc1IC0xLjQyMTg3NSBDIDQuOTM3NSAtMS41MzEyNSA0Ljg1OTM3NSAtMS41MzEyNSA0LjgyODEyNSAtMS41MzEyNSBDIDQuNzM0Mzc1IC0xLjUzMTI1IDQuNzE4NzUgLTEuNDg0Mzc1IDQuNjg3NSAtMS40MjE4NzUgQyA0LjM1OTM3NSAtMC4zNDM3NSAzLjY4NzUgLTAuMTA5Mzc1IDMuMzc1IC0wLjEwOTM3NSBDIDIuOTg0Mzc1IC0wLjEwOTM3NSAyLjgyODEyNSAtMC40MjE4NzUgMi44MjgxMjUgLTAuNzY1NjI1IEMgMi44MjgxMjUgLTAuOTg0Mzc1IDIuODc1IC0xLjIwMzEyNSAyLjk4NDM3NSAtMS42NDA2MjUgWiBNIDMuMzI4MTI1IC0zLjAxNTYyNSAiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDAtMyI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gMC44NzUgLTAuNTkzNzUgQyAwLjg0Mzc1IC0wLjQzNzUgMC43ODEyNSAtMC4yMDMxMjUgMC43ODEyNSAtMC4xNTYyNSBDIDAuNzgxMjUgMC4wMTU2MjUgMC45MjE4NzUgMC4xMDkzNzUgMS4wNzgxMjUgMC4xMDkzNzUgQyAxLjIwMzEyNSAwLjEwOTM3NSAxLjM3NSAwLjAzMTI1IDEuNDUzMTI1IC0wLjE3MTg3NSBDIDEuNDUzMTI1IC0wLjE4NzUgMS41NzgxMjUgLTAuNjU2MjUgMS42NDA2MjUgLTAuOTA2MjUgTCAxLjg1OTM3NSAtMS43OTY4NzUgQyAxLjkwNjI1IC0yLjAzMTI1IDEuOTY4NzUgLTIuMjUgMi4wMzEyNSAtMi40Njg3NSBDIDIuMDYyNSAtMi42NDA2MjUgMi4xNDA2MjUgLTIuOTM3NSAyLjE1NjI1IC0yLjk2ODc1IEMgMi4yOTY4NzUgLTMuMjgxMjUgMi44MjgxMjUgLTQuMTg3NSAzLjc4MTI1IC00LjE4NzUgQyA0LjIzNDM3NSAtNC4xODc1IDQuMzEyNSAtMy44MTI1IDQuMzEyNSAtMy40ODQzNzUgQyA0LjMxMjUgLTIuODc1IDMuODI4MTI1IC0xLjU5Mzc1IDMuNjcxODc1IC0xLjE3MTg3NSBDIDMuNTc4MTI1IC0wLjkzNzUgMy41NjI1IC0wLjgxMjUgMy41NjI1IC0wLjcwMzEyNSBDIDMuNTYyNSAtMC4yMzQzNzUgMy45MjE4NzUgMC4xMDkzNzUgNC4zOTA2MjUgMC4xMDkzNzUgQyA1LjMyODEyNSAwLjEwOTM3NSA1LjY4NzUgLTEuMzQzNzUgNS42ODc1IC0xLjQyMTg3NSBDIDUuNjg3NSAtMS41MzEyNSA1LjYwOTM3NSAtMS41MzEyNSA1LjU3ODEyNSAtMS41MzEyNSBDIDUuNDY4NzUgLTEuNTMxMjUgNS40Njg3NSAtMS41IDUuNDIxODc1IC0xLjM0Mzc1IEMgNS4yMTg3NSAtMC42NzE4NzUgNC44OTA2MjUgLTAuMTA5Mzc1IDQuNDA2MjUgLTAuMTA5Mzc1IEMgNC4yMzQzNzUgLTAuMTA5Mzc1IDQuMTcxODc1IC0wLjIwMzEyNSA0LjE3MTg3NSAtMC40Mzc1IEMgNC4xNzE4NzUgLTAuNjg3NSA0LjI1IC0wLjkyMTg3NSA0LjM0Mzc1IC0xLjE0MDYyNSBDIDQuNTMxMjUgLTEuNjcxODc1IDQuOTUzMTI1IC0yLjc2NTYyNSA0Ljk1MzEyNSAtMy4zNDM3NSBDIDQuOTUzMTI1IC00IDQuNTMxMjUgLTQuNDA2MjUgMy44MTI1IC00LjQwNjI1IEMgMi45MDYyNSAtNC40MDYyNSAyLjQyMTg3NSAtMy43NjU2MjUgMi4yNSAtMy41MzEyNSBDIDIuMjAzMTI1IC00LjA5Mzc1IDEuNzk2ODc1IC00LjQwNjI1IDEuMzI4MTI1IC00LjQwNjI1IEMgMC44NzUgLTQuNDA2MjUgMC42ODc1IC00LjAxNTYyNSAwLjU5Mzc1IC0zLjg0Mzc1IEMgMC40MjE4NzUgLTMuNSAwLjI5Njg3NSAtMi45MDYyNSAwLjI5Njg3NSAtMi44NzUgQyAwLjI5Njg3NSAtMi43NjU2MjUgMC4zOTA2MjUgLTIuNzY1NjI1IDAuNDA2MjUgLTIuNzY1NjI1IEMgMC41MTU2MjUgLTIuNzY1NjI1IDAuNTE1NjI1IC0yLjc4MTI1IDAuNTc4MTI1IC0zIEMgMC43NSAtMy43MDMxMjUgMC45NTMxMjUgLTQuMTg3NSAxLjMxMjUgLTQuMTg3NSBDIDEuNSAtNC4xODc1IDEuNjA5Mzc1IC00LjA2MjUgMS42MDkzNzUgLTMuNzM0Mzc1IEMgMS42MDkzNzUgLTMuNTE1NjI1IDEuNTc4MTI1IC0zLjQwNjI1IDEuNDUzMTI1IC0yLjg5MDYyNSBaIE0gMC44NzUgLTAuNTkzNzUgIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgwLTQiPgo8cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNIDQuODQzNzUgLTMuNzk2ODc1IEMgNC44OTA2MjUgLTMuOTM3NSA0Ljg5MDYyNSAtMy45NTMxMjUgNC44OTA2MjUgLTQuMDMxMjUgQyA0Ljg5MDYyNSAtNC4yMDMxMjUgNC43NSAtNC4yOTY4NzUgNC41OTM3NSAtNC4yOTY4NzUgQyA0LjUgLTQuMjk2ODc1IDQuMzQzNzUgLTQuMjM0Mzc1IDQuMjUgLTQuMDkzNzUgQyA0LjIzNDM3NSAtNC4wMzEyNSA0LjE0MDYyNSAtMy43MzQzNzUgNC4xMDkzNzUgLTMuNTQ2ODc1IEMgNC4wMzEyNSAtMy4yOTY4NzUgMy45Njg3NSAtMy4wMTU2MjUgMy45MDYyNSAtMi43NSBMIDMuNDUzMTI1IC0wLjk1MzEyNSBDIDMuNDIxODc1IC0wLjgxMjUgMi45ODQzNzUgLTAuMTA5Mzc1IDIuMzI4MTI1IC0wLjEwOTM3NSBDIDEuODI4MTI1IC0wLjEwOTM3NSAxLjcxODc1IC0wLjU0Njg3NSAxLjcxODc1IC0wLjkyMTg3NSBDIDEuNzE4NzUgLTEuMzc1IDEuODkwNjI1IC0yIDIuMjE4NzUgLTIuODc1IEMgMi4zNzUgLTMuMjgxMjUgMi40MjE4NzUgLTMuMzkwNjI1IDIuNDIxODc1IC0zLjU5Mzc1IEMgMi40MjE4NzUgLTQuMDMxMjUgMi4xMDkzNzUgLTQuNDA2MjUgMS42MDkzNzUgLTQuNDA2MjUgQyAwLjY1NjI1IC00LjQwNjI1IDAuMjk2ODc1IC0yLjk1MzEyNSAwLjI5Njg3NSAtMi44NzUgQyAwLjI5Njg3NSAtMi43NjU2MjUgMC4zOTA2MjUgLTIuNzY1NjI1IDAuNDA2MjUgLTIuNzY1NjI1IEMgMC41MTU2MjUgLTIuNzY1NjI1IDAuNTE1NjI1IC0yLjc5Njg3NSAwLjU2MjUgLTIuOTUzMTI1IEMgMC44NDM3NSAtMy44OTA2MjUgMS4yMzQzNzUgLTQuMTg3NSAxLjU3ODEyNSAtNC4xODc1IEMgMS42NTYyNSAtNC4xODc1IDEuODI4MTI1IC00LjE4NzUgMS44MjgxMjUgLTMuODc1IEMgMS44MjgxMjUgLTMuNjI1IDEuNzE4NzUgLTMuMzU5Mzc1IDEuNjU2MjUgLTMuMTcxODc1IEMgMS4yNSAtMi4xMDkzNzUgMS4wNzgxMjUgLTEuNTQ2ODc1IDEuMDc4MTI1IC0xLjA3ODEyNSBDIDEuMDc4MTI1IC0wLjE4NzUgMS43MDMxMjUgMC4xMDkzNzUgMi4yOTY4NzUgMC4xMDkzNzUgQyAyLjY4NzUgMC4xMDkzNzUgMy4wMTU2MjUgLTAuMDYyNSAzLjI5Njg3NSAtMC4zNDM3NSBDIDMuMTcxODc1IDAuMTcxODc1IDMuMDQ2ODc1IDAuNjcxODc1IDIuNjU2MjUgMS4yMDMxMjUgQyAyLjM5MDYyNSAxLjUzMTI1IDIuMDE1NjI1IDEuODI4MTI1IDEuNTYyNSAxLjgyODEyNSBDIDEuNDIxODc1IDEuODI4MTI1IDAuOTY4NzUgMS43OTY4NzUgMC43OTY4NzUgMS40MDYyNSBDIDAuOTUzMTI1IDEuNDA2MjUgMS4wOTM3NSAxLjQwNjI1IDEuMjE4NzUgMS4yODEyNSBDIDEuMzI4MTI1IDEuMjAzMTI1IDEuNDIxODc1IDEuMDYyNSAxLjQyMTg3NSAwLjg3NSBDIDEuNDIxODc1IDAuNTYyNSAxLjE1NjI1IDAuNTMxMjUgMS4wNjI1IDAuNTMxMjUgQyAwLjgyODEyNSAwLjUzMTI1IDAuNSAwLjY4NzUgMC41IDEuMTcxODc1IEMgMC41IDEuNjcxODc1IDAuOTM3NSAyLjA0Njg3NSAxLjU2MjUgMi4wNDY4NzUgQyAyLjU3ODEyNSAyLjA0Njg3NSAzLjYwOTM3NSAxLjE0MDYyNSAzLjg5MDYyNSAwLjAxNTYyNSBaIE0gNC44NDM3NSAtMy43OTY4NzUgIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgxLTAiPgo8cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSIiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDEtMSI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gNS4xODc1IC0xLjU3ODEyNSBDIDUuMjk2ODc1IC0xLjU3ODEyNSA1LjQ2ODc1IC0xLjU3ODEyNSA1LjQ2ODc1IC0xLjczNDM3NSBDIDUuNDY4NzUgLTEuOTIxODc1IDUuMjk2ODc1IC0xLjkyMTg3NSA1LjE4NzUgLTEuOTIxODc1IEwgMS4wMzEyNSAtMS45MjE4NzUgQyAwLjkyMTg3NSAtMS45MjE4NzUgMC43NSAtMS45MjE4NzUgMC43NSAtMS43NSBDIDAuNzUgLTEuNTc4MTI1IDAuOTA2MjUgLTEuNTc4MTI1IDEuMDMxMjUgLTEuNTc4MTI1IFogTSA1LjE4NzUgLTEuNTc4MTI1ICIvPgo8L3N5bWJvbD4KPHN5bWJvbCBvdmVyZmxvdz0idmlzaWJsZSIgaWQ9ImdseXBoMi0wIj4KPHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgyLTEiPgo8cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNIDIuMzI4MTI1IC00LjQzNzUgQyAyLjMyODEyNSAtNC42MjUgMi4zMjgxMjUgLTQuNjI1IDIuMTI1IC00LjYyNSBDIDEuNjcxODc1IC00LjE4NzUgMS4wNDY4NzUgLTQuMTg3NSAwLjc2NTYyNSAtNC4xODc1IEwgMC43NjU2MjUgLTMuOTM3NSBDIDAuOTIxODc1IC0zLjkzNzUgMS4zOTA2MjUgLTMuOTM3NSAxLjc2NTYyNSAtNC4xMjUgTCAxLjc2NTYyNSAtMC41NzgxMjUgQyAxLjc2NTYyNSAtMC4zNDM3NSAxLjc2NTYyNSAtMC4yNSAxLjA3ODEyNSAtMC4yNSBMIDAuODEyNSAtMC4yNSBMIDAuODEyNSAwIEMgMC45Mzc1IDAgMS43OTY4NzUgLTAuMDMxMjUgMi4wNDY4NzUgLTAuMDMxMjUgQyAyLjI2NTYyNSAtMC4wMzEyNSAzLjE0MDYyNSAwIDMuMjk2ODc1IDAgTCAzLjI5Njg3NSAtMC4yNSBMIDMuMDMxMjUgLTAuMjUgQyAyLjMyODEyNSAtMC4yNSAyLjMyODEyNSAtMC4zNDM3NSAyLjMyODEyNSAtMC41NzgxMjUgWiBNIDIuMzI4MTI1IC00LjQzNzUgIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgyLTIiPgo8cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNIDEuOTA2MjUgLTIuMzI4MTI1IEMgMi40NTMxMjUgLTIuMzI4MTI1IDIuODQzNzUgLTEuOTUzMTI1IDIuODQzNzUgLTEuMjAzMTI1IEMgMi44NDM3NSAtMC4zNDM3NSAyLjMyODEyNSAtMC4wNzgxMjUgMS45Mzc1IC0wLjA3ODEyNSBDIDEuNjU2MjUgLTAuMDc4MTI1IDEuMDMxMjUgLTAuMTU2MjUgMC43NSAtMC41NzgxMjUgQyAxLjA3ODEyNSAtMC41NzgxMjUgMS4xNTYyNSAtMC44MTI1IDEuMTU2MjUgLTAuOTY4NzUgQyAxLjE1NjI1IC0xLjE4NzUgMC45ODQzNzUgLTEuMzQzNzUgMC43NjU2MjUgLTEuMzQzNzUgQyAwLjU3ODEyNSAtMS4zNDM3NSAwLjM3NSAtMS4yMTg3NSAwLjM3NSAtMC45Mzc1IEMgMC4zNzUgLTAuMjgxMjUgMS4wOTM3NSAwLjE0MDYyNSAxLjkzNzUgMC4xNDA2MjUgQyAyLjkwNjI1IDAuMTQwNjI1IDMuNTc4MTI1IC0wLjUxNTYyNSAzLjU3ODEyNSAtMS4yMDMxMjUgQyAzLjU3ODEyNSAtMS43NSAzLjE0MDYyNSAtMi4yOTY4NzUgMi4zNzUgLTIuNDUzMTI1IEMgMy4wOTM3NSAtMi43MTg3NSAzLjM1OTM3NSAtMy4yMzQzNzUgMy4zNTkzNzUgLTMuNjcxODc1IEMgMy4zNTkzNzUgLTQuMjE4NzUgMi43MzQzNzUgLTQuNjI1IDEuOTUzMTI1IC00LjYyNSBDIDEuMTg3NSAtNC42MjUgMC41OTM3NSAtNC4yNSAwLjU5Mzc1IC0zLjY4NzUgQyAwLjU5Mzc1IC0zLjQ1MzEyNSAwLjc1IC0zLjMyODEyNSAwLjk1MzEyNSAtMy4zMjgxMjUgQyAxLjE3MTg3NSAtMy4zMjgxMjUgMS4zMTI1IC0zLjQ4NDM3NSAxLjMxMjUgLTMuNjcxODc1IEMgMS4zMTI1IC0zLjg3NSAxLjE3MTg3NSAtNC4wMzEyNSAwLjk1MzEyNSAtNC4wNDY4NzUgQyAxLjIwMzEyNSAtNC4zNDM3NSAxLjY3MTg3NSAtNC40MjE4NzUgMS45Mzc1IC00LjQyMTg3NSBDIDIuMjUgLTQuNDIxODc1IDIuNjg3NSAtNC4yNjU2MjUgMi42ODc1IC0zLjY3MTg3NSBDIDIuNjg3NSAtMy4zNzUgMi41OTM3NSAtMy4wNDY4NzUgMi40MDYyNSAtMi44NDM3NSBDIDIuMTg3NSAtMi41NzgxMjUgMS45ODQzNzUgLTIuNTYyNSAxLjY0MDYyNSAtMi41MzEyNSBDIDEuNDY4NzUgLTIuNTE1NjI1IDEuNDUzMTI1IC0yLjUxNTYyNSAxLjQyMTg3NSAtMi41MTU2MjUgQyAxLjQwNjI1IC0yLjUxNTYyNSAxLjM0Mzc1IC0yLjUgMS4zNDM3NSAtMi40MjE4NzUgQyAxLjM0Mzc1IC0yLjMyODEyNSAxLjQwNjI1IC0yLjMyODEyNSAxLjUzMTI1IC0yLjMyODEyNSBaIE0gMS45MDYyNSAtMi4zMjgxMjUgIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgyLTMiPgo8cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNIDMuNjg3NSAtMS4xNDA2MjUgTCAzLjY4NzUgLTEuMzkwNjI1IEwgMi45MDYyNSAtMS4zOTA2MjUgTCAyLjkwNjI1IC00LjUgQyAyLjkwNjI1IC00LjY0MDYyNSAyLjkwNjI1IC00LjcwMzEyNSAyLjc2NTYyNSAtNC43MDMxMjUgQyAyLjY3MTg3NSAtNC43MDMxMjUgMi42NDA2MjUgLTQuNzAzMTI1IDIuNTc4MTI1IC00LjU5Mzc1IEwgMC4yNjU2MjUgLTEuMzkwNjI1IEwgMC4yNjU2MjUgLTEuMTQwNjI1IEwgMi4zMjgxMjUgLTEuMTQwNjI1IEwgMi4zMjgxMjUgLTAuNTc4MTI1IEMgMi4zMjgxMjUgLTAuMzI4MTI1IDIuMzI4MTI1IC0wLjI1IDEuNzUgLTAuMjUgTCAxLjU2MjUgLTAuMjUgTCAxLjU2MjUgMCBDIDEuOTIxODc1IC0wLjAxNTYyNSAyLjM1OTM3NSAtMC4wMzEyNSAyLjYwOTM3NSAtMC4wMzEyNSBDIDIuODc1IC0wLjAzMTI1IDMuMzEyNSAtMC4wMTU2MjUgMy42NzE4NzUgMCBMIDMuNjcxODc1IC0wLjI1IEwgMy40ODQzNzUgLTAuMjUgQyAyLjkwNjI1IC0wLjI1IDIuOTA2MjUgLTAuMzI4MTI1IDIuOTA2MjUgLTAuNTc4MTI1IEwgMi45MDYyNSAtMS4xNDA2MjUgWiBNIDIuMzc1IC0zLjkzNzUgTCAyLjM3NSAtMS4zOTA2MjUgTCAwLjUzMTI1IC0xLjM5MDYyNSBaIE0gMi4zNzUgLTMuOTM3NSAiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDItNCI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gMi40Njg3NSAtMi41MTU2MjUgQyAzLjAxNTYyNSAtMi43ODEyNSAzLjM1OTM3NSAtMy4xMDkzNzUgMy4zNTkzNzUgLTMuNTkzNzUgQyAzLjM1OTM3NSAtNC4yNjU2MjUgMi42NTYyNSAtNC42MjUgMS45ODQzNzUgLTQuNjI1IEMgMS4yMTg3NSAtNC42MjUgMC41OTM3NSAtNC4xMjUgMC41OTM3NSAtMy40Njg3NSBDIDAuNTkzNzUgLTMuMTQwNjI1IDAuNzUgLTIuOTA2MjUgMC44NzUgLTIuNzY1NjI1IEMgMSAtMi42MDkzNzUgMS4wNDY4NzUgLTIuNTc4MTI1IDEuNDUzMTI1IC0yLjM0Mzc1IEMgMS4wNjI1IC0yLjE3MTg3NSAwLjM3NSAtMS43OTY4NzUgMC4zNzUgLTEuMDYyNSBDIDAuMzc1IC0wLjI5Njg3NSAxLjE3MTg3NSAwLjE0MDYyNSAxLjk2ODc1IDAuMTQwNjI1IEMgMi44NTkzNzUgMC4xNDA2MjUgMy41NzgxMjUgLTAuNDIxODc1IDMuNTc4MTI1IC0xLjE3MTg3NSBDIDMuNTc4MTI1IC0xLjY0MDYyNSAzLjMxMjUgLTIuMDMxMjUgMi45MDYyNSAtMi4yNjU2MjUgQyAyLjgxMjUgLTIuMzI4MTI1IDIuNTc4MTI1IC0yLjQ1MzEyNSAyLjQ2ODc1IC0yLjUxNTYyNSBaIE0gMS4zNDM3NSAtMy4xNzE4NzUgQyAxLjE1NjI1IC0zLjI4MTI1IDAuOTY4NzUgLTMuNDY4NzUgMC45Njg3NSAtMy43MzQzNzUgQyAwLjk2ODc1IC00LjE3MTg3NSAxLjQ2ODc1IC00LjQyMTg3NSAxLjk2ODc1IC00LjQyMTg3NSBDIDIuNTE1NjI1IC00LjQyMTg3NSAzIC00LjA3ODEyNSAzIC0zLjU5Mzc1IEMgMyAtMi45Njg3NSAyLjI2NTYyNSAtMi42NTYyNSAyLjI2NTYyNSAtMi42NTYyNSBDIDIuMjUgLTIuNjU2MjUgMi4yMzQzNzUgLTIuNjU2MjUgMi4xODc1IC0yLjY4NzUgWiBNIDEuNjcxODc1IC0yLjIwMzEyNSBMIDIuNjQwNjI1IC0xLjY1NjI1IEMgMi44MTI1IC0xLjU0Njg3NSAzLjE1NjI1IC0xLjM0Mzc1IDMuMTU2MjUgLTAuOTM3NSBDIDMuMTU2MjUgLTAuNDA2MjUgMi41NzgxMjUgLTAuMDc4MTI1IDEuOTg0Mzc1IC0wLjA3ODEyNSBDIDEuMzQzNzUgLTAuMDc4MTI1IDAuNzk2ODc1IC0wLjUgMC43OTY4NzUgLTEuMDYyNSBDIDAuNzk2ODc1IC0xLjU3ODEyNSAxLjE3MTg3NSAtMS45ODQzNzUgMS42NzE4NzUgLTIuMjAzMTI1IFogTSAxLjY3MTg3NSAtMi4yMDMxMjUgIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgzLTAiPgo8cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSIiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDMtMSI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gMy43MDMxMjUgLTMuMjUgQyAzLjc5Njg3NSAtMy4zNDM3NSAzLjc5Njg3NSAtMy4zOTA2MjUgMy43OTY4NzUgLTMuNDA2MjUgQyAzLjc5Njg3NSAtMy40NTMxMjUgMy43NjU2MjUgLTMuNTE1NjI1IDMuNzM0Mzc1IC0zLjU0Njg3NSBMIDEuNjg3NSAtNi41IEwgMy45ODQzNzUgLTYuNSBDIDUuNjcxODc1IC02LjUgNi4xNzE4NzUgLTYuMTQwNjI1IDYuMzc1IC00LjU2MjUgTCA2LjYyNSAtNC41NjI1IEwgNi4zNDM3NSAtNi44MTI1IEwgMC44MTI1IC02LjgxMjUgQyAwLjU3ODEyNSAtNi44MTI1IDAuNTYyNSAtNi44MTI1IDAuNTYyNSAtNi41NzgxMjUgTCAzLjA0Njg3NSAtMi45Njg3NSBMIDAuNjcxODc1IC0wLjI2NTYyNSBDIDAuNTYyNSAtMC4xNTYyNSAwLjU2MjUgLTAuMTQwNjI1IDAuNTYyNSAtMC4xMDkzNzUgQyAwLjU2MjUgMCAwLjY3MTg3NSAwIDAuODEyNSAwIEwgNi4zNDM3NSAwIEwgNi42MjUgLTIuMzU5Mzc1IEwgNi4zNzUgLTIuMzU5Mzc1IEMgNi4yMDMxMjUgLTAuNjg3NSA1LjUxNTYyNSAtMC40MjE4NzUgMy45NTMxMjUgLTAuNDIxODc1IEwgMS4yMDMxMjUgLTAuNDIxODc1IFogTSAzLjcwMzEyNSAtMy4yNSAiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDMtMiI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gMi41NDY4NzUgMi41IEwgMi41NDY4NzUgMi4wOTM3NSBMIDEuNTc4MTI1IDIuMDkzNzUgTCAxLjU3ODEyNSAtNy4wNzgxMjUgTCAyLjU0Njg3NSAtNy4wNzgxMjUgTCAyLjU0Njg3NSAtNy40ODQzNzUgTCAxLjE3MTg3NSAtNy40ODQzNzUgTCAxLjE3MTg3NSAyLjUgWiBNIDIuNTQ2ODc1IDIuNSAiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDMtMyI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gMS41NzgxMjUgLTcuNDg0Mzc1IEwgMC4yMTg3NSAtNy40ODQzNzUgTCAwLjIxODc1IC03LjA3ODEyNSBMIDEuMTg3NSAtNy4wNzgxMjUgTCAxLjE4NzUgMi4wOTM3NSBMIDAuMjE4NzUgMi4wOTM3NSBMIDAuMjE4NzUgMi41IEwgMS41NzgxMjUgMi41IFogTSAxLjU3ODEyNSAtNy40ODQzNzUgIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgzLTQiPgo8cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNIDYuODQzNzUgLTMuMjY1NjI1IEMgNyAtMy4yNjU2MjUgNy4xODc1IC0zLjI2NTYyNSA3LjE4NzUgLTMuNDUzMTI1IEMgNy4xODc1IC0zLjY1NjI1IDcgLTMuNjU2MjUgNi44NTkzNzUgLTMuNjU2MjUgTCAwLjg5MDYyNSAtMy42NTYyNSBDIDAuNzUgLTMuNjU2MjUgMC41NjI1IC0zLjY1NjI1IDAuNTYyNSAtMy40NTMxMjUgQyAwLjU2MjUgLTMuMjY1NjI1IDAuNzUgLTMuMjY1NjI1IDAuODkwNjI1IC0zLjI2NTYyNSBaIE0gNi44NTkzNzUgLTEuMzI4MTI1IEMgNyAtMS4zMjgxMjUgNy4xODc1IC0xLjMyODEyNSA3LjE4NzUgLTEuNTMxMjUgQyA3LjE4NzUgLTEuNzE4NzUgNyAtMS43MTg3NSA2Ljg0Mzc1IC0xLjcxODc1IEwgMC44OTA2MjUgLTEuNzE4NzUgQyAwLjc1IC0xLjcxODc1IDAuNTYyNSAtMS43MTg3NSAwLjU2MjUgLTEuNTMxMjUgQyAwLjU2MjUgLTEuMzI4MTI1IDAuNzUgLTEuMzI4MTI1IDAuODkwNjI1IC0xLjMyODEyNSBaIE0gNi44NTkzNzUgLTEuMzI4MTI1ICIvPgo8L3N5bWJvbD4KPHN5bWJvbCBvdmVyZmxvdz0idmlzaWJsZSIgaWQ9ImdseXBoMy01Ij4KPHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTSAzLjc4MTI1IC0wLjU0Njg3NSBMIDMuNzgxMjUgMC4xMDkzNzUgTCA1LjI1IDAgTCA1LjI1IC0wLjMxMjUgQyA0LjU2MjUgLTAuMzEyNSA0LjQ2ODc1IC0wLjM3NSA0LjQ2ODc1IC0wLjg3NSBMIDQuNDY4NzUgLTYuOTIxODc1IEwgMy4wNDY4NzUgLTYuODEyNSBMIDMuMDQ2ODc1IC02LjUgQyAzLjczNDM3NSAtNi41IDMuODEyNSAtNi40Mzc1IDMuODEyNSAtNS45Mzc1IEwgMy44MTI1IC0zLjc4MTI1IEMgMy41MzEyNSAtNC4xNDA2MjUgMy4wOTM3NSAtNC40MDYyNSAyLjU2MjUgLTQuNDA2MjUgQyAxLjM5MDYyNSAtNC40MDYyNSAwLjM0Mzc1IC0zLjQyMTg3NSAwLjM0Mzc1IC0yLjE0MDYyNSBDIDAuMzQzNzUgLTAuODc1IDEuMzEyNSAwLjEwOTM3NSAyLjQ1MzEyNSAwLjEwOTM3NSBDIDMuMDkzNzUgMC4xMDkzNzUgMy41MzEyNSAtMC4yMzQzNzUgMy43ODEyNSAtMC41NDY4NzUgWiBNIDMuNzgxMjUgLTMuMjE4NzUgTCAzLjc4MTI1IC0xLjE3MTg3NSBDIDMuNzgxMjUgLTEgMy43ODEyNSAtMC45ODQzNzUgMy42NzE4NzUgLTAuODEyNSBDIDMuMzc1IC0wLjMyODEyNSAyLjkzNzUgLTAuMTA5Mzc1IDIuNSAtMC4xMDkzNzUgQyAyLjA0Njg3NSAtMC4xMDkzNzUgMS42ODc1IC0wLjM3NSAxLjQ1MzEyNSAtMC43NSBDIDEuMjAzMTI1IC0xLjE1NjI1IDEuMTcxODc1IC0xLjcxODc1IDEuMTcxODc1IC0yLjE0MDYyNSBDIDEuMTcxODc1IC0yLjUgMS4xODc1IC0zLjA5Mzc1IDEuNDY4NzUgLTMuNTQ2ODc1IEMgMS42ODc1IC0zLjg1OTM3NSAyLjA2MjUgLTQuMTg3NSAyLjYwOTM3NSAtNC4xODc1IEMgMi45NTMxMjUgLTQuMTg3NSAzLjM3NSAtNC4wMzEyNSAzLjY3MTg3NSAtMy41OTM3NSBDIDMuNzgxMjUgLTMuNDIxODc1IDMuNzgxMjUgLTMuNDA2MjUgMy43ODEyNSAtMy4yMTg3NSBaIE0gMy43ODEyNSAtMy4yMTg3NSAiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDMtNiI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gMS4xMDkzNzUgLTIuNTE1NjI1IEMgMS4xNzE4NzUgLTQgMi4wMTU2MjUgLTQuMjUgMi4zNTkzNzUgLTQuMjUgQyAzLjM3NSAtNC4yNSAzLjQ4NDM3NSAtMi45MDYyNSAzLjQ4NDM3NSAtMi41MTU2MjUgWiBNIDEuMTA5Mzc1IC0yLjI5Njg3NSBMIDMuODkwNjI1IC0yLjI5Njg3NSBDIDQuMTA5Mzc1IC0yLjI5Njg3NSA0LjE0MDYyNSAtMi4yOTY4NzUgNC4xNDA2MjUgLTIuNTE1NjI1IEMgNC4xNDA2MjUgLTMuNSAzLjU5Mzc1IC00LjQ2ODc1IDIuMzU5Mzc1IC00LjQ2ODc1IEMgMS4yMDMxMjUgLTQuNDY4NzUgMC4yODEyNSAtMy40Mzc1IDAuMjgxMjUgLTIuMTg3NSBDIDAuMjgxMjUgLTAuODU5Mzc1IDEuMzI4MTI1IDAuMTA5Mzc1IDIuNDY4NzUgMC4xMDkzNzUgQyAzLjY4NzUgMC4xMDkzNzUgNC4xNDA2MjUgLTEgNC4xNDA2MjUgLTEuMTg3NSBDIDQuMTQwNjI1IC0xLjI4MTI1IDQuMDYyNSAtMS4zMTI1IDQgLTEuMzEyNSBDIDMuOTIxODc1IC0xLjMxMjUgMy44OTA2MjUgLTEuMjUgMy44NzUgLTEuMTcxODc1IEMgMy41MzEyNSAtMC4xNDA2MjUgMi42MjUgLTAuMTQwNjI1IDIuNTMxMjUgLTAuMTQwNjI1IEMgMi4wMzEyNSAtMC4xNDA2MjUgMS42NDA2MjUgLTAuNDM3NSAxLjQwNjI1IC0wLjgxMjUgQyAxLjEwOTM3NSAtMS4yODEyNSAxLjEwOTM3NSAtMS45Mzc1IDEuMTA5Mzc1IC0yLjI5Njg3NSBaIE0gMS4xMDkzNzUgLTIuMjk2ODc1ICIvPgo8L3N5bWJvbD4KPHN5bWJvbCBvdmVyZmxvdz0idmlzaWJsZSIgaWQ9ImdseXBoMy03Ij4KPHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTSAxLjc2NTYyNSAtNi45MjE4NzUgTCAwLjMyODEyNSAtNi44MTI1IEwgMC4zMjgxMjUgLTYuNSBDIDEuMDMxMjUgLTYuNSAxLjEwOTM3NSAtNi40Mzc1IDEuMTA5Mzc1IC01LjkzNzUgTCAxLjEwOTM3NSAtMC43NSBDIDEuMTA5Mzc1IC0wLjMxMjUgMSAtMC4zMTI1IDAuMzI4MTI1IC0wLjMxMjUgTCAwLjMyODEyNSAwIEMgMC42NTYyNSAtMC4wMTU2MjUgMS4xODc1IC0wLjAzMTI1IDEuNDM3NSAtMC4wMzEyNSBDIDEuNjg3NSAtMC4wMzEyNSAyLjE3MTg3NSAtMC4wMTU2MjUgMi41NDY4NzUgMCBMIDIuNTQ2ODc1IC0wLjMxMjUgQyAxLjg3NSAtMC4zMTI1IDEuNzY1NjI1IC0wLjMxMjUgMS43NjU2MjUgLTAuNzUgWiBNIDEuNzY1NjI1IC02LjkyMTg3NSAiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDMtOCI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gMy4zMTI1IC0wLjc1IEMgMy4zNTkzNzUgLTAuMzU5Mzc1IDMuNjI1IDAuMDYyNSA0LjA5Mzc1IDAuMDYyNSBDIDQuMzEyNSAwLjA2MjUgNC45MjE4NzUgLTAuMDc4MTI1IDQuOTIxODc1IC0wLjg5MDYyNSBMIDQuOTIxODc1IC0xLjQ1MzEyNSBMIDQuNjcxODc1IC0xLjQ1MzEyNSBMIDQuNjcxODc1IC0wLjg5MDYyNSBDIDQuNjcxODc1IC0wLjMxMjUgNC40MjE4NzUgLTAuMjUgNC4zMTI1IC0wLjI1IEMgMy45ODQzNzUgLTAuMjUgMy45Mzc1IC0wLjcwMzEyNSAzLjkzNzUgLTAuNzUgTCAzLjkzNzUgLTIuNzM0Mzc1IEMgMy45Mzc1IC0zLjE1NjI1IDMuOTM3NSAtMy41NDY4NzUgMy41NzgxMjUgLTMuOTIxODc1IEMgMy4xODc1IC00LjMxMjUgMi42ODc1IC00LjQ2ODc1IDIuMjE4NzUgLTQuNDY4NzUgQyAxLjM5MDYyNSAtNC40Njg3NSAwLjcwMzEyNSAtNCAwLjcwMzEyNSAtMy4zNDM3NSBDIDAuNzAzMTI1IC0zLjA0Njg3NSAwLjkwNjI1IC0yLjg3NSAxLjE3MTg3NSAtMi44NzUgQyAxLjQ1MzEyNSAtMi44NzUgMS42MjUgLTMuMDc4MTI1IDEuNjI1IC0zLjMyODEyNSBDIDEuNjI1IC0zLjQ1MzEyNSAxLjU3ODEyNSAtMy43ODEyNSAxLjEwOTM3NSAtMy43ODEyNSBDIDEuMzkwNjI1IC00LjE0MDYyNSAxLjg3NSAtNC4yNSAyLjE4NzUgLTQuMjUgQyAyLjY4NzUgLTQuMjUgMy4yNSAtMy44NTkzNzUgMy4yNSAtMi45Njg3NSBMIDMuMjUgLTIuNjA5Mzc1IEMgMi43MzQzNzUgLTIuNTc4MTI1IDIuMDQ2ODc1IC0yLjU0Njg3NSAxLjQyMTg3NSAtMi4yNSBDIDAuNjcxODc1IC0xLjkwNjI1IDAuNDIxODc1IC0xLjM5MDYyNSAwLjQyMTg3NSAtMC45NTMxMjUgQyAwLjQyMTg3NSAtMC4xNDA2MjUgMS4zOTA2MjUgMC4xMDkzNzUgMi4wMTU2MjUgMC4xMDkzNzUgQyAyLjY3MTg3NSAwLjEwOTM3NSAzLjEyNSAtMC4yOTY4NzUgMy4zMTI1IC0wLjc1IFogTSAzLjI1IC0yLjM5MDYyNSBMIDMuMjUgLTEuMzkwNjI1IEMgMy4yNSAtMC40NTMxMjUgMi41MzEyNSAtMC4xMDkzNzUgMi4wNzgxMjUgLTAuMTA5Mzc1IEMgMS41OTM3NSAtMC4xMDkzNzUgMS4xODc1IC0wLjQ1MzEyNSAxLjE4NzUgLTAuOTUzMTI1IEMgMS4xODc1IC0xLjUgMS42MDkzNzUgLTIuMzI4MTI1IDMuMjUgLTIuMzkwNjI1IFogTSAzLjI1IC0yLjM5MDYyNSAiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDMtOSI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gNC4xNDA2MjUgLTMuMzQzNzUgQyA0LjM5MDYyNSAtMy45ODQzNzUgNC45MDYyNSAtMy45ODQzNzUgNS4wNjI1IC0zLjk4NDM3NSBMIDUuMDYyNSAtNC4yOTY4NzUgQyA0LjgyODEyNSAtNC4yODEyNSA0LjU0Njg3NSAtNC4yNjU2MjUgNC4zMTI1IC00LjI2NTYyNSBDIDQuMTQwNjI1IC00LjI2NTYyNSAzLjY3MTg3NSAtNC4yODEyNSAzLjQ1MzEyNSAtNC4yOTY4NzUgTCAzLjQ1MzEyNSAtMy45ODQzNzUgQyAzLjc2NTYyNSAtMy45ODQzNzUgMy45MjE4NzUgLTMuODEyNSAzLjkyMTg3NSAtMy41NjI1IEMgMy45MjE4NzUgLTMuNDUzMTI1IDMuOTA2MjUgLTMuNDM3NSAzLjg1OTM3NSAtMy4zMTI1IEwgMi44NDM3NSAtMC44NzUgTCAxLjc1IC0zLjU0Njg3NSBDIDEuNzAzMTI1IC0zLjY1NjI1IDEuNjg3NSAtMy42ODc1IDEuNjg3NSAtMy43MzQzNzUgQyAxLjY4NzUgLTMuOTg0Mzc1IDIuMDQ2ODc1IC0zLjk4NDM3NSAyLjI1IC0zLjk4NDM3NSBMIDIuMjUgLTQuMjk2ODc1IEMgMS45ODQzNzUgLTQuMjgxMjUgMS4zMjgxMjUgLTQuMjY1NjI1IDEuMTU2MjUgLTQuMjY1NjI1IEMgMC44OTA2MjUgLTQuMjY1NjI1IDAuNDg0Mzc1IC00LjI4MTI1IDAuMTg3NSAtNC4yOTY4NzUgTCAwLjE4NzUgLTMuOTg0Mzc1IEMgMC42NzE4NzUgLTMuOTg0Mzc1IDAuODU5Mzc1IC0zLjk4NDM3NSAxIC0zLjY0MDYyNSBMIDIuNSAwIEMgMi40Mzc1IDAuMTI1IDIuMjk2ODc1IDAuNDUzMTI1IDIuMjUgMC41OTM3NSBDIDIuMDMxMjUgMS4xNDA2MjUgMS43NSAxLjgyODEyNSAxLjEwOTM3NSAxLjgyODEyNSBDIDEuMDYyNSAxLjgyODEyNSAwLjgyODEyNSAxLjgyODEyNSAwLjY0MDYyNSAxLjY0MDYyNSBDIDAuOTUzMTI1IDEuNjA5Mzc1IDEuMDMxMjUgMS4zOTA2MjUgMS4wMzEyNSAxLjIxODc1IEMgMS4wMzEyNSAwLjk2ODc1IDAuODQzNzUgMC44MTI1IDAuNjA5Mzc1IDAuODEyNSBDIDAuNDA2MjUgMC44MTI1IDAuMTg3NSAwLjkzNzUgMC4xODc1IDEuMjM0Mzc1IEMgMC4xODc1IDEuNjg3NSAwLjYwOTM3NSAyLjA0Njg3NSAxLjEwOTM3NSAyLjA0Njg3NSBDIDEuNzM0Mzc1IDIuMDQ2ODc1IDIuMTQwNjI1IDEuNDY4NzUgMi4zNzUgMC45MDYyNSBaIE0gNC4xNDA2MjUgLTMuMzQzNzUgIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgzLTEwIj4KPHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTSAxLjcxODc1IC0zLjc2NTYyNSBMIDEuNzE4NzUgLTYuOTIxODc1IEwgMC4yODEyNSAtNi44MTI1IEwgMC4yODEyNSAtNi41IEMgMC45ODQzNzUgLTYuNSAxLjA2MjUgLTYuNDM3NSAxLjA2MjUgLTUuOTM3NSBMIDEuMDYyNSAwIEwgMS4zMTI1IDAgQyAxLjMxMjUgLTAuMDE1NjI1IDEuMzkwNjI1IC0wLjE1NjI1IDEuNjcxODc1IC0wLjYyNSBDIDEuODEyNSAtMC4zOTA2MjUgMi4yMzQzNzUgMC4xMDkzNzUgMi45Njg3NSAwLjEwOTM3NSBDIDQuMTU2MjUgMC4xMDkzNzUgNS4xODc1IC0wLjg3NSA1LjE4NzUgLTIuMTU2MjUgQyA1LjE4NzUgLTMuNDIxODc1IDQuMjE4NzUgLTQuNDA2MjUgMy4wNzgxMjUgLTQuNDA2MjUgQyAyLjI5Njg3NSAtNC40MDYyNSAxLjg3NSAtMy45Mzc1IDEuNzE4NzUgLTMuNzY1NjI1IFogTSAxLjc1IC0xLjE0MDYyNSBMIDEuNzUgLTMuMTg3NSBDIDEuNzUgLTMuMzc1IDEuNzUgLTMuMzkwNjI1IDEuODU5Mzc1IC0zLjU0Njg3NSBDIDIuMjUgLTQuMTA5Mzc1IDIuNzk2ODc1IC00LjE4NzUgMy4wMzEyNSAtNC4xODc1IEMgMy40ODQzNzUgLTQuMTg3NSAzLjg0Mzc1IC0zLjkyMTg3NSA0LjA3ODEyNSAtMy41NDY4NzUgQyA0LjM0Mzc1IC0zLjE0MDYyNSA0LjM1OTM3NSAtMi41NzgxMjUgNC4zNTkzNzUgLTIuMTU2MjUgQyA0LjM1OTM3NSAtMS43OTY4NzUgNC4zNDM3NSAtMS4yMDMxMjUgNC4wNjI1IC0wLjc1IEMgMy44NDM3NSAtMC40Mzc1IDMuNDY4NzUgLTAuMTA5Mzc1IDIuOTM3NSAtMC4xMDkzNzUgQyAyLjQ4NDM3NSAtMC4xMDkzNzUgMi4xMjUgLTAuMzQzNzUgMS44OTA2MjUgLTAuNzE4NzUgQyAxLjc1IC0wLjkyMTg3NSAxLjc1IC0wLjk1MzEyNSAxLjc1IC0xLjE0MDYyNSBaIE0gMS43NSAtMS4xNDA2MjUgIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgzLTExIj4KPHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTSA0LjY4NzUgLTIuMTQwNjI1IEMgNC42ODc1IC0zLjQwNjI1IDMuNzAzMTI1IC00LjQ2ODc1IDIuNSAtNC40Njg3NSBDIDEuMjUgLTQuNDY4NzUgMC4yODEyNSAtMy4zNzUgMC4yODEyNSAtMi4xNDA2MjUgQyAwLjI4MTI1IC0wLjg0Mzc1IDEuMzEyNSAwLjEwOTM3NSAyLjQ4NDM3NSAwLjEwOTM3NSBDIDMuNjg3NSAwLjEwOTM3NSA0LjY4NzUgLTAuODc1IDQuNjg3NSAtMi4xNDA2MjUgWiBNIDIuNSAtMC4xNDA2MjUgQyAyLjA2MjUgLTAuMTQwNjI1IDEuNjI1IC0wLjM0Mzc1IDEuMzU5Mzc1IC0wLjgxMjUgQyAxLjEwOTM3NSAtMS4yNSAxLjEwOTM3NSAtMS44NTkzNzUgMS4xMDkzNzUgLTIuMjE4NzUgQyAxLjEwOTM3NSAtMi42MDkzNzUgMS4xMDkzNzUgLTMuMTQwNjI1IDEuMzQzNzUgLTMuNTc4MTI1IEMgMS42MDkzNzUgLTQuMDMxMjUgMi4wNzgxMjUgLTQuMjUgMi40ODQzNzUgLTQuMjUgQyAyLjkyMTg3NSAtNC4yNSAzLjM0Mzc1IC00LjAzMTI1IDMuNjA5Mzc1IC0zLjU5Mzc1IEMgMy44NzUgLTMuMTcxODc1IDMuODc1IC0yLjU5Mzc1IDMuODc1IC0yLjIxODc1IEMgMy44NzUgLTEuODU5Mzc1IDMuODc1IC0xLjMxMjUgMy42NTYyNSAtMC44NzUgQyAzLjQyMTg3NSAtMC40MjE4NzUgMi45ODQzNzUgLTAuMTQwNjI1IDIuNSAtMC4xNDA2MjUgWiBNIDIuNSAtMC4xNDA2MjUgIi8+Cjwvc3ltYm9sPgo8c3ltYm9sIG92ZXJmbG93PSJ2aXNpYmxlIiBpZD0iZ2x5cGgzLTEyIj4KPHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTSAxLjE3MTg3NSAtMi4xNzE4NzUgQyAxLjE3MTg3NSAtMy43OTY4NzUgMS45ODQzNzUgLTQuMjE4NzUgMi41MTU2MjUgLTQuMjE4NzUgQyAyLjYwOTM3NSAtNC4yMTg3NSAzLjIzNDM3NSAtNC4yMDMxMjUgMy41NzgxMjUgLTMuODQzNzUgQyAzLjE3MTg3NSAtMy44MTI1IDMuMTA5Mzc1IC0zLjUxNTYyNSAzLjEwOTM3NSAtMy4zOTA2MjUgQyAzLjEwOTM3NSAtMy4xMjUgMy4yOTY4NzUgLTIuOTM3NSAzLjU2MjUgLTIuOTM3NSBDIDMuODI4MTI1IC0yLjkzNzUgNC4wMzEyNSAtMy4wOTM3NSA0LjAzMTI1IC0zLjQwNjI1IEMgNC4wMzEyNSAtNC4wNzgxMjUgMy4yNjU2MjUgLTQuNDY4NzUgMi41IC00LjQ2ODc1IEMgMS4yNSAtNC40Njg3NSAwLjM0Mzc1IC0zLjM5MDYyNSAwLjM0Mzc1IC0yLjE1NjI1IEMgMC4zNDM3NSAtMC44NzUgMS4zMjgxMjUgMC4xMDkzNzUgMi40ODQzNzUgMC4xMDkzNzUgQyAzLjgxMjUgMC4xMDkzNzUgNC4xNDA2MjUgLTEuMDkzNzUgNC4xNDA2MjUgLTEuMTg3NSBDIDQuMTQwNjI1IC0xLjI4MTI1IDQuMDMxMjUgLTEuMjgxMjUgNCAtMS4yODEyNSBDIDMuOTIxODc1IC0xLjI4MTI1IDMuODkwNjI1IC0xLjI1IDMuODc1IC0xLjE4NzUgQyAzLjU5Mzc1IC0wLjI2NTYyNSAyLjkzNzUgLTAuMTQwNjI1IDIuNTc4MTI1IC0wLjE0MDYyNSBDIDIuMDQ2ODc1IC0wLjE0MDYyNSAxLjE3MTg3NSAtMC41NjI1IDEuMTcxODc1IC0yLjE3MTg3NSBaIE0gMS4xNzE4NzUgLTIuMTcxODc1ICIvPgo8L3N5bWJvbD4KPHN5bWJvbCBvdmVyZmxvdz0idmlzaWJsZSIgaWQ9ImdseXBoMy0xMyI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0gMS4wNjI1IC0wLjc1IEMgMS4wNjI1IC0wLjMxMjUgMC45NTMxMjUgLTAuMzEyNSAwLjI4MTI1IC0wLjMxMjUgTCAwLjI4MTI1IDAgQyAwLjYwOTM3NSAtMC4wMTU2MjUgMS4wNzgxMjUgLTAuMDMxMjUgMS4zNTkzNzUgLTAuMDMxMjUgQyAxLjY3MTg3NSAtMC4wMzEyNSAyLjA2MjUgLTAuMDE1NjI1IDIuNDY4NzUgMCBMIDIuNDY4NzUgLTAuMzEyNSBDIDEuNzk2ODc1IC0wLjMxMjUgMS42ODc1IC0wLjMxMjUgMS42ODc1IC0wLjc1IEwgMS42ODc1IC0xLjc4MTI1IEwgMi4zMjgxMjUgLTIuMzI4MTI1IEMgMy4wOTM3NSAtMS4yODEyNSAzLjUxNTYyNSAtMC43MTg3NSAzLjUxNTYyNSAtMC41MzEyNSBDIDMuNTE1NjI1IC0wLjM0Mzc1IDMuMzQzNzUgLTAuMzEyNSAzLjE1NjI1IC0wLjMxMjUgTCAzLjE1NjI1IDAgQyAzLjQyMTg3NSAtMC4wMTU2MjUgNC4wMTU2MjUgLTAuMDMxMjUgNC4yMzQzNzUgLTAuMDMxMjUgQyA0LjUxNTYyNSAtMC4wMzEyNSA0LjgxMjUgLTAuMDE1NjI1IDUuMDkzNzUgMCBMIDUuMDkzNzUgLTAuMzEyNSBDIDQuNzE4NzUgLTAuMzEyNSA0LjUgLTAuMzEyNSA0LjEyNSAtMC44NDM3NSBMIDIuODU5Mzc1IC0yLjYyNSBDIDIuODQzNzUgLTIuNjQwNjI1IDIuNzk2ODc1IC0yLjcwMzEyNSAyLjc5Njg3NSAtMi43MzQzNzUgQyAyLjc5Njg3NSAtMi43NjU2MjUgMy41MTU2MjUgLTMuMzc1IDMuNjA5Mzc1IC0zLjQ1MzEyNSBDIDQuMjM0Mzc1IC0zLjk1MzEyNSA0LjY1NjI1IC0zLjk4NDM3NSA0Ljg1OTM3NSAtMy45ODQzNzUgTCA0Ljg1OTM3NSAtNC4yOTY4NzUgQyA0LjU3ODEyNSAtNC4yNjU2MjUgNC40NTMxMjUgLTQuMjY1NjI1IDQuMTcxODc1IC00LjI2NTYyNSBDIDMuODEyNSAtNC4yNjU2MjUgMy4xODc1IC00LjI4MTI1IDMuMDQ2ODc1IC00LjI5Njg3NSBMIDMuMDQ2ODc1IC0zLjk4NDM3NSBDIDMuMjM0Mzc1IC0zLjk4NDM3NSAzLjM0Mzc1IC0zLjg3NSAzLjM0Mzc1IC0zLjczNDM3NSBDIDMuMzQzNzUgLTMuNTMxMjUgMy4yMDMxMjUgLTMuNDIxODc1IDMuMTI1IC0zLjM0Mzc1IEwgMS43MTg3NSAtMi4xNDA2MjUgTCAxLjcxODc1IC02LjkyMTg3NSBMIDAuMjgxMjUgLTYuODEyNSBMIDAuMjgxMjUgLTYuNSBDIDAuOTg0Mzc1IC02LjUgMS4wNjI1IC02LjQzNzUgMS4wNjI1IC01LjkzNzUgWiBNIDEuMDYyNSAtMC43NSAiLz4KPC9zeW1ib2w+CjxzeW1ib2wgb3ZlcmZsb3c9InZpc2libGUiIGlkPSJnbHlwaDQtMCI+CjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9IiIvPgo8L3N5bWJvbD4KPHN5bWJvbCBvdmVyZmxvdz0idmlzaWJsZSIgaWQ9ImdseXBoNC0xIj4KPHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTSA2LjU2MjUgLTIuMjk2ODc1IEMgNi43MzQzNzUgLTIuMjk2ODc1IDYuOTIxODc1IC0yLjI5Njg3NSA2LjkyMTg3NSAtMi41IEMgNi45MjE4NzUgLTIuNjg3NSA2LjczNDM3NSAtMi42ODc1IDYuNTYyNSAtMi42ODc1IEwgMS4xNzE4NzUgLTIuNjg3NSBDIDEgLTIuNjg3NSAwLjgyODEyNSAtMi42ODc1IDAuODI4MTI1IC0yLjUgQyAwLjgyODEyNSAtMi4yOTY4NzUgMSAtMi4yOTY4NzUgMS4xNzE4NzUgLTIuMjk2ODc1IFogTSA2LjU2MjUgLTIuMjk2ODc1ICIvPgo8L3N5bWJvbD4KPC9nPgo8Y2xpcFBhdGggaWQ9ImNsaXAxIj4KICA8cGF0aCBkPSJNIDEyOSAxNDEgTCAxNTAgMTQxIEwgMTUwIDE2MS4zODI4MTIgTCAxMjkgMTYxLjM4MjgxMiBaIE0gMTI5IDE0MSAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwMiI+CiAgPHBhdGggZD0iTSAxMjQgMTM2IEwgMTU1IDEzNiBMIDE1NSAxNjEuMzgyODEyIEwgMTI0IDE2MS4zODI4MTIgWiBNIDEyNCAxMzYgIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPGcgaWQ9InN1cmZhY2UxIj4KPHBhdGggc3R5bGU9ImZpbGwtcnVsZTpub256ZXJvO2ZpbGw6cmdiKDg5Ljk5OTM5JSw4OS45OTkzOSUsODkuOTk5MzklKTtmaWxsLW9wYWNpdHk6MTtzdHJva2Utd2lkdGg6MC4zOTg1O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZTpyZ2IoMCUsMCUsMCUpO3N0cm9rZS1vcGFjaXR5OjE7c3Ryb2tlLW1pdGVybGltaXQ6MTA7IiBkPSJNIDQ1LjQ4NzkzOCAtNjQuMDcwNTMxIEwgNjcuODk4MDk0IC02NC4wNzA1MzEgTCA2Ny44OTgwOTQgLTQ5LjMxNjYyNSBMIDQ1LjQ4NzkzOCAtNDkuMzE2NjI1IFogTSA0NS40ODc5MzggLTY0LjA3MDUzMSAiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLC0xLDI2LjA5OCw5LjgyNCkiLz4KPGcgc3R5bGU9ImZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMC0xIiB4PSI3NC45MDciIHk9IjcwLjU3MiIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDEtMSIgeD0iNzkuOTc5IiB5PSI2Ni45NTciLz4KPC9nPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgyLTEiIHg9Ijg2LjIwNSIgeT0iNjYuOTU3Ii8+CjwvZz4KPHBhdGggc3R5bGU9ImZpbGwtcnVsZTpub256ZXJvO2ZpbGw6cmdiKDg5Ljk5OTM5JSw4OS45OTkzOSUsODkuOTk5MzklKTtmaWxsLW9wYWNpdHk6MTtzdHJva2Utd2lkdGg6MC4zOTg1O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZTpyZ2IoMCUsMCUsMCUpO3N0cm9rZS1vcGFjaXR5OjE7c3Ryb2tlLW1pdGVybGltaXQ6MTA7IiBkPSJNIDE1OC44NzQ2NTYgLTY0LjA3MDUzMSBMIDE4MS4yODQ4MTIgLTY0LjA3MDUzMSBMIDE4MS4yODQ4MTIgLTQ5LjMxNjYyNSBMIDE1OC44NzQ2NTYgLTQ5LjMxNjYyNSBaIE0gMTU4Ljg3NDY1NiAtNjQuMDcwNTMxICIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsLTEsMjYuMDk4LDkuODI0KSIvPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgwLTEiIHg9IjE4OC4yOTMiIHk9IjcwLjU3MiIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDEtMSIgeD0iMTkzLjM2NCIgeT0iNjYuOTU3Ii8+CjwvZz4KPGcgc3R5bGU9ImZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMi0xIiB4PSIxOTkuNTkxIiB5PSI2Ni45NTciLz4KPC9nPgo8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOm5vbnplcm87ZmlsbDpyZ2IoODkuOTk5MzklLDg5Ljk5OTM5JSw4OS45OTkzOSUpO2ZpbGwtb3BhY2l0eToxO3N0cm9rZS13aWR0aDowLjM5ODU7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlOnJnYigwJSwwJSwwJSk7c3Ryb2tlLW9wYWNpdHk6MTtzdHJva2UtbWl0ZXJsaW1pdDoxMDsiIGQ9Ik0gMTU4Ljg3NDY1NiAtMTIwLjc2MTkzNyBMIDE4MS4yODQ4MTIgLTEyMC43NjE5MzcgTCAxODEuMjg0ODEyIC0xMDYuMDExOTM3IEwgMTU4Ljg3NDY1NiAtMTA2LjAxMTkzNyBaIE0gMTU4Ljg3NDY1NiAtMTIwLjc2MTkzNyAiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLC0xLDI2LjA5OCw5LjgyNCkiLz4KPGcgc3R5bGU9ImZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMC0xIiB4PSIxODguMjkzIiB5PSIxMjcuMjY1Ii8+CjwvZz4KPGcgc3R5bGU9ImZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMS0xIiB4PSIxOTMuMzY0IiB5PSIxMjMuNjUiLz4KPC9nPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgyLTEiIHg9IjE5OS41OTEiIHk9IjEyMy42NSIvPgo8L2c+CjxwYXRoIHN0eWxlPSJmaWxsLXJ1bGU6bm9uemVybztmaWxsOnJnYig4OS45OTkzOSUsODkuOTk5MzklLDg5Ljk5OTM5JSk7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuMzk4NTtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2U6cmdiKDAlLDAlLDAlKTtzdHJva2Utb3BhY2l0eToxO3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgZD0iTSAxMjMuMDExMzc1IC0wLjAwMDIxODc1IEMgMTIzLjAxMTM3NSA1LjMxNjE4OCAxMTguNzAyNzgxIDkuNjI0NzgxIDExMy4zODYzNzUgOS42MjQ3ODEgQyAxMDguMDY5OTY5IDkuNjI0NzgxIDEwMy43NjEzNzUgNS4zMTYxODggMTAzLjc2MTM3NSAtMC4wMDAyMTg3NSBDIDEwMy43NjEzNzUgLTUuMzE2NjI1IDEwOC4wNjk5NjkgLTkuNjI1MjE5IDExMy4zODYzNzUgLTkuNjI1MjE5IEMgMTE4LjcwMjc4MSAtOS42MjUyMTkgMTIzLjAxMTM3NSAtNS4zMTY2MjUgMTIzLjAxMTM3NSAtMC4wMDAyMTg3NSBaIE0gMTIzLjAxMTM3NSAtMC4wMDAyMTg3NSAiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLC0xLDI2LjA5OCw5LjgyNCkiLz4KPGcgc3R5bGU9ImZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMy0xIiB4PSIxMzUuODg2IiB5PSIxMy4yMjgiLz4KPC9nPgo8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOm5vbnplcm87ZmlsbDpyZ2IoODkuOTk5MzklLDg5Ljk5OTM5JSw4OS45OTkzOSUpO2ZpbGwtb3BhY2l0eToxO3N0cm9rZS13aWR0aDowLjM5ODU7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlOnJnYigwJSwwJSwwJSk7c3Ryb2tlLW9wYWNpdHk6MTtzdHJva2UtbWl0ZXJsaW1pdDoxMDsiIGQ9Ik0gMTIzLjAxMTM3NSAtODUuMDM5MjgxIEMgMTIzLjAxMTM3NSAtNzkuNzIyODc1IDExOC43MDI3ODEgLTc1LjQxNDI4MSAxMTMuMzg2Mzc1IC03NS40MTQyODEgQyAxMDguMDY5OTY5IC03NS40MTQyODEgMTAzLjc2MTM3NSAtNzkuNzIyODc1IDEwMy43NjEzNzUgLTg1LjAzOTI4MSBDIDEwMy43NjEzNzUgLTkwLjM1NTY4NyAxMDguMDY5OTY5IC05NC42NjQyODEgMTEzLjM4NjM3NSAtOTQuNjY0MjgxIEMgMTE4LjcwMjc4MSAtOTQuNjY0MjgxIDEyMy4wMTEzNzUgLTkwLjM1NTY4NyAxMjMuMDExMzc1IC04NS4wMzkyODEgWiBNIDEyMy4wMTEzNzUgLTg1LjAzOTI4MSAiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLC0xLDI2LjA5OCw5LjgyNCkiLz4KPGcgc3R5bGU9ImZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMy0xIiB4PSIxMzUuODg2IiB5PSI5OC4yNjgiLz4KPC9nPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcDEpIiBjbGlwLXJ1bGU9Im5vbnplcm8iPgo8cGF0aCBzdHlsZT0iIHN0cm9rZTpub25lO2ZpbGwtcnVsZTpub256ZXJvO2ZpbGw6cmdiKDg5Ljk5OTM5JSw4OS45OTkzOSUsODkuOTk5MzklKTtmaWxsLW9wYWNpdHk6MTsiIGQ9Ik0gMTQ5LjEwOTM3NSAxNTEuNTU4NTk0IEMgMTQ5LjEwOTM3NSAxNDYuMjQyMTg4IDE0NC44MDA3ODEgMTQxLjkzMzU5NCAxMzkuNDg0Mzc1IDE0MS45MzM1OTQgQyAxMzQuMTY3OTY5IDE0MS45MzM1OTQgMTI5Ljg1OTM3NSAxNDYuMjQyMTg4IDEyOS44NTkzNzUgMTUxLjU1ODU5NCBDIDEyOS44NTkzNzUgMTU2Ljg3NSAxMzQuMTY3OTY5IDE2MS4xODM1OTQgMTM5LjQ4NDM3NSAxNjEuMTgzNTk0IEMgMTQ0LjgwMDc4MSAxNjEuMTgzNTk0IDE0OS4xMDkzNzUgMTU2Ljg3NSAxNDkuMTA5Mzc1IDE1MS41NTg1OTQgWiBNIDE0OS4xMDkzNzUgMTUxLjU1ODU5NCAiLz4KPC9nPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcDIpIiBjbGlwLXJ1bGU9Im5vbnplcm8iPgo8cGF0aCBzdHlsZT0iZmlsbDpub25lO3N0cm9rZS13aWR0aDowLjM5ODU7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlOnJnYigwJSwwJSwwJSk7c3Ryb2tlLW9wYWNpdHk6MTtzdHJva2UtbWl0ZXJsaW1pdDoxMDsiIGQ9Ik0gMTIzLjAxMTM3NSAtMTQxLjczNDU5NCBDIDEyMy4wMTEzNzUgLTEzNi40MTgxODcgMTE4LjcwMjc4MSAtMTMyLjEwOTU5NCAxMTMuMzg2Mzc1IC0xMzIuMTA5NTk0IEMgMTA4LjA2OTk2OSAtMTMyLjEwOTU5NCAxMDMuNzYxMzc1IC0xMzYuNDE4MTg3IDEwMy43NjEzNzUgLTE0MS43MzQ1OTQgQyAxMDMuNzYxMzc1IC0xNDcuMDUxIDEwOC4wNjk5NjkgLTE1MS4zNTk1OTQgMTEzLjM4NjM3NSAtMTUxLjM1OTU5NCBDIDExOC43MDI3ODEgLTE1MS4zNTk1OTQgMTIzLjAxMTM3NSAtMTQ3LjA1MSAxMjMuMDExMzc1IC0xNDEuNzM0NTk0IFogTSAxMjMuMDExMzc1IC0xNDEuNzM0NTk0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsLTEsMjYuMDk4LDkuODI0KSIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDMtMSIgeD0iMTM1Ljg4NiIgeT0iMTU0Ljk2MSIvPgo8L2c+CjxwYXRoIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlLXdpZHRoOjAuMzk4NTtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2U6cmdiKDAlLDAlLDAlKTtzdHJva2Utb3BhY2l0eToxO3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgZD0iTSAtMC4wMDAzNDM3NSAtMC4wMDAyMTg3NSBMIDEwMS4xNzE1MzEgLTAuMDAwMjE4NzUgIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwtMSwyNi4wOTgsOS44MjQpIi8+CjxwYXRoIHN0eWxlPSIgc3Ryb2tlOm5vbmU7ZmlsbC1ydWxlOm5vbnplcm87ZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyIgZD0iTSAxMjkuNjYwMTU2IDkuODI0MjE5IEMgMTI4LjY2NDA2MiA5LjYyNSAxMjYuODcxMDk0IDkuMjI2NTYyIDEyNS42NzU3ODEgOC4zMjgxMjUgQyAxMjYuNjcxODc1IDkuNDI1NzgxIDEyNi42NzE4NzUgMTAuMjIyNjU2IDEyNS42NzU3ODEgMTEuMzIwMzEyIEMgMTI2Ljg3MTA5NCAxMC40MjE4NzUgMTI4LjY2NDA2MiAxMC4wMjM0MzggMTI5LjY2MDE1NiA5LjgyNDIxOSBaIE0gMTI5LjY2MDE1NiA5LjgyNDIxOSAiLz4KPHBhdGggc3R5bGU9ImZpbGw6bm9uZTtzdHJva2Utd2lkdGg6MC4zOTg1O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZTpyZ2IoMCUsMCUsMCUpO3N0cm9rZS1vcGFjaXR5OjE7c3Ryb2tlLW1pdGVybGltaXQ6MTA7IiBkPSJNIC0wLjAwMDM0Mzc1IC0wLjAwMDIxODc1IEwgNTYuNjk0OTY5IC0wLjAwMDIxODc1IEwgNTYuNjk0OTY5IC00Ni43MjY3ODEgIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwtMSwyNi4wOTgsOS44MjQpIi8+CjxwYXRoIHN0eWxlPSIgc3Ryb2tlOm5vbmU7ZmlsbC1ydWxlOm5vbnplcm87ZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyIgZD0iTSA4Mi43OTI5NjkgNTguOTQxNDA2IEMgODIuOTkyMTg4IDU3Ljk0NTMxMiA4My4zOTA2MjUgNTYuMTUyMzQ0IDg0LjI4NTE1NiA1NC45NTcwMzEgQyA4My4xOTE0MDYgNTUuOTUzMTI1IDgyLjM5NDUzMSA1NS45NTMxMjUgODEuMjk2ODc1IDU0Ljk1NzAzMSBDIDgyLjE5NTMxMiA1Ni4xNTIzNDQgODIuNTkzNzUgNTcuOTQ1MzEyIDgyLjc5Mjk2OSA1OC45NDE0MDYgWiBNIDgyLjc5Mjk2OSA1OC45NDE0MDYgIi8+CjxwYXRoIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlLXdpZHRoOjAuMzk4NTtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2U6cmdiKDAlLDAlLDAlKTtzdHJva2Utb3BhY2l0eToxO3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgZD0iTSA1Ni42OTQ5NjkgLTY0LjI2OTc1IEwgNTYuNjk0OTY5IC04NS4wMzkyODEgTCAxMDEuMTcxNTMxIC04NS4wMzkyODEgIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwtMSwyNi4wOTgsOS44MjQpIi8+CjxwYXRoIHN0eWxlPSIgc3Ryb2tlOm5vbmU7ZmlsbC1ydWxlOm5vbnplcm87ZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyIgZD0iTSAxMjkuNjYwMTU2IDk0Ljg2MzI4MSBDIDEyOC42NjQwNjIgOTQuNjY0MDYyIDEyNi44NzEwOTQgOTQuMjY1NjI1IDEyNS42NzU3ODEgOTMuMzcxMDk0IEMgMTI2LjY3MTg3NSA5NC40NjQ4NDQgMTI2LjY3MTg3NSA5NS4yNjE3MTkgMTI1LjY3NTc4MSA5Ni4zNTkzNzUgQyAxMjYuODcxMDk0IDk1LjQ2MDkzOCAxMjguNjY0MDYyIDk1LjA2MjUgMTI5LjY2MDE1NiA5NC44NjMyODEgWiBNIDEyOS42NjAxNTYgOTQuODYzMjgxICIvPgo8cGF0aCBzdHlsZT0iZmlsbDpub25lO3N0cm9rZS13aWR0aDowLjM5ODU7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlOnJnYigwJSwwJSwwJSk7c3Ryb2tlLW9wYWNpdHk6MTtzdHJva2UtbWl0ZXJsaW1pdDoxMDsiIGQ9Ik0gMTEzLjM4NjM3NSAtNzUuMjE1MDYyIEwgMTEzLjM4NjM3NSAtMTIuMjE1MDYyICIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsLTEsMjYuMDk4LDkuODI0KSIvPgo8cGF0aCBzdHlsZT0iIHN0cm9rZTpub25lO2ZpbGwtcnVsZTpub256ZXJvO2ZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiIGQ9Ik0gMTM5LjQ4NDM3NSAxOS42NDg0MzggQyAxMzkuMjg1MTU2IDIwLjY0NDUzMSAxMzguODg2NzE5IDIyLjQzNzUgMTM3Ljk5MjE4OCAyMy42MzI4MTIgQyAxMzkuMDg1OTM4IDIyLjYzNjcxOSAxMzkuODgyODEyIDIyLjYzNjcxOSAxNDAuOTgwNDY5IDIzLjYzMjgxMiBDIDE0MC4wODIwMzEgMjIuNDM3NSAxMzkuNjgzNTk0IDIwLjY0NDUzMSAxMzkuNDg0Mzc1IDE5LjY0ODQzOCBaIE0gMTM5LjQ4NDM3NSAxOS42NDg0MzggIi8+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDQtMSIgeD0iMTI4LjIxNSIgeT0iMjUuNDA5Ii8+CjwvZz4KPHBhdGggc3R5bGU9ImZpbGw6bm9uZTtzdHJva2Utd2lkdGg6MC4zOTg1O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZTpyZ2IoMCUsMCUsMCUpO3N0cm9rZS1vcGFjaXR5OjE7c3Ryb2tlLW1pdGVybGltaXQ6MTA7IiBkPSJNIDEyMy4yMTA1OTQgLTAuMDAwMjE4NzUgTCAyMjQuMzgyNDY5IC0wLjAwMDIxODc1ICIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsLTEsMjYuMDk4LDkuODI0KSIvPgo8cGF0aCBzdHlsZT0iIHN0cm9rZTpub25lO2ZpbGwtcnVsZTpub256ZXJvO2ZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiIGQ9Ik0gMjUyLjg3MTA5NCA5LjgyNDIxOSBDIDI1MS44NzUgOS42MjUgMjUwLjA4MjAzMSA5LjIyNjU2MiAyNDguODg2NzE5IDguMzI4MTI1IEMgMjQ5Ljg4MjgxMiA5LjQyNTc4MSAyNDkuODgyODEyIDEwLjIyMjY1NiAyNDguODg2NzE5IDExLjMyMDMxMiBDIDI1MC4wODIwMzEgMTAuNDIxODc1IDI1MS44NzUgMTAuMDIzNDM4IDI1Mi44NzEwOTQgOS44MjQyMTkgWiBNIDI1Mi44NzEwOTQgOS44MjQyMTkgIi8+CjxwYXRoIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlLXdpZHRoOjAuMzk4NTtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2U6cmdiKDAlLDAlLDAlKTtzdHJva2Utb3BhY2l0eToxO3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgZD0iTSAxMjMuMjEwNTk0IC0wLjAwMDIxODc1IEwgMTcwLjA4MTY4NyAtMC4wMDAyMTg3NSBMIDE3MC4wODE2ODcgLTQ2LjcyNjc4MSAiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLC0xLDI2LjA5OCw5LjgyNCkiLz4KPHBhdGggc3R5bGU9IiBzdHJva2U6bm9uZTtmaWxsLXJ1bGU6bm9uemVybztmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7IiBkPSJNIDE5Ni4xNzk2ODggNTguOTQxNDA2IEMgMTk2LjM3ODkwNiA1Ny45NDUzMTIgMTk2Ljc3NzM0NCA1Ni4xNTIzNDQgMTk3LjY3MTg3NSA1NC45NTcwMzEgQyAxOTYuNTc4MTI1IDU1Ljk1MzEyNSAxOTUuNzgxMjUgNTUuOTUzMTI1IDE5NC42ODM1OTQgNTQuOTU3MDMxIEMgMTk1LjU4MjAzMSA1Ni4xNTIzNDQgMTk1Ljk4MDQ2OSA1Ny45NDUzMTIgMTk2LjE3OTY4OCA1OC45NDE0MDYgWiBNIDE5Ni4xNzk2ODggNTguOTQxNDA2ICIvPgo8cGF0aCBzdHlsZT0iZmlsbDpub25lO3N0cm9rZS13aWR0aDowLjM5ODU7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlOnJnYigwJSwwJSwwJSk7c3Ryb2tlLW9wYWNpdHk6MTtzdHJva2UtbWl0ZXJsaW1pdDoxMDsiIGQ9Ik0gMTcwLjA4MTY4NyAtNjQuMjY5NzUgTCAxNzAuMDgxNjg3IC04NS4wMzkyODEgTCAxMjUuNjAxMjE5IC04NS4wMzkyODEgIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwtMSwyNi4wOTgsOS44MjQpIi8+CjxwYXRoIHN0eWxlPSIgc3Ryb2tlOm5vbmU7ZmlsbC1ydWxlOm5vbnplcm87ZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyIgZD0iTSAxNDkuMzA4NTk0IDk0Ljg2MzI4MSBDIDE1MC4zMDQ2ODggOTUuMDYyNSAxNTIuMDk3NjU2IDk1LjQ2MDkzOCAxNTMuMjkyOTY5IDk2LjM1OTM3NSBDIDE1Mi4yOTY4NzUgOTUuMjYxNzE5IDE1Mi4yOTY4NzUgOTQuNDY0ODQ0IDE1My4yOTI5NjkgOTMuMzcxMDk0IEMgMTUyLjA5NzY1NiA5NC4yNjU2MjUgMTUwLjMwNDY4OCA5NC42NjQwNjIgMTQ5LjMwODU5NCA5NC44NjMyODEgWiBNIDE0OS4zMDg1OTQgOTQuODYzMjgxICIvPgo8cGF0aCBzdHlsZT0iZmlsbDpub25lO3N0cm9rZS13aWR0aDowLjM5ODU7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlOnJnYigwJSwwJSwwJSk7c3Ryb2tlLW9wYWNpdHk6MTtzdHJva2UtbWl0ZXJsaW1pdDoxMDsiIGQ9Ik0gMTcwLjA4MTY4NyAtNjQuMjY5NzUgTCAxNzAuMDgxNjg3IC0xMDMuNDIyMDk0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsLTEsMjYuMDk4LDkuODI0KSIvPgo8cGF0aCBzdHlsZT0iIHN0cm9rZTpub25lO2ZpbGwtcnVsZTpub256ZXJvO2ZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiIGQ9Ik0gMTk2LjE3OTY4OCAxMTUuNjM2NzE5IEMgMTk2LjM3ODkwNiAxMTQuNjQwNjI1IDE5Ni43NzczNDQgMTEyLjg0NzY1NiAxOTcuNjcxODc1IDExMS42NTIzNDQgQyAxOTYuNTc4MTI1IDExMi42NDg0MzggMTk1Ljc4MTI1IDExMi42NDg0MzggMTk0LjY4MzU5NCAxMTEuNjUyMzQ0IEMgMTk1LjU4MjAzMSAxMTIuODQ3NjU2IDE5NS45ODA0NjkgMTE0LjY0MDYyNSAxOTYuMTc5Njg4IDExNS42MzY3MTkgWiBNIDE5Ni4xNzk2ODggMTE1LjYzNjcxOSAiLz4KPHBhdGggc3R5bGU9ImZpbGw6bm9uZTtzdHJva2Utd2lkdGg6MC4zOTg1O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZTpyZ2IoMCUsMCUsMCUpO3N0cm9rZS1vcGFjaXR5OjE7c3Ryb2tlLW1pdGVybGltaXQ6MTA7IiBkPSJNIDE3MC4wODE2ODcgLTEyMC45NjExNTYgTCAxNzAuMDgxNjg3IC0xNDEuNzM0NTk0IEwgMTI1LjYwMTIxOSAtMTQxLjczNDU5NCAiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLC0xLDI2LjA5OCw5LjgyNCkiLz4KPHBhdGggc3R5bGU9IiBzdHJva2U6bm9uZTtmaWxsLXJ1bGU6bm9uemVybztmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7IiBkPSJNIDE0OS4zMDg1OTQgMTUxLjU1ODU5NCBDIDE1MC4zMDQ2ODggMTUxLjc1NzgxMiAxNTIuMDk3NjU2IDE1Mi4xNTYyNSAxNTMuMjkyOTY5IDE1My4wNTA3ODEgQyAxNTIuMjk2ODc1IDE1MS45NTcwMzEgMTUyLjI5Njg3NSAxNTEuMTYwMTU2IDE1My4yOTI5NjkgMTUwLjA2MjUgQyAxNTIuMDk3NjU2IDE1MC45NjA5MzggMTUwLjMwNDY4OCAxNTEuMzU5Mzc1IDE0OS4zMDg1OTQgMTUxLjU1ODU5NCBaIE0gMTQ5LjMwODU5NCAxNTEuNTU4NTk0ICIvPgo8cGF0aCBzdHlsZT0iZmlsbDpub25lO3N0cm9rZS13aWR0aDowLjM5ODU7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlOnJnYigwJSwwJSwwJSk7c3Ryb2tlLW9wYWNpdHk6MTtzdHJva2UtbWl0ZXJsaW1pdDoxMDsiIGQ9Ik0gMTEzLjM4NjM3NSAtMTMxLjkxMDM3NSBMIDExMy4zODYzNzUgLTk3LjI1NDEyNSAiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLC0xLDI2LjA5OCw5LjgyNCkiLz4KPHBhdGggc3R5bGU9IiBzdHJva2U6bm9uZTtmaWxsLXJ1bGU6bm9uemVybztmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7IiBkPSJNIDEzOS40ODQzNzUgMTA0LjY4NzUgQyAxMzkuMjg1MTU2IDEwNS42ODM1OTQgMTM4Ljg4NjcxOSAxMDcuNDc2NTYyIDEzNy45OTIxODggMTA4LjY3NTc4MSBDIDEzOS4wODU5MzggMTA3LjY3NTc4MSAxMzkuODgyODEyIDEwNy42NzU3ODEgMTQwLjk4MDQ2OSAxMDguNjc1NzgxIEMgMTQwLjA4MjAzMSAxMDcuNDc2NTYyIDEzOS42ODM1OTQgMTA1LjY4MzU5NCAxMzkuNDg0Mzc1IDEwNC42ODc1IFogTSAxMzkuNDg0Mzc1IDEwNC42ODc1ICIvPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgwLTIiIHg9IjMuMzIiIHk9IjEyLjMxNSIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDMtMiIgeD0iOS4wMTQiIHk9IjEyLjMxNSIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDAtMyIgeD0iMTEuNzgyIiB5PSIxMi4zMTUiLz4KPC9nPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgzLTMiIHg9IjE3Ljc2MiIgeT0iMTIuMzE1Ii8+CjwvZz4KPGcgc3R5bGU9ImZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMC00IiB4PSIyNTguNjY0IiB5PSIxMi4zMTUiLz4KPC9nPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgzLTIiIHg9IjI2My45MDYiIHk9IjEyLjMxNSIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDAtMyIgeD0iMjY2LjY3NCIgeT0iMTIuMzE1Ii8+CjwvZz4KPGcgc3R5bGU9ImZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMy0zIiB4PSIyNzIuNjU0IiB5PSIxMi4zMTUiLz4KPC9nPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgyLTIiIHg9IjE2NS44NDUiIHk9Ijg0LjkyOCIvPgo8L2c+CjxwYXRoIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlLXdpZHRoOjAuMzk4O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZTpyZ2IoMCUsMCUsMCUpO3N0cm9rZS1vcGFjaXR5OjE7c3Ryb2tlLW1pdGVybGltaXQ6MTA7IiBkPSJNIC0wLjAwMTI1IDAuMDAwNjI1IEwgMy45NzE0MDYgMC4wMDA2MjUgIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwtMSwxNjUuODQ1LDg2LjM2KSIvPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgyLTMiIHg9IjE2NS44NDUiIHk9IjkyLjI4NiIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDItMSIgeD0iMTY1Ljg0NSIgeT0iMTQxLjYyMSIvPgo8L2c+CjxwYXRoIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlLXdpZHRoOjAuMzk4O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZTpyZ2IoMCUsMCUsMCUpO3N0cm9rZS1vcGFjaXR5OjE7c3Ryb2tlLW1pdGVybGltaXQ6MTA7IiBkPSJNIC0wLjAwMTI1IC0wLjAwMTY4NzUgTCAzLjk3MTQwNiAtMC4wMDE2ODc1ICIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsLTEsMTY1Ljg0NSwxNDMuMDUzKSIvPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgyLTQiIHg9IjE2NS44NDUiIHk9IjE0OC45NzkiLz4KPC9nPgo8cGF0aCBzdHlsZT0iZmlsbC1ydWxlOm5vbnplcm87ZmlsbDpyZ2IoODkuOTk5MzklLDg5Ljk5OTM5JSw4OS45OTkzOSUpO2ZpbGwtb3BhY2l0eToxO3N0cm9rZS13aWR0aDowLjM5ODU7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlOnJnYigwJSwwJSwwJSk7c3Ryb2tlLW9wYWNpdHk6MTtzdHJva2UtbWl0ZXJsaW1pdDoxMDsiIGQ9Ik0gMjE1LjU2OTk2OSAtOTIuNDE0MjgxIEwgMjM3Ljk4MDEyNSAtOTIuNDE0MjgxIEwgMjM3Ljk4MDEyNSAtNzcuNjY0MjgxIEwgMjE1LjU2OTk2OSAtNzcuNjY0MjgxIFogTSAyMTUuNTY5OTY5IC05Mi40MTQyODEgIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwtMSwyNi4wOTgsOS44MjQpIi8+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDAtMSIgeD0iMjQ0Ljk4NiIgeT0iOTguOTE4Ii8+CjwvZz4KPGcgc3R5bGU9ImZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMS0xIiB4PSIyNTAuMDU3IiB5PSI5NS4zMDMiLz4KPC9nPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgyLTEiIHg9IjI1Ni4yODQiIHk9Ijk1LjMwMyIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDMtNCIgeD0iMjY1LjM2MyIgeT0iOTcuMzU0Ii8+CjwvZz4KPGcgc3R5bGU9ImZpbGw6cmdiKDAlLDAlLDAlKTtmaWxsLW9wYWNpdHk6MTsiPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMy01IiB4PSIyNzYuNDI5NDU2IiB5PSI5Ny4zNTQiLz4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDMtNiIgeD0iMjgxLjk2NDY3NyIgeT0iOTcuMzU0Ii8+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgzLTciIHg9IjI4Ni4zOTIwNTYiIHk9Ijk3LjM1NCIvPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMy04IiB4PSIyODkuMTU5NjY2IiB5PSI5Ny4zNTQiLz4KPC9nPgo8ZyBzdHlsZT0iZmlsbDpyZ2IoMCUsMCUsMCUpO2ZpbGwtb3BhY2l0eToxOyI+CiAgPHVzZSB4bGluazpocmVmPSIjZ2x5cGgzLTkiIHg9IjI5My44NzE5NzYiIHk9Ijk3LjM1NCIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDMtMTAiIHg9IjMwMi40NDc3ODIiIHk9Ijk3LjM1NCIvPgogIDx1c2UgeGxpbms6aHJlZj0iI2dseXBoMy03IiB4PSIzMDcuOTgzMDAzIiB5PSI5Ny4zNTQiLz4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDMtMTEiIHg9IjMxMC43NTA2MTMiIHk9Ijk3LjM1NCIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDMtMTIiIHg9IjMxNi4wMTA4NjYiIHk9Ijk3LjM1NCIvPgo8L2c+CjxnIHN0eWxlPSJmaWxsOnJnYigwJSwwJSwwJSk7ZmlsbC1vcGFjaXR5OjE7Ij4KICA8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaDMtMTMiIHg9IjMyMC4xNTkyOTMiIHk9Ijk3LjM1NCIvPgo8L2c+CjwvZz4KPC9zdmc+Cg==" alt="&quot;block diagram for exmple problem&quot;" /></p>
+</figure>
+<p><strong>Solution:</strong></p>
+<ul>
+<li><p>reading the block diagram
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mi>−</mi><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>y</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mi>y</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">y[n] = -\frac{3}{4} y[n-1] - \frac{1}{8} y[n-2] + x[n] - x[n-1]</annotation></semantics></math></p></li>
+<li><p>putting into standard form
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>y</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mi>y</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">y[n+2] + \frac{3}{4} y[n+1] + \frac{1}{8} y[n] = x[n+2] - x[n+1]</annotation></semantics></math></p></li>
+<li><p>Note
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>E</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>E</mi><mn>2</mn></msup><mo>+</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>E</mi><mo>+</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>E</mi><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>E</mi><mo>+</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">Q(E) = E^2 + \frac{3}{4}E + \frac{1}{8} = \left(E + \frac{1}{2}\right)\left(E + \frac{1}{4}\right)</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>E</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>E</mi><mn>2</mn></msup><mo>−</mo><mi>E</mi><mo>+</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">P(E) = E^2 - E + 0</annotation></semantics></math></p></li>
+<li><p>the homogeneous form is then
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><msub><mi>C</mi><mn>1</mn></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mo>+</mo><msub><mi>C</mi><mn>2</mn></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mn>1</mn><mn>4</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">y_h[n] = C_1 \left(-\frac{1}{2}\right)^n + C_2\left(-\frac{1}{4}\right)^n</annotation></semantics></math></p></li>
+<li><p>the impulse response is
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mfrac><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>2</mn></msub></mfrac><mi>δ</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>+</mo><msub><mi>y</mi><mi>h</mi></msub><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mspace width="0.167em"></mspace><mi>u</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">h[n] = \frac{a_2}{b_2}\delta[n] + y_h[n]\, u[n]</annotation></semantics></math></p></li>
+<li><p>since
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><msub><mi>b</mi><mn>2</mn></msub><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></mrow><annotation encoding="application/x-tex">a_2 = 0, b_2 = \frac{1}{8}</annotation></semantics></math>
+then
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><msub><mi>C</mi><mn>1</mn></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mi>u</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>+</mo><msub><mi>C</mi><mn>2</mn></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mn>1</mn><mn>4</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mi>u</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">h[n] = C_1 \left(-\frac{1}{2}\right)^n u[n] + C_2\left(-\frac{1}{4}\right)^n u[n]</annotation></semantics></math></p></li>
+<li><p>to find the constants we need two values of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>,
+from the recursive form
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>−</mi><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mi>δ</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>δ</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>−</mi><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>2</mn><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mi>δ</mi><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>δ</mi><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mn>1</mn><mo>=</mo><msub><mi>C</mi><mn>1</mn></msub><mo>+</mo><msub><mi>C</mi><mn>2</mn></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>−</mi><mfrac><mn>3</mn><mn>4</mn></mfrac><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mfrac><mn>1</mn><mn>8</mn></mfrac><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mi>δ</mi><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>δ</mi><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mi>−</mi><mfrac><mn>7</mn><mn>4</mn></mfrac><mo>=</mo><mi>−</mi><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>C</mi><mn>1</mn></msub><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><msub><mi>C</mi><mn>2</mn></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+      h[n] &amp;= -\frac{3}{4} h[n-1] - \frac{1}{8} h[n-2] + \delta[n] - \delta[n-1]\\
+      h[0] &amp;= -\frac{3}{4} h[-1] - \frac{1}{8} h[-2] + \delta[0] - \delta[-1] = 1 = C_1 + C_2\\
+      h[1] &amp;= -\frac{3}{4} h[0] - \frac{1}{8} h[-1] + \delta[1] - \delta[0] = -\frac{7}{4} = -\frac{1}{2} C_1 -\frac{1}{4} C_2\\
+    
+\end{aligned}</annotation></semantics></math> This implies
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mn>1</mn></msub><mo>=</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">C_1 = 6</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mn>2</mn></msub><mo>=</mo><mi>−</mi><mn>5</mn></mrow><annotation encoding="application/x-tex">C_2 = -5</annotation></semantics></math>.</p></li>
+<li><p>the final solution is then
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mn>6</mn><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mi>u</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mn>5</mn><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mn>1</mn><mn>4</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mi>u</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">h[n] = 6 \left(-\frac{1}{2}\right)^n u[n] -5 \left(-\frac{1}{4}\right)^n u[n]</annotation></semantics></math></p></li>
+</ul></li>
+</ol>
+</body>
+</html>

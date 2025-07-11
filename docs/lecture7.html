@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-07-11" />
+  <title>Lecture 7 Complex Analysis II</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+</style>
+  <style type="text/css">html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #444;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 14px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: left;
+}
+.date {
+font-size: 1.2em;
+text-align: left;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Lecture 7<br />
+Complex Analysis II</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-07-11</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#complex-derivatives" id="toc-complex-derivatives">Complex
+Derivatives</a>
+<ul>
+<li><a href="#examples" id="toc-examples">Examples</a></li>
+</ul></li>
+<li><a href="#rational-complex-functions" id="toc-rational-complex-functions">Rational Complex Functions</a>
+<ul>
+<li><a href="#partial-fraction-expansion" id="toc-partial-fraction-expansion">Partial Fraction Expansion</a></li>
+</ul></li>
+</ul>
+</nav>
+<p>In today’s lecture we continue our introduction to complex analysis
+by defining analytic complex functions, the complex derivative, and
+looking closer at rational complex functions.</p>
+<h1 id="complex-derivatives">Complex Derivatives</h1>
+<p>A complex function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(s)</annotation></semantics></math>
+is <em>analytic</em> in some domain
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>⊂</mo><mi>ℂ</mi></mrow><annotation encoding="application/x-tex">R\subset\mathbb{C}</annotation></semantics></math>
+of the function is</p>
+<ul>
+<li><p>single valued, and</p></li>
+<li><p>has a finite complex derivative
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mi>′</mi></msup><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>≡</mo><mfrac><mrow><mi>d</mi><mi>f</mi></mrow><mrow><mi>d</mi><mi>s</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">f^\prime(s) \equiv \frac{df}{ds}</annotation></semantics></math>
+for all
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>∈</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">s\in R</annotation></semantics></math>.</p></li>
+</ul>
+<p>Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>j</mi><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(s) = f(x + jy) = u(x,y) + jv(x,y)</annotation></semantics></math>.
+The function has a complex derivative if and only if</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}</annotation></semantics></math>
+and
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mi>−</mi><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}</annotation></semantics></math>
+These are called the Cauchy-Riemann conditions. If these conditions are
+met then the complex derivative is given by</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mi>′</mi></msup><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mi>j</mi><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>−</mo><mi>j</mi><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">f^\prime(s) = \frac{\partial u}{\partial x} + j \frac{\partial v}{\partial x} = \frac{\partial v}{\partial y} - j \frac{\partial u}{\partial y}</annotation></semantics></math></p>
+<p>If a complex function is analytic over the entire complex plane, i.e.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mi>ℂ</mi></mrow><annotation encoding="application/x-tex">R = \mathbb{C}</annotation></semantics></math>,
+it is called an <em>entire</em> function.</p>
+<p>If a complex function is not analytic at a point
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mn>0</mn></msub><annotation encoding="application/x-tex">s_0</annotation></semantics></math>,
+but is analytic in the neighborhood of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mn>0</mn></msub><annotation encoding="application/x-tex">s_0</annotation></semantics></math>,
+then the point is called a or a <em>singular point</em> of the
+function.</p>
+<h2 id="examples">Examples</h2>
+<p><strong>Example 1:</strong> Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">s = x+jy</annotation></semantics></math>
+and define</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mi>s</mi></msup><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mrow><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi></mrow></msup><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup><msup><mi>e</mi><mrow><mi>j</mi><mi>y</mi></mrow></msup></mrow><annotation encoding="application/x-tex">f(s) = e^s = f(x+jy) = e^{x+jy} = e^x e^{jy}</annotation></semantics></math>
+Using Euler’s relation</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munder><munder><mrow><msup><mi>e</mi><mi>x</mi></msup><mrow><mi>cos</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><mo accent="true">⏟</mo></munder><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow></munder><mo>+</mo><mi>j</mi><munder><munder><mrow><msup><mi>e</mi><mi>x</mi></msup><mrow><mi>sin</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><mo accent="true">⏟</mo></munder><mrow><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow></munder></mrow><annotation encoding="application/x-tex">f(x+jy) = \underbrace{e^x\cos(y)}_{u(x,y)} + j\underbrace{e^x \sin(y)}_{v(x,y)}</annotation></semantics></math>
+Checking the Cauchy-Riemann conditions</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup><mrow><mi>cos</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial x} = e^x\cos(y)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mi>−</mi><msup><mi>e</mi><mi>x</mi></msup><mrow><mi>sin</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial y} = -e^x\sin(y)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup><mrow><mi>sin</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\frac{\partial v}{\partial x} = e^x\sin(y)</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup><mrow><mi>cos</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\frac{\partial v}{\partial y} = e^x\cos(y)</annotation></semantics></math>
+Thus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup><mrow><mi>cos</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y} = e^x\cos(y)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mi>−</mi><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mi>−</mi><msup><mi>e</mi><mi>x</mi></msup><mrow><mi>sin</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x} = -e^x\sin(y)</annotation></semantics></math>
+and the function is analytic everywhere and thus an entire function. The
+complex derivative is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mi>′</mi></msup><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup><mrow><mi>cos</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>j</mi><msup><mi>e</mi><mi>x</mi></msup><mrow><mi>sin</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup><msup><mi>e</mi><mrow><mi>j</mi><mi>y</mi></mrow></msup><mo>=</mo><msup><mi>e</mi><mrow><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi></mrow></msup><mo>=</mo><msup><mi>e</mi><mi>s</mi></msup></mrow><annotation encoding="application/x-tex">f^\prime(s) = e^x\cos(y) + je^x\sin(y) = e^x e^{jy} = e^{x+jy} = e^s</annotation></semantics></math>
+just as if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
+was real and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+a real function.</p>
+<p><strong>Example 2:</strong> Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mi>s</mi></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{1}{s}</annotation></semantics></math>,
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>s</mi><mo stretchy="false" form="prefix">|</mo><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">|s| &gt; 0</annotation></semantics></math>,
+i.e.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">s \neq 0</annotation></semantics></math>.
+Then</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi></mrow></mfrac><mo>⋅</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>j</mi><mi>y</mi></mrow><mrow><mi>x</mi><mo>−</mo><mi>j</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>j</mi><mi>y</mi></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><munder><munder><mfrac><mi>x</mi><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac><mo accent="true">⏟</mo></munder><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow></munder><mo>+</mo><mi>j</mi><munder><munder><mfrac><mrow><mi>−</mi><mi>y</mi></mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac><mo accent="true">⏟</mo></munder><mrow><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow></munder></mrow><annotation encoding="application/x-tex">f(s) = f(x+jy) = \frac{1}{x+jy} = \frac{1}{x+jy} \cdot \frac{x-jy}{x-jy} = \frac{x-jy}{x^2 + y^2} = \underbrace{\frac{x}{x^2 + y^2}}_{u(x,y)} + j \underbrace{\frac{-y}{x^2 + y^2}}_{v(x,y)}</annotation></semantics></math></p>
+<p>Checking the Cauchy-Riemann conditions</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>−</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial x} = \frac{-x^2 + y^2}{(x^2 + y^2)^2}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>−</mi><mn>2</mn><mi>x</mi><mi>y</mi></mrow><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial y} = \frac{-2xy}{(x^2 + y^2)^2}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mi>x</mi><mi>y</mi></mrow><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial v}{\partial x} = \frac{2xy}{(x^2 + y^2)^2}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>−</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial v}{\partial y} = \frac{-x^2 + y^2}{(x^2 + y^2)^2}</annotation></semantics></math></p>
+<p>we we see that the function is analytic for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>∈</mo><mi>ℂ</mi><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>+</mo><mi>j</mi><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s \in \mathbb{C} - (0 + j0)</annotation></semantics></math>
+and</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mi>′</mi></msup><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>−</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mi>j</mi><mfrac><mrow><mn>2</mn><mi>x</mi><mi>y</mi></mrow><mrow><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">f^\prime(s) = \frac{-x^2 + y^2}{(x^2 + y^2)^2} + j \frac{2xy}{(x^2 + y^2)^2}</annotation></semantics></math></p>
+<p>With some work you can show this is the same as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mi>′</mi></msup><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mfrac><mn>1</mn><msup><mi>s</mi><mn>2</mn></msup></mfrac></mrow><annotation encoding="application/x-tex">f^\prime(s) = -\frac{1}{s^2}</annotation></semantics></math></p>
+<p>again, just as if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
+was real and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+a real function.</p>
+<p><strong>Example 3:</strong> Now for a counter-example. Consider</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>s</mi><mo>*</mo></msup><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>x</mi><mo>−</mo><mi>j</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">f(s) = s^* = f(x + jy) = x - jy</annotation></semantics></math>
+Thus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">u(x,y) = x</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">v(x,y) = -y</annotation></semantics></math>.
+Checking the Cauchy-Riemann conditions,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial x} = 1</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial y} = 0</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{\partial v}{\partial x} = 0</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{\partial v}{\partial y} = -1</annotation></semantics></math></p>
+<p>we see
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mn>1</mn><mo>≠</mo><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial x} = 1 \neq \frac{\partial v}{\partial y} = -1</annotation></semantics></math>
+thus the function is not analytic and no derivative exists.</p>
+<p><strong>Example 4:</strong> Show that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mn>0</mn></msub><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">s_0 = -1</annotation></semantics></math>
+is a singularity of an analytic complex function
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>j</mi><mi>y</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{1}{s+1} = f(x +jy) = \frac{1}{(1+x) + jy}</annotation></semantics></math>
+Rearranging to get the real part and imaginary part</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>j</mi><mi>y</mi></mrow></mfrac><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>j</mi><mi>y</mi></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>j</mi><mi>y</mi></mrow></mfrac><mo>=</mo><munder><munder><mfrac><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac><mo accent="true">⏟</mo></munder><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow></munder><mo>+</mo><mi>j</mi><munder><munder><mfrac><mrow><mi>−</mi><mi>y</mi></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac><mo accent="true">⏟</mo></munder><mrow><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow></munder></mrow><annotation encoding="application/x-tex">\frac{1}{(1+x) + jy}\frac{(1+x) - jy}{(1+x) - jy} = \underbrace{\frac{1+x}{(1+x)^2 + y^2}}_{u(x,y)} + j \underbrace{\frac{-y}{(1+x)^2 + y^2}}_{v(x,y)}</annotation></semantics></math></p>
+<p>Checking the Cauchy-Riemann conditions,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>−</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><mrow><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">]</mo><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial x} = \frac{-(1+x)^2 + y^2}{[(1+x)^2 + y^2]^2}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>−</mi><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>y</mi></mrow><mrow><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">]</mo><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial y} = \frac{-2(1+x)y}{[(1+x)^2 + y^2]^2}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>y</mi></mrow><mrow><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">]</mo><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial v}{\partial x} = \frac{2(1+x)y}{[(1+x)^2 + y^2]^2}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>−</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><mrow><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">]</mo><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial v}{\partial y} = \frac{-(1+x)^2 + y^2}{[(1+x)^2 + y^2]^2}</annotation></semantics></math></p>
+<p>we see that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mi>−</mi><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}</annotation></semantics></math>
+except at
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>−</mi><mn>1</mn><mo>,</mo><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=-1, y = 0</annotation></semantics></math>
+where</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>−</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><mrow><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">]</mo><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mfrac><mn>0</mn><mn>0</mn></mfrac><mo>=</mo><mtext mathvariant="normal">undefined</mtext></mrow><annotation encoding="application/x-tex">\frac{-(1+x)^2 + y^2}{[(1+x)^2 + y^2]^2} = \frac{0}{0} = \text{undefined}</annotation></semantics></math></p>
+<p>Thus the function is analytic except at
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mn>0</mn></msub><mo>=</mo><mi>−</mi><mn>1</mn><mo>+</mo><mi>j</mi><mn>0</mn><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">s_0 = -1 + j0 = -1</annotation></semantics></math>.</p>
+<h1 id="rational-complex-functions">Rational Complex Functions</h1>
+<p>The previous example is a <em>rational function</em>, a ratio of
+polynomials in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>.
+These will be very important later in the course. We will need to be
+very adept at doing manipulations of such functions. The general case
+can be written as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>M</mi></munderover><msub><mi>b</mi><mi>k</mi></msub><msup><mi>s</mi><mi>k</mi></msup></mrow><mrow><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>N</mi></munderover><msub><mi>a</mi><mi>k</mi></msub><msup><mi>s</mi><mi>k</mi></msup></mrow></mfrac><mo>≡</mo><mfrac><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{\sum\limits_{k=0}^M b_k s^k}{\sum\limits_{k=0}^N a_k s^k} \equiv \frac{P(s)}{Q(s)}</annotation></semantics></math></p>
+<ul>
+<li><p>If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>&lt;</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">M &lt; N</annotation></semantics></math>
+the ratio is said to be <em>strictly proper</em>.</p></li>
+<li><p>If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>≤</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">M \leq N</annotation></semantics></math>
+the ratio is <em>proper</em>.</p></li>
+<li><p>If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>&gt;</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">M &gt; N</annotation></semantics></math>
+the ratio is <em>improper</em>.</p></li>
+</ul>
+<p>Example:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>2</mn><mo>,</mo><mi>N</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">M = 2, N=3</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><msub><mi>b</mi><mn>0</mn></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><mi>s</mi><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><msup><mi>s</mi><mn>2</mn></msup></mrow><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><msub><mi>a</mi><mn>1</mn></msub><mi>s</mi><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub><msup><mi>s</mi><mn>3</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{b_0 + b_1 s + b_2 s^2}{a_0 + a_1 s + a_2 s^2 + a_3 s^3}</annotation></semantics></math>
+is a strictly proper rational function.</p>
+<p>The roots of the denominator polynomial
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Q(s)</annotation></semantics></math>
+are the singularities of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>.
+We will often be interested in writing rational functions as a
+<em>partial fraction expansion</em> of the factors of the
+denominator.</p>
+<h2 id="partial-fraction-expansion">Partial Fraction Expansion</h2>
+<p>A ratio of polynomials that is improper can be written as the sum of
+a polynomial and a strictly proper rational function. Example</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mn>2</mn><msup><mi>s</mi><mn>3</mn></msup><mo>+</mo><mn>9</mn><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>11</mn><mi>s</mi><mo>+</mo><mn>2</mn></mrow><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>s</mi><mo>+</mo><mn>3</mn></mrow></mfrac><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mfrac><mrow><mi>s</mi><mo>−</mo><mn>1</mn></mrow><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>s</mi><mo>+</mo><mn>3</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{2s^3 + 9s^2 + 11s + 2}{s^2 + 4s + 3} = (2s+1) + \frac{s-1}{s^2 + 4s + 3}</annotation></semantics></math></p>
+<p>Once a rational function is proper we can expand it in terms of the
+factors of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Q(s)</annotation></semantics></math>.
+Example</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>3</mn><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><mfrac><mi>A</mi><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mi>B</mi><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{1}{s^2 + 3s +2} = \frac{1}{(s+1)(s+2)} = \frac{A}{s+1} + \frac{B}{s+2}</annotation></semantics></math></p>
+<p>To find
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+we can &quot;clear&quot; the fractions</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>A</mi><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mi>B</mi><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{A}{s+1} + \frac{B}{s+2} = \frac{1}{(s+1)(s+2)} = \frac{A(s+2) + B(s+1)}{(s+1)(s+2)}</annotation></semantics></math>
+which gives the equation for the numerator
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn><mo>+</mo><mn>0</mn><mi>s</mi></mrow><annotation encoding="application/x-tex">A(s+2) + B(s+1) = 1 + 0s</annotation></semantics></math>
+which requires
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">A = 1</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">B = -1</annotation></semantics></math>,
+so that
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>−</mi><mn>1</mn></mrow><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{1}{s+1} + \frac{-1}{s+2}</annotation></semantics></math></p>
+<p>Clearing fractions can be tedious with higher order systems. A
+shortcut is to use the Heaviside &quot;cover-up&quot; method, or finding the
+<em>residues</em>.</p>
+<p><strong>Case #1:</strong> non-repeated singularities
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><msub><mi>α</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><msub><mi>α</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>⋯</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><msub><mi>α</mi><mi>N</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{P(s)}{(s-\alpha_1)(s-\alpha_2)\cdots (s-\alpha_N)}</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\alpha_i</annotation></semantics></math>
+are the distinct singularities (roots of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Q(s)</annotation></semantics></math>).
+Then
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><msub><mi>K</mi><mn>1</mn></msub><mrow><mi>s</mi><mo>−</mo><msub><mi>α</mi><mn>1</mn></msub></mrow></mfrac><mo>+</mo><mfrac><msub><mi>K</mi><mn>1</mn></msub><mrow><mi>s</mi><mo>−</mo><msub><mi>α</mi><mn>1</mn></msub></mrow></mfrac><mo>+</mo><mi>⋯</mi><mo>+</mo><mfrac><msub><mi>K</mi><mi>N</mi></msub><mrow><mi>s</mi><mo>−</mo><msub><mi>α</mi><mi>N</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{K_1}{s-\alpha_1} + \frac{K_1}{s-\alpha_1} + \cdots + \frac{K_N}{s-\alpha_N}</annotation></semantics></math></p>
+<p>To find the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>i</mi></msub><annotation encoding="application/x-tex">K_i</annotation></semantics></math>
+values we multiply through by that term
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>−</mo><msub><mi>α</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">s-\alpha_i</annotation></semantics></math>)
+and evaluate the result when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><msub><mi>α</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">s = \alpha_i</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>i</mi></msub><mo>=</mo><msub><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><msub><mi>α</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><msub><mi>α</mi><mi>i</mi></msub></mrow></msub></mrow><annotation encoding="application/x-tex">K_i = \left. (s-\alpha_i)f(s) \right|_{s = \alpha_i}</annotation></semantics></math></p>
+<p>Example:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>7</mn></mrow><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>s</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><mn>3</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><mfrac><msub><mi>K</mi><mn>1</mn></msub><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><msub><mi>K</mi><mn>2</mn></msub><mrow><mi>s</mi><mo>−</mo><mn>3</mn></mrow></mfrac><mo>+</mo><mfrac><msub><mi>K</mi><mn>3</mn></msub><mrow><mi>s</mi><mo>+</mo><mn>5</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{s^2 + 2s + 7}{(s_1)(s-3)(s+5)} = \frac{K_1}{s+1} + \frac{K_2}{s-3} + \frac{K_3}{s+5}</annotation></semantics></math></p>
+<p>We note that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">M = 2</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">N = 3</annotation></semantics></math>
+so that the function is strictly proper. To find the constants</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>1</mn></msub><mo>=</mo><msub><mrow><mfrac><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>7</mn></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><mn>3</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow></msub><mo>=</mo><mi>−</mi><mfrac><mn>3</mn><mn>8</mn></mfrac></mrow><annotation encoding="application/x-tex">K_1 = \left. \frac{s^2 + 2s + 7}{(s-3)(s+5)} \right|_{s = -1} = -\frac{3}{8}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><msub><mrow><mfrac><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>7</mn></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mn>3</mn></mrow></msub><mo>=</mo><mfrac><mn>11</mn><mn>16</mn></mfrac></mrow><annotation encoding="application/x-tex">K_2 = \left. \frac{s^2 + 2s + 7}{(s+1)(s+5)} \right|_{s = 3} = \frac{11}{16}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>3</mn></msub><mo>=</mo><msub><mrow><mfrac><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>7</mn></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><mn>3</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mi>−</mi><mn>5</mn></mrow></msub><mo>=</mo><mfrac><mn>11</mn><mn>16</mn></mfrac></mrow><annotation encoding="application/x-tex">K_3 = \left. \frac{s^2 + 2s + 7}{(s+1)(s-3)} \right|_{s = -5} = \frac{11}{16}</annotation></semantics></math></p>
+<p>This works even if the roots are complex. For example:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo>+</mo><mi>j</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo>−</mo><mi>j</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><mfrac><msub><mi>K</mi><mn>1</mn></msub><mrow><mi>s</mi><mo>+</mo><mn>1</mn><mo>+</mo><mi>j</mi></mrow></mfrac><mo>+</mo><mfrac><msub><mi>K</mi><mn>2</mn></msub><mrow><mi>s</mi><mo>+</mo><mn>1</mn><mo>−</mo><mi>j</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{1}{(s + 1 + j)(s + 1 -j)} = \frac{K_1}{s + 1 + j} + \frac{K_2}{s + 1 -j}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>1</mn></msub><mo>=</mo><msub><mrow><mfrac><mn>1</mn><mrow><mi>s</mi><mo>+</mo><mn>1</mn><mo>−</mo><mi>j</mi></mrow></mfrac><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mi>−</mi><mn>1</mn><mo>−</mo><mi>j</mi></mrow></msub><mo>=</mo><mi>−</mi><mfrac><mn>1</mn><mrow><mn>2</mn><mi>j</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">K_1 = \left. \frac{1}{s + 1 - j} \right|_{s = -1-j} = -\frac{1}{2j}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><msub><mrow><mfrac><mn>1</mn><mrow><mi>s</mi><mo>+</mo><mn>1</mn><mo>+</mo><mi>j</mi></mrow></mfrac><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mi>−</mi><mn>1</mn><mo>+</mo><mi>j</mi></mrow></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>j</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">K_2 = \left. \frac{1}{s + 1 + j} \right|_{s = -1+j} = \frac{1}{2j}</annotation></semantics></math></p>
+<p><strong>Case #2:</strong> However we will often want to avoid working
+with complex roots directly. Another approach is to combine them into a
+quadratic term. Here is an example:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow><mrow><msup><mi>s</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo>+</mo><mi>j</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo>−</mo><mi>j</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><mfrac><mi>A</mi><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>B</mi><mi>s</mi><mo>+</mo><mi>C</mi></mrow><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{s+2}{s^3 + 3s^2 + 4s + 2} = \frac{s+2}{(s+1)(s+1 +j)(s +1 -j)} = \frac{s+2}{(s+1)(s^2 +2s + 2)} = \frac{A}{s+1} + \frac{Bs + C}{s^2 + 2s + 2}</annotation></semantics></math></p>
+<p>To find
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+we use the same residue method</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><msub><mrow><mfrac><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">A = \left. \frac{s+2}{s^2 + 2s + 2} \right|_{s = -1} = 1</annotation></semantics></math></p>
+<p>To find
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+we can clear fractions or use another shortcut. To find
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>,
+let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">s = 0</annotation></semantics></math>.
+We get</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>A</mi><mn>1</mn></mfrac><mo>+</mo><mfrac><mi>C</mi><mn>2</mn></mfrac><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{A}{1} + \frac{C}{2} = 1</annotation></semantics></math>
+which implies that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">C = 0</annotation></semantics></math>.
+To find
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+multiply through by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
+and let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">s\rightarrow \infty</annotation></semantics></math>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>A</mi><mi>s</mi></mrow><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>B</mi><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mi>C</mi><mi>s</mi></mrow><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>s</mi></mrow><mrow><msup><mi>s</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{As}{s+1} + \frac{Bs^2 + Cs}{s^2 + 2s + 2} = \frac{s^2 + 2s}{s^3 + 3s^2 + 4s + 2}</annotation></semantics></math></p>
+<p>In the first term divide top and bottom by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>,
+in the second term by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>s</mi><mn>2</mn></msup><annotation encoding="application/x-tex">s^2</annotation></semantics></math>,
+and on the right-hand side by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>s</mi><mn>3</mn></msup><annotation encoding="application/x-tex">s^3</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>A</mi><mrow><mn>1</mn><mo>+</mo><msup><mi>s</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>B</mi><mo>+</mo><mi>C</mi><msup><mi>s</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><mrow><mn>1</mn><mo>+</mo><mn>2</mn><msup><mi>s</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>+</mo><mn>2</mn><msup><mi>s</mi><mrow><mi>−</mi><mn>2</mn></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>s</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>+</mo><mn>2</mn><msup><mi>s</mi><mrow><mi>−</mi><mn>2</mn></mrow></msup></mrow><mrow><mn>1</mn><mo>+</mo><mn>3</mn><msup><mi>s</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>+</mo><mn>4</mn><msup><mi>s</mi><mrow><mi>−</mi><mn>2</mn></mrow></msup><mo>+</mo><mn>2</mn><msup><mi>s</mi><mrow><mi>−</mi><mn>3</mn></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{A}{1+s^{-1}} + \frac{B + Cs^{-1}}{1 + 2s^{-1} + 2s^{-2}} = \frac{s^{-1} + 2s^{-2}}{1 + 3s^{-1} + 4s^{-2} + 2s^{-3}}</annotation></semantics></math></p>
+<p>Now let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">s\rightarrow \infty</annotation></semantics></math>.
+We get</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>A</mi><mn>1</mn></mfrac><mo>+</mo><mfrac><mi>B</mi><mn>1</mn></mfrac><mo>=</mo><mfrac><mn>0</mn><mn>1</mn></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{A}{1} + \frac{B}{1} = \frac{0}{1} = 0</annotation></semantics></math>
+which implies
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">B = -1</annotation></semantics></math>.</p>
+<p>Or you can just clear the fractions and substitute for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>A</mi><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>A</mi><mi>s</mi><mo>+</mo><mn>2</mn><mi>A</mi><mo>+</mo><mi>B</mi><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mi>C</mi><mi>s</mi><mo>+</mo><mi>B</mi><mi>s</mi><mo>+</mo><mi>C</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>s</mi><mo>+</mo><mn>2</mn></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo>+</mo><mi>B</mi><mo stretchy="false" form="postfix">)</mo><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>A</mi><mo>+</mo><mi>B</mi><mo>+</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mi>s</mi><mo>+</mo><mn>2</mn><mi>A</mi><mo>+</mo><mi>C</mi><mo>=</mo><mi>s</mi><mo>+</mo><mn>2</mn></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+  As^2 + 2As + 2A + Bs^2 + Cs + Bs + C &amp;= s+2\\
+  (A+B)s^2 + (2A + B + c)s + 2A +C = s+2\\
+\end{aligned}</annotation></semantics></math> We only need one equation,
+so lets use
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>A</mi><mo>+</mo><mi>B</mi><mo>+</mo><mi>C</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2A + B + C = 1</annotation></semantics></math>.
+Solving for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+and substituting for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>.</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">A.C</annotation></semantics></math>
+gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">B = -1</annotation></semantics></math>
+as above.</p>
+<p>Thus the final result is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>−</mi><mi>s</mi></mrow><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{1}{s+1} + \frac{-s}{s^2 + 2s + 2}</annotation></semantics></math></p>
+<p><strong>Case # 3:</strong> One other complication is when we have
+repeated roots (a root
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>,
+repeated
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">r &gt; 1</annotation></semantics></math>
+times).</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mfrac><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><mi>λ</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>r</mi></msup><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><msub><mi>α</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><msub><mi>α</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>⋯</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><msub><mi>α</mi><mrow><mi>N</mi><mo>−</mo><mi>r</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) \frac{P(s)}{(s-\lambda)^r\, (s-\alpha_1)(s-\alpha_2)\cdots(s-\alpha_{N-r})}</annotation></semantics></math></p>
+<p>To handle this case we expand the ratio as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><msub><mi>a</mi><mn>0</mn></msub><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><mi>λ</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>r</mi></msup></mrow></mfrac><mo>+</mo><mfrac><msub><mi>a</mi><mn>1</mn></msub><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><mi>λ</mi><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>r</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow></mfrac><mo>+</mo><mi>⋯</mi><mo>+</mo><mfrac><msub><mi>a</mi><mrow><mi>r</mi><mo>−</mo><mn>1</mn></mrow></msub><mrow><mi>s</mi><mo>−</mo><mi>λ</mi></mrow></mfrac><mo>+</mo><mfrac><msub><mi>K</mi><mn>1</mn></msub><mrow><mi>s</mi><mo>−</mo><msub><mi>α</mi><mn>1</mn></msub></mrow></mfrac><mo>+</mo><mi>+</mi><mfrac><msub><mi>K</mi><mn>2</mn></msub><mrow><mi>s</mi><mo>−</mo><msub><mi>α</mi><mn>2</mn></msub></mrow></mfrac><mo>+</mo><mi>⋯</mi><mo>+</mo><mi>+</mi><mfrac><msub><mi>K</mi><mrow><mi>N</mi><mo>−</mo><mi>r</mi></mrow></msub><mrow><mi>s</mi><mo>−</mo><msub><mi>α</mi><mrow><mi>N</mi><mo>−</mo><mi>r</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{a_0}{(s-\lambda)^r} + \frac{a_1}{(s-\lambda)^{r-1}} + \cdots + \frac{a_{r-1}}{s-\lambda} + \frac{K_1}{s-\alpha_1} + + \frac{K_2}{s-\alpha_2} + \cdots + + \frac{K_{N-r}}{s-\alpha_{N-r}}</annotation></semantics></math></p>
+<p>The
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>i</mi></msub><annotation encoding="application/x-tex">K_i</annotation></semantics></math>
+values are determined using the same residue method as before. The
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>i</mi></msub><annotation encoding="application/x-tex">a_i</annotation></semantics></math>
+values are found using a variation on the residue method:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>i</mi></msub><mo>=</mo><msub><mrow><mfrac><mn>1</mn><mrow><mi>i</mi><mi>!</mi></mrow></mfrac><mfrac><msup><mi>d</mi><mi>i</mi></msup><mrow><mi>d</mi><msup><mi>s</mi><mi>i</mi></msup></mrow></mfrac><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><mi>λ</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>r</mi></msup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">]</mo><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mi>λ</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_i = \left. \frac{1}{i!}\frac{d^i}{ds^i}[(s-\lambda)^r f(s)] \right|_{s = \lambda}</annotation></semantics></math></p>
+<p>That is rather complicated so lets finish up with an example. Find
+the partial fraction expansion of</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mn>3</mn></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{s+3}{(s+1)^2(s+2)}</annotation></semantics></math></p>
+<p>Using the pattern above we expand the terms as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><msub><mi>K</mi><mn>1</mn></msub><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><msub><mi>a</mi><mn>0</mn></msub><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mfrac><msub><mi>a</mi><mn>1</mn></msub><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{K_1}{s+2} + \frac{a_0}{(s+1)^2} + \frac{a_1}{s+1}</annotation></semantics></math>
+then find the residues</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mn>1</mn></msub><mo>=</mo><msub><mrow><mfrac><mrow><mi>s</mi><mo>+</mo><mn>3</mn></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mi>−</mi><mn>2</mn></mrow></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K_1 = \left. \frac{s+3}{(s+1)^2} \right|_{s = -2} = 1</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>=</mo><msub><mrow><mfrac><mn>1</mn><mrow><mn>0</mn><mi>!</mi></mrow></mfrac><mfrac><msup><mi>d</mi><mn>0</mn></msup><mrow><mi>d</mi><msup><mi>s</mi><mn>0</mn></msup></mrow></mfrac><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mn>3</mn></mrow><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow></msub><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">a_0 = \left. \frac{1}{0!}\frac{d^0}{ds^0}\left[\frac{s+3}{s+2}\right] \right|_{s = -1} = 2</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>=</mo><msub><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mi>!</mi></mrow></mfrac><mfrac><mi>d</mi><mrow><mi>d</mi><mi>s</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mrow><mi>s</mi><mo>+</mo><mn>3</mn></mrow><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow></msub><mo>=</mo><msub><mrow><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>3</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>2</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mi>s</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow></msub><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">a_1 = \left. \frac{1}{1!}\frac{d}{ds}\left[\frac{s+3}{s+2}\right] \right|_{s = -1} = \left. \frac{(s+2)(1) - (s+3)(1)}{(s+2)^2} \right|_{s = -1} = -1</annotation></semantics></math></p>
+<p>Thus the result is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>s</mi><mo>+</mo><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><mn>2</mn><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>−</mi><mn>1</mn></mrow><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{1}{s+2} + \frac{2}{(s+1)^2} + \frac{-1}{s+1}</annotation></semantics></math></p>
+<p>As you might expect there are computational tools that do this job
+for you.</p>
+<ul>
+<li><p>Mathematica: <code>Apart</code> function</p></li>
+<li><p>Matlab (using symbolic toolbox) and Maxima: <code>partfrac</code>
+function</p></li>
+</ul>
+<p>You can use this to check work and help on homework, but you will
+need to be able to do this by hand on exams.</p>
+</body>
+</html>
