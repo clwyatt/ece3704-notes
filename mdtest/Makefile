@@ -1,10 +1,11 @@
 
 HTMLOPTIONS= -s -t html -V lang=en --embed-resources --mathml
 
-#PDFOPTIONS= -s -t context+tagging -V pdfa=3a
 PDFOPTIONS= -s -t context+tagging --template context.template
 
-all: lecture2.html lecture2.pdf
+DOCXOPTIONS= -t docx -V lang=en --embed-resources
+
+all: lecture2.html lecture2.pdf lecture2.docx
 
 lecture2.html: lecture2.md fig2_1.tikz
 	pdflatex fig2_1.tikz
@@ -15,14 +16,16 @@ lecture2.pdf: lecture2.md fig2_1.tikz context.template
 	pdflatex fig2_1.tikz
 	pandoc $(PDFOPTIONS) --default-image-extension=pdf lecture2.md -o lecture2.pdf
 
-view: lecture2.html
-	open lecture2.html
+lecture2.docx: lecture2.md fig2_1.tikz
+	pdflatex fig2_1.tikz
+	pdftocairo -png fig2_1.pdf -r 300 -singlefile
+	pandoc $(DOCXOPTIONS) --default-image-extension=png lecture2.md -o lecture2.docx
 
 clean:
 	$(RM) *.log *.aux *.pdf
 
 realclean: clean
-	$(RM) *.svg *.html
+	$(RM) *.png *.svg *.html *.docx
 
 
 
