@@ -14,11 +14,11 @@ OPTIONS= -s -t html --toc=true --css=$(CSS) -V lang=en --embed-resources --mathm
 
 all: $(TARGET)
 
-%.pdf: %.tikz
-	pdflatex $<
+%.dvi: %.tikz
+	latex $<
 
-%.svg: %.pdf
-	pdf2svg $< $@
+%.svg: %.dvi
+	dvisvgm -p1 --output=$@ $<
 
 %.html: %.tex $(DEPS) $(CSS)
 	pandoc $(OPTIONS) $< -o $@
@@ -27,7 +27,7 @@ view: $(TARGET)
 	open $<
 
 clean:
-	$(RM) *.log *.aux *.pdf
+	$(RM) *.log *.aux *.dvi
 
 realclean: clean
 	$(RM) $(DEPS) $(TARGET)
