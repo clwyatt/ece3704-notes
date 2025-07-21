@@ -1,4 +1,7 @@
 
+status:
+   git status . -- ':!docs'
+
 build target:
   @echo 'Building {{target}}…'
   cd {{target}} && make
@@ -22,6 +25,8 @@ render: build-all
   cd index && make && cd ..;
   cp index/index.html docs
 
+# Note: this may result in source out of sync with the site
+# Check that `just status` shows no desired modifications before running
 deploy: render
   git add docs
   git commit -m "publish site"
