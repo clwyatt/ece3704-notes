@@ -18,7 +18,7 @@ all: $(TARGET)
 	latex --shell-escape $<
 
 %.svg: %.dvi
-	dvisvgm -p1 --output=$@ $<
+	dvisvgm --font-format=woff -p1 --output=$@ $<
 
 %.html: %.tex $(DEPS) $(CSS)
 	pandoc $(OPTIONS) $< -o $@
