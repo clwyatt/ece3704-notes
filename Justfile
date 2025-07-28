@@ -15,6 +15,7 @@ clean:
   for dir in `find ./ -name "lecture*" -type d -print`; do \
     cd $dir && make realclean && cd ..; \
   done
+  cd about && make clean && cd ..;
   cd index && make clean && cd ..;
 
 render: build-all
@@ -22,6 +23,8 @@ render: build-all
   for dir in `find ./ -name "lecture*" -type d -print`; do \
     cp ${dir}/${dir}.html docs; \
   done
+  cd about && make && cd ..;
+  cp about/about.html docs
   cd index && make && cd ..;
   cp index/index.html docs
 

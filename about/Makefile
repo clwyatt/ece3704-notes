@@ -1,7 +1,7 @@
 # build html from md file
 
 # set final output file
-TARGET=index.html
+TARGET=about.html
 
 CSS=../style/style.css
 HEADER=../style/header.html

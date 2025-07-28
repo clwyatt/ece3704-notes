@@ -1,5 +1,5 @@
 ---
-title: "Notes for ECE 3704"
+title: "Supplementary Notes for ECE 3704"
 author: C.L Wyatt
 date: Fall 2025
 ---
