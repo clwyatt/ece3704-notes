@@ -4,7 +4,7 @@ author: C.L Wyatt
 date: Fall 2025
 ---
 
-# Lectures
+## Lectures
 
 2. [Modeling and Characterization of Signals and Systems](lecture2.html)
 3. [Time Domain Analysis of LTI Systems](lecture3.html)
