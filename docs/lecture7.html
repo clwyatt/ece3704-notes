@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2025-07-28" />
+  <meta name="dcterms.date" content="2025-08-01" />
   <title>Lecture 7 Complex Analysis II</title>
   <style>
 code{white-space: pre-wrap;}
@@ -37,6 +37,15 @@ padding: 1em;
 margin: auto;
 max-width: 42em;
 background: #fefefe;
+}
+#header-nav {
+background-color: #fefefe;
+}
+.nav-title{
+font-weight: bold;
+font-size: 1.5em;
+padding-left:10px;
+padding-right:10px; display:inline-block;
 }
 a {
 color: #0645ad;
@@ -293,15 +302,15 @@ page-break-after: avoid;
 </style>
 </head>
 <body>
-<nav>
-<strong>ECE 3704 Notes</strong> [<a href="index.html">Contents</a>] [<a href="about.html">About</a>] 
+<nav id="header-nav">
+<span class="nav-title">ECE 3704 Notes</span> [<a href="index.html">Contents</a>] [<a href="about.html">About</a>] 
 </nav>
 
 <header id="title-block-header">
 <h1 class="title">Lecture 7<br />
 Complex Analysis II</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2025-07-28</p>
+<p class="date">2025-08-01</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -319,7 +328,7 @@ Derivatives</a>
 <p>In today’s lecture we continue our introduction to complex analysis
 by defining analytic complex functions, the complex derivative, and
 looking closer at rational complex functions.</p>
-<h1 id="complex-derivatives">Complex Derivatives</h1>
+<h2 id="complex-derivatives">Complex Derivatives</h2>
 <p>A complex function
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(s)</annotation></semantics></math>
 is <em>analytic</em> in some domain
@@ -350,7 +359,7 @@ but is analytic in the neighborhood of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mn>0</mn></msub><annotation encoding="application/x-tex">s_0</annotation></semantics></math>,
 then the point is called a or a <em>singular point</em> of the
 function.</p>
-<h2 id="examples">Examples</h2>
+<h3 id="examples">Examples</h3>
 <p><strong>Example 1:</strong> Let
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mi>x</mi><mo>+</mo><mi>j</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">s = x+jy</annotation></semantics></math>
 and define</p>
@@ -433,7 +442,7 @@ where</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>−</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><mrow><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><msup><mo stretchy="false" form="postfix">]</mo><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mfrac><mn>0</mn><mn>0</mn></mfrac><mo>=</mo><mtext mathvariant="normal">undefined</mtext></mrow><annotation encoding="application/x-tex">\frac{-(1+x)^2 + y^2}{[(1+x)^2 + y^2]^2} = \frac{0}{0} = \text{undefined}</annotation></semantics></math></p>
 <p>Thus the function is analytic except at
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mn>0</mn></msub><mo>=</mo><mi>−</mi><mn>1</mn><mo>+</mo><mi>j</mi><mn>0</mn><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">s_0 = -1 + j0 = -1</annotation></semantics></math>.</p>
-<h1 id="rational-complex-functions">Rational Complex Functions</h1>
+<h2 id="rational-complex-functions">Rational Complex Functions</h2>
 <p>The previous example is a <em>rational function</em>, a ratio of
 polynomials in
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>.
@@ -463,7 +472,7 @@ are the singularities of
 We will often be interested in writing rational functions as a
 <em>partial fraction expansion</em> of the factors of the
 denominator.</p>
-<h2 id="partial-fraction-expansion">Partial Fraction Expansion</h2>
+<h3 id="partial-fraction-expansion">Partial Fraction Expansion</h3>
 <p>A ratio of polynomials that is improper can be written as the sum of
 a polynomial and a strictly proper rational function. Example</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mn>2</mn><msup><mi>s</mi><mn>3</mn></msup><mo>+</mo><mn>9</mn><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>11</mn><mi>s</mi><mo>+</mo><mn>2</mn></mrow><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>s</mi><mo>+</mo><mn>3</mn></mrow></mfrac><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>s</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mfrac><mrow><mi>s</mi><mo>−</mo><mn>1</mn></mrow><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn><mi>s</mi><mo>+</mo><mn>3</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">f(s) = \frac{2s^3 + 9s^2 + 11s + 2}{s^2 + 4s + 3} = (2s+1) + \frac{s-1}{s^2 + 4s + 3}</annotation></semantics></math></p>
