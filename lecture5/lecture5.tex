@@ -69,21 +69,24 @@ If $x(t)$ is not band-limited, or $T > \frac{1}{2B}$, then we get \textit{aliasi
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\linewidth, alt="cartoon of the magnitude spectrum of a band-limited signal"]{bandlimited.svg}
+  \includegraphics[width=0.8\linewidth, alt="the magnitude spectrum of a band-limited signal"]{bandlimited.svg}
+  \caption{Illustration of the magnitude spectrum of a band-limited signal.}
 \end{figure}
 
 After sampling ($y(t) = x_1(t)\cdot x_2(t)$) and assuming $\omega_0 > 4\pi B$ the spectrum of the sampled signal is:
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\linewidth, alt="cartoon of the magnitude spectrum of a band-limited signal after sampling at the Nyquist rate"]{bandlimitedsampled1.svg}
+  \includegraphics[width=0.8\linewidth, alt="the magnitude spectrum of a band-limited signal after sampling at the Nyquist rate"]{bandlimitedsampled1.svg}
+  \caption{Illustration of the magnitude spectrum of a band-limited signal after sampling at the Nyquist rate.}
 \end{figure}
 
 If instead $\omega_0 < 4\pi B$ the images overlap and we get aliasing, where high frequency content gets added to the lower frequency content. This is shown below with the lighter lines showing the images and the heavier line showing their sum.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\linewidth, alt="cartoon of the magnitude spectrum of a band-limited signal after sampling below the Nyquist rate"]{bandlimitedsampled2.svg}
+  \includegraphics[width=0.8\linewidth, alt="the magnitude spectrum of a band-limited signal after sampling below the Nyquist rate"]{bandlimitedsampled2.svg}
+  \caption{Illustration of the magnitude spectrum of a band-limited signal after sampling below the Nyquist rate.}
 \end{figure}
 
 \section{Practical Sampling}
