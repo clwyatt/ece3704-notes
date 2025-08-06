@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-08-06" />
+  <title>Lecture X</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+</style>
+  <style type="text/css">html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #444;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 14px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+#header-nav {
+background-color: #fefefe;
+}
+.nav-title{
+font-weight: bold;
+font-size: 1.5em;
+padding-left:10px;
+padding-right:10px; display:inline-block;
+}
+a {
+color: #0645ad;
+text-decoration: underline;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: left;
+}
+.date {
+font-size: 1.2em;
+text-align: left;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}
+</style>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture X</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-08-06</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#contour-integration" id="toc-contour-integration">Contour
+Integration</a></li>
+</ul>
+</nav>
+<p>In today’s lecture we finish up our introduction to complex analysis
+by defining contour integration in the complex plane. This will be used
+later in the course for inverse transforms.</p>
+<h2 id="contour-integration">Contour Integration</h2>
+<p>Recall from lecture 6 the definition of a parametric curve in the
+complex plane:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>:</mo><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>j</mi><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo stretchy="false" form="postfix">)</mo><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> for </mtext><mspace width="0.333em"></mspace></mrow><mi>p</mi><mo>∈</mo><mi>ℝ</mi><mo>,</mo><mi>a</mi><mo>≤</mo><mi>p</mi><mo>≤</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">C: s(p) = x(p) +jy(p) \text{ for } p\in\mathbb{R}, a \leq p \leq b</annotation></semantics></math></p>
+<figure>
+<p><img role="img" aria-label="circular contour of integration for the example" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPCEtLSBUaGlzIGZpbGUgd2FzIGdlbmVyYXRlZCBieSBkdmlzdmdtIDIuMTMuMSAtLT4KPHN2ZyB2ZXJzaW9uPScxLjEnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZycgeG1sbnM6eGxpbms9J2h0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsnIHdpZHRoPScxMzkuNjQ5MTAycHQnIGhlaWdodD0nMTI0LjAzODkyNXB0JyB2aWV3Qm94PSctNzEuNzk5OTgxIC02OC42ODAyOCAxMzkuNjQ5MTAyIDEyNC4wMzg5MjUnPgo8c3R5bGUgdHlwZT0ndGV4dC9jc3MnPgo8IVtDREFUQVtAZm9udC1mYWNle2ZvbnQtZmFtaWx5OmNtbWkxMDtzcmM6dXJsKGRhdGE6YXBwbGljYXRpb24veC1mb250LXdvZmY7YmFzZTY0LGQwOUdSZ0FCQUFBQUFBVFlBQTBBQUFBQUJqUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFCR1JsUk5BQUFCTUFBQUFCb0FBQUFjblNsUDdVOVRMeklBQUFGTUFBQUFSQUFBQUZaV0pHSWFZMjFoY0FBQUFaQUFBQUJNQUFBQlNnY2xBT2xqZG5RZ0FBQUIzQUFBQUFRQUFBQUVBQ0VDZVdkaGMzQUFBQUhnQUFBQUNBQUFBQWovL3dBRFoyeDVaZ0FBQWVnQUFBR0NBQUFCcFB0enZaUm9aV0ZrQUFBRGJBQUFBREVBQUFBMkt1TzB5R2hvWldFQUFBT2dBQUFBSGdBQUFDUUZMUUkxYUcxMGVBQUFBOEFBQUFBVUFBQUFGQWJIQUhCc2IyTmhBQUFEMUFBQUFBd0FBQUFNQUs0QkptMWhlSEFBQUFQZ0FBQUFId0FBQUNBQVNRQnpibUZ0WlFBQUJBQUFBQUMvQUFBQkhYd2p0cDl3YjNOMEFBQUV3QUFBQUJZQUFBQXNBRjRBblhqYVkyQmdZR1FBZ3N2YjdzMEEwVTkyV3F5QzBRQlppUWYvQUFCNDJtTmdaR0pubk1EQXlzREExTVcwaDRHQm9RZENNejVnTUdSa0Fvb3lzREl6d0VBakF4SUlTSE5OQVZMRnpBZVkzdjFuWTRoaW1zWEFEZVF6Z3VRQXpWSUs3WGphWTJCZ1lHYUFZQmtHUmdZUWNBSHlHTUY4RmdZTklNMEdwQmtabUJpS21RLzgvdy9rZytuL0UvNjRRTlVEQVNNYkE1ekR5QVFrbUJoUUFTTURMUUF6VlV4aG9ZNWpBUHhQQ2c0QUlRSjVBQUFBQWYvL0FBSjQyaTNQdlc3VFVCVEE4WE91RTl1SjQ0L3JYTWRObk1UeGRSVUxVN25FbjAxcklFeXRLaEdXVnFwVXRXT1pRWUx1WFhpSHp1d29HZnNDSFhnRjJGa1l1d0VoVHJzZC9YVjA5RHRBd0FQQWtOeUNBQkpFQzRUZGNpblY0SGU4RU9zL3lxVkExaU1zaENyWHE3eVVSUHhUTHJIcUNmVm9rRkRmdzhhdiszdHkrL2ZLSTJjQUJOTFZBMzdGTzVqQm0vVjFEUzNXU2VJOFM4YysxNGpGN0tGZ01ZMzRQT2c4Um5HejhJcGthUkNSSUtwbGFaN0VObjVoZlVNMys3TWlPdlRwKzI3Zk4xcjlsK0c1N1d4YlJvZS9tMDFQbnJWZGxXOE5xT0lvelh6L3lNVFA2TkFXSFRqYjhXZ1N0ZWRXWFRZY3BvNkNYbGJqTmpWOTkzaytuaVlzZEZVcWlqV2lOSms2TEtQSzdLd2VTSUhmSUlWc2JVNHF0RDNFRFRzWVoybVJ4Rmthb2U5eHFYb2hpWXY4QUVYcFNZNUYvaHF4OGNIUlpjbFE5WjQ0TUQ5T05GWDl0eWgzaktIZWtocVQrWlJmeXFhaU1WbHUwajM4ZEgzK0l1UnUyOVpsN2VqaStKUXJDdGsxUTBkb3R0N2VmTmNicXNaWWw4OStBdndIQTVCRmpnQUFlTnBqWUdSZ1lBQmkrNU8xenZIOE5sOFp1SmxmQUVVWW51eTBXQVducGY5L1pUSm5tZ1hrY2pBd2dVUUJWKzBNVEFBQUFIamFZMkJrWUdDYTlmOHJReFNURlFNUU1Ka3pNREtnQWxZQVlIOERad0FBQVd3QUlRQUFBQUFCVFFBQUFkUUFOQUk2QUJzQUFBQXFBQ29BS2dDRUFOSjQybU5nWkdCZ1lHVndZbUJpQUFFUXljZ0FFbk5nMEFNSkFBQUtSZ0M5QUhqYVRZMU5Dc0l3RUlVL3JmVUhSVnlKeTNpQWxqYWdTSmN1UElBTFYyNUtpYVZnVzRpNjlSZ2V3Qk40UkNjYXhBekRmSmw1dkFjTU9kSEJ2UzREWnA0RGxodzloNHg1ZU81THZlVGE2WTFFUC8wb0hRZHNXWGdPbVhQMzNHZkNrejJHa2h0bmNpenNUWGs3NXdJN1docXVuMmxGWVZCb1loS1ptWFJCTFZXUi9qWnJJamJTV2phYWxWaTB6WFhYMnRJb0hTY3FVMFZkVjZtRGRiU0pkS0pGY2hCZnkwVjhYSm9TTjVmQXdkaEwxVFlxamVYem44VFhnemNDcGliVUFIamFZMkJpd0E5WWdaaVJnWWtoakdFMkFBSm5BUHdBQUE9PSkgZm9ybWF0KCd3b2ZmJyk7fQpAZm9udC1mYWNle2ZvbnQtZmFtaWx5OmNtcjEwO3NyYzp1cmwoZGF0YTphcHBsaWNhdGlvbi94LWZvbnQtd29mZjtiYXNlNjQsZDA5R1JnQUJBQUFBQUFjNEFBMEFBQUFBQ1d3QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUJHUmxSTkFBQUJNQUFBQUJvQUFBQWNuU2xQN1U5VEx6SUFBQUZNQUFBQVFnQUFBRlpXU0Y4YVkyMWhjQUFBQVpBQUFBQnRBQUFCY2c4VURXWmpkblFnQUFBQ0FBQUFBQVFBQUFBRUFDRUNlV2RoYzNBQUFBSUVBQUFBQ0FBQUFBai8vd0FEWjJ4NVpnQUFBZ3dBQUFPU0FBQUVqSWtZcUZWb1pXRmtBQUFGb0FBQUFERUFBQUEySzlxMExXaG9aV0VBQUFYVUFBQUFIZ0FBQUNRR2R3SlRhRzEwZUFBQUJmUUFBQUFzQUFBQUxCTHZBWkZzYjJOaEFBQUdJQUFBQUJnQUFBQVlCRllGd0cxaGVIQUFBQVk0QUFBQUh3QUFBQ0FBVVFDRWJtRnRaUUFBQmxnQUFBQzhBQUFCRi9pS3J4cHdiM04wQUFBSEZBQUFBQ0VBQUFBNEFLQUFxSGphWTJCZ1lHUUFnc3ZiN3MwQTBVOTJXcXlDMFFCWmlRZi9BQUI0Mm1OZ1pHSmpuTURBeXNEQTFNVzBoNEdCb1FkQ016NWdNR1JrQW9veXNESXp3QUFqQXhJSVNITk5BVklhRExsTTcvNnpNVVF4dldQNEJWTURBTGYyQ3c0QUFIamFZMkJnWUdhQVlCa0dSZ1lReUFIeUdNRjhGb1lBSUMwQWhDQjVUUVlEQmlNR1Q0WWdobFNHM1AvL2dTSWFxQ0wvYi8rLyt2L0svMzMvdC8xZjhuOHUxRFFVd01qR0FCZG1aQUlTVE9nS0VFeG1GZ2pOeXNER2dCV3d3eGdjbUhLY1VKcUxZZEFCQVB2eUZZY0FBQUFBSVFKNUFBQUFBZi8vQUFKNDJuMVNYV2hiWlJoKzMrOGtPY2xKem1uT1NVNU9rdWFuNTN6NVBXMlRMT2VuV1kxZGE3QzJqWk91WXl5d0tYUEZqazdteExrNXZSRkVaU0FpS0tKc2JDTHNaZ2hpaXhmaWpmWEdnZTV1NEZVdjlFNEhFd1c5a1RYMU80blZpZUxWOTN6dnhmTzh6L084UUVBSFFKTmNCZzU0cUcwZzFOdWJ2QS91TmpjQy91MzJKa2NZaEEzT0cvdTk4U1lmd0h2dFRmVG1scXpMWlV1bU9vWit1SG1UWE41WjAwa1BnTURxYmdDNzVDZlFJQW5ndDhzbE9UcmxPalkxSk9RRGFsekxFYXZwWUZlKytxRW84TTN1NklHSFJwY2F2UEN6WDc2R0xqclhJMzdCUExILzBvMVBMcldPVndRQWozTS80OVQzT0l0MnVVYW93YWdTY3RTanRKb3p5Q1JRSHpMRnJ1d3gvejdrOEN0WCsxLzN2L21MMmVQMFFYbjNEdDVpM2hXSVFSVk1sc1NRZDdna1drMUd5Um1sY3NteHAyWTRxNW5RRW1xY2w1RGlyWXI2c0p0K3lTNU9abzlOWG5TTHQ0dWRTRGpJNXlzWmtjNkxRbGpvVkhEMjNTTVRydlRDOGp2WERrL1ZubDkrdTcvVm1tdS85NHBydGhKQmU2NzF4bHV6YysyaHR5WlQvcEx0TVFHVEFBZHd4dWZZSldxd0pid2QzTUdIbjJHUXFZK2doS28rUlFOOFlCeGZQajF0enlhVmk4Y1BuYzRvdkV3ektZR1RseVptNTllM2doeWV5NlFpQXQvNzlPQXBxOUV4M2R5Uk0yZm5VeGt1UGFybXNlR2U2Snk2OEcwd3JIemNsWUxlRGhtMncwSHlFV1FoQnhDejNRZlFDVkNqckhxcWNweUpxYTdWMUJ4cWxCejUrM1FyVGM5Zm9PejVHNUhIczBxZTQvSktkdWVYUFVSR0JqblQzVHRrbTNISElBNkhZSVh4eTdiWGw5WE0rZFM0Uk1aUm0wSFBwbjYvM0ZEdFFlYWJkZUZsb1NWWXpjUzdJNjhEbythclk2bjhIUW1GaFgzWmdtTVlVZEZZY003ZWZuVDEvVFA5cjVKdUt1VW1DOXNGQnM1TjAzU0VVK0tOeDBhcnNhQW9FRjlaaXloU0tPVDNpZG9xUG9tY0ZBa2pJY0Y0M3FHNWVqMHR4bnF0eGFmL1lXWEhTRm5UMVdKZE1kTWxYWlNqalNvZmoxV3kyZVVWWStBeHMvc2Jmb0JiSUVDWVhkSTR3T0JpY2tTbHZQNW5oNnpRK3h4d0xOMlM4eXpKbWpSYTJLZnlkeEUxT1hpc2QvVEZWM3ZtZkNFbUNsekViR2pDSTJidW50M1ZwZXBjWFZVREl5dlB2ZjdFeWRkb3ZSeUtTSVdhN09zMDFnWTNOQWJBVGVMbnNBaExYcjd4QUIwVzVpVm9NNVRJNHYvUGFvUU4yYTJ6UFhudjRCeGVaVjA4azNMV2c4S2FrenBzaitmL2paTnFNaFJLNUxxdEJUbDYvcW42bTNZYWUvMWZ4MFF2TTNIc3M4V2piZXZILy9xaFh3eC9zZEJLRmR1bGsrdnI0WHlzQ0g4QTF5YlUvZ0FBZU5wallHUmdZQURpYjFjNzlPUDViYjR5Y0RPL0FJb3dQTmxwc1FwT3kveG5ZOVpsZWdma2NqQXdnVVFCYnFzTVl3QUFBSGphWTJCa1lHQjY5NStOSVlyWmtRRUltSFVaR0JsUUFUY0FUNzBDMFFBQUFXd0FJUUFBQUFBQlRRQUFBWVFBWXdHRUFEa0I5QUFuQWZRQU1nRnBBQndDNEFBakFid0FIQU5CQUNBQUFBQXFBQ29BS2dCVUFINEF3Z0VFQVRJQnBBSGtBa1o0Mm1OZ1pHQmc0R1lJWm1CaEFBRW1JR1prQUlrNU1PaUJCQUFNdndEV0FIamFSWTNOQ29KQUZJVy9mclEvaUZiUmNsNUEwWUVpWExYeUFWeTRhQ2N5aVdBS1U2MTZqQjZnQitnbHU4cFFBNWY3blR1SGM0QTVGMGIwYjh5TWplTUppck5qanhVdng3Nm9qL3lPcGd2eHJ3ZG56eE5PN0J4N2JIazY5bG55SnNOUThhQ2h3RUptcWtkVENLUjB0TnlIYmNWaHBGVVRFc2xPWkVxdWNvOS8ra0RBVVViTFJiT1hnSzY5cDUydGpOSmhwQkpWWG0zYzcwTndESFNreFpGTHFPVkdQVlFwQ2V2anlZMjkxVjJyNGxERXY0WWhnQy82YnlVdWVOcGpZR0xBRDdpQm1KR0JDVWp6TUFnemlETG9NSmd5ZURBRUFBQUlEQUZKQUFBQSkgZm9ybWF0KCd3b2ZmJyk7fQp0ZXh0LmYwIHtmb250LWZhbWlseTpjbW1pMTA7Zm9udC1zaXplOjkuOTYyNjRweH0KdGV4dC5mMSB7Zm9udC1mYW1pbHk6Y21yMTA7Zm9udC1zaXplOjkuOTYyNjRweH0KXV0+Cjwvc3R5bGU+CjxnIGlkPSdwYWdlMSc+CjxwYXRoIGQ9J00tMTUuMTA5Mzc1IDU0Ljg5ODQzVi01Ny41NzAyNycgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy4zOTg1Jy8+CjxwYXRoIGQ9J00tMTMuNTE1NjMgNTMuNzAzMTZDLTE0LjExMzI4MiA1My44MDQ3Mi0xNS4wMDc4MTMgNTQuODk4NDY4LTE1LjEwOTM3NSA1NS4xOTkyNUMtMTUuMjA3MDMyIDU0Ljg5ODQ2OC0xNi4xMDU0NjkgNTMuODA0NzItMTYuNzAzMTMgNTMuNzAzMTYnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuMzE4NzknIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCcvPgo8cGF0aCBkPSdNLTE2LjcwMzEzLTU2LjM3NDk5Qy0xNi4xMDU0NjktNTYuNDc2NTUtMTUuMjA3MDMyLTU3LjU3MDMwMS0xNS4xMDkzNzUtNTcuODcxMDgzQy0xNS4wMDc4MTMtNTcuNTcwMzAxLTE0LjExMzI4Mi01Ni40NzY1NS0xMy41MTU2My01Ni4zNzQ5OScgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy4zMTg3OScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0ncm91bmQnIHN0cm9rZS1saW5lam9pbj0ncm91bmQnLz4KPHBhdGggZD0nTS03MS4zNDM4LTEuMzM1OTM4SDQxLjEyODknIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuMzk4NScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJy8+CjxwYXRoIGQ9J00tNzAuMTQ4NCAuMjU3ODFDLTcwLjI0NjA1LS4zMzk4NDQtNzEuMzQzNzExLTEuMjM4MjgxLTcxLjY0MDU4Ni0xLjMzNTkzOEMtNzEuMzQzNzExLTEuNDM3NS03MC4yNDYwNS0yLjMzMjAzMS03MC4xNDg0LTIuOTI5NjknIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuMzE4NzknIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtbGluZWpvaW49J3JvdW5kJy8+CjxwYXRoIGQ9J00zOS45MzM1NS0yLjkyOTY5QzQwLjAzMTIxLTIuMzMyMDMxIDQxLjEyODg2NS0xLjQzNzUgNDEuNDI1NzQtMS4zMzU5MzhDNDEuMTI4ODY1LTEuMjM4MjgxIDQwLjAzMTIxLS4zMzk4NDQgMzkuOTMzNTUgLjI1NzgxJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjMxODc5JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCcvPgo8dGV4dCBjbGFzcz0nZjEnIHg9Jy0xNS4xMDc4NjYnIHk9Jy0xLjMzNjA2OScgdHJhbnNmb3JtPSdtYXRyaXgoMSAwIDAgMSAtMTIuMTU5NCAtNTkuODcyMjMpJz5JbTx0c3BhbiB4PSctMy4yMDgwMTcnPig8L3RzcGFuPjwvdGV4dD4KPHRleHQgY2xhc3M9J2YwJyB4PScuNjY2MzU3JyB5PSctMS4zMzYwNjknIHRyYW5zZm9ybT0nbWF0cml4KDEgMCAwIDEgLTEyLjE1OTQgLTU5Ljg3MjIzKSc+czwvdGV4dD4KPHRleHQgY2xhc3M9J2YxJyB4PSc1LjMzNjM0NCcgeT0nLTEuMzM2MDY5JyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAxIC0xMi4xNTk0IC01OS44NzIyMyknPik8L3RleHQ+Cjx0ZXh0IGNsYXNzPSdmMScgeD0nLTE1LjEwNzg2NicgeT0nLTEuMzM2MDY5JyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAxIDU4Ljc3NjggMi40OTA2OSknPlJlPHRzcGFuIHg9Jy0zLjM0NjQxNCc+KDwvdHNwYW4+PC90ZXh0Pgo8dGV4dCBjbGFzcz0nZjAnIHg9Jy41Mjc5NicgeT0nLTEuMzM2MDY5JyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAxIDU4Ljc3NjggMi40OTA2OSknPnM8L3RleHQ+Cjx0ZXh0IGNsYXNzPSdmMScgeD0nNS4xOTc5NDcnIHk9Jy0xLjMzNjA2OScgdHJhbnNmb3JtPSdtYXRyaXgoMSAwIDAgMSA1OC43NzY4IDIuNDkwNjkpJz4pPC90ZXh0Pgo8cGF0aCBkPSdNMTMuMjM4My0xLjMzNTkzOEMxMy4yMzgzLTE2Ljk5MjE3IC41NDY5LTI5LjY4MzU3LTE1LjEwOTM3NS0yOS42ODM1N0MtMzAuNzYxNy0yOS42ODM1Ny00My40NTMxLTE2Ljk5MjE3LTQzLjQ1MzEtMS4zMzU5MzhDLTQzLjQ1MzEgMTQuMzIwMzMtMzAuNzYxNyAyNy4wMTE3My0xNS4xMDkzNzUgMjcuMDExNzNDLjU0NjkgMjcuMDExNzMgMTMuMjM4MyAxNC4zMjAzMyAxMy4yMzgzLTEuMzM1OTM4Wicgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy4zOTg1JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnLz4KPHBhdGggZD0nTS0yMS44MDQ2ODUtMjcuMjk2ODQyQy0yMi4wODU5MzktMjcuODM1OTA2LTIzLjQwMjM0NC0yOC4zNDc2MjctMjMuNzE4NzUtMjguMzUxNTMxQy0yMy40NjQ4NDMtMjguNTM5MDMyLTIyLjY5OTIyLTI5LjczMDQzOS0yMi43ODkwNjItMzAuMzI4MDkxJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjMxODc4OScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0ncm91bmQnIHN0cm9rZS1saW5lam9pbj0ncm91bmQnLz4KPHBhdGggZD0nTTE0LjY0ODQtMS4zMzU5MzhDMTQuNjQ4NC0yLjExMzI4MSAxNC4wMTU2LTIuNzQ2MDkgMTMuMjM4My0yLjc0NjA5QzEyLjQ2MDktMi43NDYwOSAxMS44MjgxLTIuMTEzMjgxIDExLjgyODEtMS4zMzU5MzhDMTEuODI4MS0uNTU4NTk0IDEyLjQ2MDkgLjA3NDIyIDEzLjIzODMgLjA3NDIyQzE0LjAxNTYgLjA3NDIyIDE0LjY0ODQtLjU1ODU5NCAxNC42NDg0LTEuMzM1OTM4WicvPgo8cGF0aCBkPSdNLTQyLjA0NjktMS4zMzU5MzhDLTQyLjA0NjktMi4xMTMyODEtNDIuNjc1OC0yLjc0NjA5LTQzLjQ1MzEtMi43NDYwOUMtNDQuMjM0NC0yLjc0NjA5LTQ0Ljg2MzMtMi4xMTMyODEtNDQuODYzMy0xLjMzNTkzOEMtNDQuODYzMy0uNTU4NTk0LTQ0LjIzNDQgLjA3NDIyLTQzLjQ1MzEgLjA3NDIyQy00Mi42NzU4IC4wNzQyMi00Mi4wNDY5LS41NTg1OTQtNDIuMDQ2OS0xLjMzNTkzOFonLz4KPHRleHQgY2xhc3M9J2YwJyB4PSctMTUuMTA3ODY2JyB5PSctMS4zMzYwNjknIHRyYW5zZm9ybT0nbWF0cml4KDEgMCAwIDEgMzAuOTg1MiAtNi4wMTM0MyknPnM8L3RleHQ+Cjx0ZXh0IGNsYXNzPSdmMScgeD0nLTEwLjQzNzg3OCcgeT0nLTEuMzM2MDY5JyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAxIDMwLjk4NTIgLTYuMDEzNDMpJz4oMCk8L3RleHQ+Cjx0ZXh0IGNsYXNzPSdmMCcgeD0nLTE1LjEwNzg2NicgeT0nLTEuMzM2MDY5JyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAxIDI3Ljk2NyAxMC45OTQ4MSknPnM8L3RleHQ+Cjx0ZXh0IGNsYXNzPSdmMScgeD0nLTEwLjQzNzg3OCcgeT0nLTEuMzM2MDY5JyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAxIDI3Ljk2NyAxMC45OTQ4MSknPigyPC90ZXh0Pgo8dGV4dCBjbGFzcz0nZjAnIHg9Jy0xLjU4MjE2NScgeT0nLTEuMzM2MDY5JyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAxIDI3Ljk2NyAxMC45OTQ4MSknPs+APC90ZXh0Pgo8dGV4dCBjbGFzcz0nZjEnIHg9JzQuNDU0MjUxJyB5PSctMS4zMzYwNjknIHRyYW5zZm9ybT0nbWF0cml4KDEgMCAwIDEgMjcuOTY3IDEwLjk5NDgxKSc+KTwvdGV4dD4KPHRleHQgY2xhc3M9J2YwJyB4PSctMTUuMTA3ODY2JyB5PSctMS4zMzYwNjknIHRyYW5zZm9ybT0nbWF0cml4KDEgMCAwIDEgLTQ4LjkxMyAtNi4wMTM0MyknPnM8L3RleHQ+Cjx0ZXh0IGNsYXNzPSdmMScgeD0nLTEwLjQzNzg3OCcgeT0nLTEuMzM2MDY5JyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAxIC00OC45MTMgLTYuMDEzNDMpJz4oPC90ZXh0Pgo8dGV4dCBjbGFzcz0nZjAnIHg9Jy02LjU2MzUwNCcgeT0nLTEuMzM2MDY5JyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAxIC00OC45MTMgLTYuMDEzNDMpJz7PgDwvdGV4dD4KPHRleHQgY2xhc3M9J2YxJyB4PSctLjUyNzA4OCcgeT0nLTEuMzM2MDY5JyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAxIC00OC45MTMgLTYuMDEzNDMpJz4pPC90ZXh0Pgo8L2c+Cjwvc3ZnPg==" alt="circular contour of integration for the example" /></p>
+<figcaption>Unit circle contour for integration.</figcaption>
+</figure>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>
