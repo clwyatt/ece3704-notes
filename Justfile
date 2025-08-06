@@ -28,6 +28,10 @@ render: build-all
   cd index && make && cd ..;
   cp index/index.html docs
 
+preview: render
+   cd docs && python3 -m http.server 8000
+   open http://0.0.0.0:8000
+
 # Note: this may result in source out of sync with the site
 # Check that `just status` shows no desired modifications before running
 deploy: render

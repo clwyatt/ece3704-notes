@@ -1,1 +1,15 @@
 /.quarto/
+
+*/*.dvi
+*/*.aux
+*/*.log
+*/*.svg
+*/*.dat
+*/*.script
+*/*.table
+
+# Ignore all HTML files recursively
+**/*.html
+
+# But don't ignore HTML files inside any docs folder
+!docs/**/*.html
