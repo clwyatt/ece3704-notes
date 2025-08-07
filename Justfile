@@ -20,6 +20,7 @@ clean:
 
 render: build-all
   rm -rf docs/*
+  cp style/style.css docs
   for dir in `find ./ -name "lecture*" -type d -print`; do \
     cp ${dir}/${dir}.html docs; \
   done
