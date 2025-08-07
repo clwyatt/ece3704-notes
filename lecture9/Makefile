@@ -10,7 +10,7 @@ CSS=../style/style.css
 HEADER=../style/header.html
 FOOTER=../style/footer.html
 
-OPTIONS= -s -t html --toc=true --shift-heading-level-by=1 --css=$(CSS) --include-before $(HEADER) --include-after $(FOOTER) -V lang=en --embed-resources --mathml
+OPTIONS= -s -t html --toc=true --shift-heading-level-by=1 --css=$(CSS) --include-before $(HEADER) --include-after $(FOOTER) -V lang=en --mathml
 
 .SECONDARY: # prevent removal of intermediate files
 

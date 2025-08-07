@@ -10,7 +10,7 @@ CSS=../style/style.css
 HEADER=../style/header.html
 FOOTER=../style/footer.html
 
-OPTIONS= -s -t html --toc=true --shift-heading-level-by=1 --css=$(CSS) --include-before $(HEADER) --include-after $(FOOTER) -V lang=en --embed-resources --mathjax="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+OPTIONS= -s -t html --toc=true --shift-heading-level-by=1 --css=$(CSS) --include-before $(HEADER) --include-after $(FOOTER) -V lang=en --mathjax=
 
 
 .SECONDARY: # prevent removal of intermediate files
