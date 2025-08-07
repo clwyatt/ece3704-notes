@@ -20,9 +20,10 @@ clean:
 
 render: build-all
   rm -rf docs/*
-  cp style/style.css docs
+  mkdir docs/style && cp style/style.css docs/style
   for dir in `find ./ -name "lecture*" -type d -print`; do \
     cp ${dir}/${dir}.html docs; \
+    cp ${dir}/*.svg docs; \
   done
   cd about && make && cd ..;
   cp about/about.html docs
