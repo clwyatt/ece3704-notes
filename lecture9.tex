@@ -12,6 +12,8 @@
 
 In today's lecture we introduce the Laplace Transform for CT signals and systems.
 
+\section{Forward Laplace Transform}
+
 Recall from ECE 2714 that the Eigenfunction for CT LTI systems is the input $x(t) = e^{st}$ for $s\in\mathbb{C}$. The resulting output, if it is defined, is given by
 
 \[
@@ -66,7 +68,7 @@ Note this result applies to any finite real $a$, thus
 \mathcal{L}_2\left\{ u(t) \right\} = \mathcal{L}_2\left\{ e^{-at} u(t) \right\}_{a = 0} = \frac{1}{s} \text{ for Re}(s) > 0 
 \]
 
-Lets compare the result in Example 9.1 to the CTFT transform.
+Lets compare the result in Example 9.1 to the CTFT.
 
 \begin{align}
   X(j\omega) &= \int\limits_{-\infty}^{\infty} x(t) e^{-j\omega t} dt\\
@@ -189,13 +191,93 @@ A few more examples.
 \begin{align}
   X(s) &= \int\limits_{-\infty}^{\infty} x(t) e^{-st} dt\\
   &= \int\limits_{-\infty}^{\infty} \delta(t) e^{-st} dt\\
-  &= s^{-s(0)} = 1\text{ for } s\in\mathbb{C}
+  &= e^{-s(0)} = 1\text{ for } s\in\mathbb{C}
 \end{align}
 
 \textbf{Example 9.6:} $x(t) = e^{j\omega t}$.
 
+\begin{align}
+  X(s) &= \int\limits_{-\infty}^{\infty} x(t) e^{-st} dt\\
+  &= \int\limits_{-\infty}^{\infty} e^{j\omega t} e^{-st} dt\\
+  &= \int\limits_{-\infty}^{\infty} e^{-(s-j\omega)t} dt\\
+  &= \frac{-1}{s-j\omega} \left. e^{-(s-j\omega)t} \right|_{-\infty}^{\infty}\\
+  &= \frac{-1}{s-j\omega} \left[ \lim_{T\rightarrow \infty} e^{-(s-j\omega)T} -  \lim_{T\rightarrow -\infty} e^{-(s-j\omega)T} \right]
+\end{align}
+
+The first limit will converge to zero if and only if
+
+\begin{align}
+  \text{Re}(s-j\omega) &> 0\\
+  \text{Re}(s) &> 0\\
+\end{align}
+
+The second limit will converge to zero if and only if
+
+\begin{align}
+  \text{Re}(s-j\omega) &< 0\\
+  \text{Re}(s) &< 0\\
+\end{align}
+
+These two conditions are mutually exclusive so it appears the transform does not exist. However, consider the edge case when the $\text{Re}(s) = 0$. Then the Laplace transform becomes equivalent to the Fourier Transform and
+
+\[
+\mathcal{L}\left\{e^{j\omega t}\right\} = \frac{1}{2\pi} \delta(s - \omega) \text{ for Re}(s) = 0 
+\]
+
 
 \textbf{Example 9.7:} Compare the previous example to $x(t) = e^{j\omega t}u(t)$.
 
+\begin{align}
+  X(s) &= \int\limits_{-\infty}^{\infty} x(t) e^{-st} dt\\
+  &= \int\limits_{0}^{\infty} e^{j\omega t} e^{-st} dt\\
+  &= \int\limits_{0}^{\infty} e^{-(s-j\omega)t} dt\\
+  &= \frac{-1}{s-j\omega} \left. e^{-(s-j\omega)t} \right|_{0}^{\infty}\\
+  &= \frac{-1}{s-j\omega} \left[ \lim_{T\rightarrow \infty} e^{-(s-j\omega)T} -  1 \right]
+\end{align}
+
+The limit will converge to zero if
+
+\begin{align}
+  \text{Re}(s-j\omega) &> 0\\
+  \text{Re}(s) &> 0\\
+\end{align}
+
+Thus,
+
+\[
+\mathcal{L}\left\{e^{j\omega t}u(t)\right\} = \frac{1}{s-j\omega} \text{ for Re}(s) > 0 
+\]
+
+\textbf{Example 9.6:} $x(t) = \cos(\omega t)u(t)$.
+
+First, write the cosine using Euler's identity
+\[
+x(t) = \frac{1}{2}e^{j\omega t} + \frac{1}{2}e^{-j\omega t} 
+\]
+
+Similar to the previous example then
+
+\begin{align}
+  X(s) &= \int\limits_{-\infty}^{\infty} x(t) e^{-st} dt\\
+  &= \int\limits_{0}^{\infty} \frac{1}{2}e^{j\omega t} e^{-st} dt + \int\limits_{0}^{\infty} \frac{1}{2}e^{-j\omega t} e^{-st}\\
+  &= \int\limits_{0}^{\infty} \frac{1}{2}e^{-(s-j\omega)t} dt + \int\limits_{0}^{\infty} \frac{1}{2}e^{-(s+j\omega)t} dt\\
+  &= \frac{1}{2} \left[ \frac{1}{s-j\omega} + \frac{1}{s+j\omega}\right] \text{ for Re}(s) > 0\\
+  &= \frac{s}{s^2 + \omega^2} \text{ for Re}(s) > 0 
+\end{align}
+
+Note the examples thus far cover many of the cases we are interested in
+
+\begin{tabular}{ccl}
+  $x(t)$ & $X(s)$ & ROC \\
+  \hline
+  $\delta(t)$ & 1 & $s\in\mathbb{C}$\\
+  $u(t)$ & $\frac{1}{s}$ & $\text{Re}(s) > 0$\\
+  $e^{-at}u(t)$, $a\in\mathbb{R}$ & $\frac{1}{s+a}$ & $\text{Re}(s) > -a$\\
+  $\cos(\omega t)u(t)$, $\omega\in\mathbb{R}$ & $\frac{s}{s^2 + \omega^2}$ & $\text{Re}(s) > 0$\\
+  $\sin(\omega t)u(t)$ & ? & ?\\
+  $e^{-at}\cos(\omega t)u(t)$, $a,\omega\in\mathbb{R}$ & ? & ?
+\end{tabular}
+
+The problem set for this week has you derive the last two rows of the above table.
 
 \end{document}
