@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-08-11" />
+  <title>Lecture 8 Complex Analysis III</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture 8<br />
+Complex Analysis III</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-08-11</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#contour-integration" id="toc-contour-integration">Contour
+Integration</a></li>
+<li><a href="#fundamental-theorem-of-complex-analysis"
+id="toc-fundamental-theorem-of-complex-analysis">Fundamental Theorem of
+Complex Analysis</a></li>
+<li><a href="#multiple-residues" id="toc-multiple-residues">Multiple
+Residues</a></li>
+<li><a href="#use-in-inverse-transforms"
+id="toc-use-in-inverse-transforms">Use in Inverse Transforms</a>
+<ul>
+<li><a href="#bromwitch-contour" id="toc-bromwitch-contour">Bromwitch
+contour</a></li>
+</ul></li>
+</ul>
+</nav>
+<p>In today’s lecture we finish up our introduction to complex analysis
+by defining contour integration in the complex plane. This will be used
+later in the course for inverse transforms.</p>
+<h2 id="contour-integration">Contour Integration</h2>
+<p>Recall from lecture 6 the definition of a parametric curve in the
+complex plane:</p>
+<p><span class="math display">\[C: s(p) = x(p) +jy(p) \text{ for }
+p\in\mathbb{R}, a \leq p \leq b\]</span></p>
+<p>The integral of a complex function <span
+class="math inline">\(f(s)\)</span> along a curve <span
+class="math inline">\(C\)</span> is the complex number</p>
+<p><span class="math display">\[\int_{C} f(s) ds = \int\limits_{a}^{b}
+f(s(p)) s^\prime(p) dp\]</span></p>
+<p>where <span class="math inline">\(s^\prime(p) =
+\frac{ds}{dp}\)</span>.</p>
+<p><strong>Example 8.1:</strong> Let <span class="math inline">\(f(s) =
+\frac{1}{s}\)</span> and <span class="math inline">\(C\)</span> be the
+unit circle</p>
+<p><span class="math display">\[s(p) = e^{jp} = \cos(p) + j\sin(p)
+\text{ for } 0 \leq p \leq 2\pi\]</span></p>
+<figure>
+<p><img src="figures/fig8_1.svg"
+alt="circular contour of integration for the example" /></p>
+<figcaption>Unit circle contour for integration.</figcaption>
+</figure>
+<p>Then</p>
+<p><span class="math display">\[f\left(s(p)\right) = \frac{1}{s(p)} =
+\frac{1}{e^{jp}} = e^{-jp}\]</span> and <span
+class="math display">\[s^\prime(p) = je^{jp}\]</span></p>
+<p>Using the contour integration formula</p>
+<p><span class="math display">\[\int_C \frac{1}{s} ds =
+\int\limits_0^{2\pi} e^{-jp} j e^{jp} dp = j \int\limits_0^{2\pi} dp =
+2\pi j\]</span></p>
+<p><strong>Example 8.2:</strong> Let <span class="math inline">\(f(s) =
+s^2\)</span> and <span class="math inline">\(C\)</span> the line from
+<span class="math inline">\(-1-j\)</span> to <span
+class="math inline">\(1 + j\)</span>.</p>
+<p><span class="math display">\[s(p) - p + jp \text{ for } -1 \leq p
+\leq 1\]</span></p>
+<figure>
+<p><img src="figures/fig8_2.svg"
+alt="line contour of integration for the example" /></p>
+<figcaption>Line representing the contour for integration.</figcaption>
+</figure>
+<p><span class="math display">\[f\left(s(p)\right) = [s(p)]^2 = (p +
+jp)(p + jp) = p^2 + 2jp^2 -p^2 = j2p^2\]</span> and <span
+class="math display">\[s^\prime(p) = 1 + j\]</span></p>
+<p>Using the contour integration formula</p>
+<p><span class="math display">\[\int_C s^2 ds = \int\limits_{-1}^{1}
+j2p^2(1_j) dp = 2j(1+j) \int\limits_{-1}^{1} p^2 dp = \frac{4}{3}
+(j-1)\]</span></p>
+<p>In general the integral between points <span
+class="math inline">\(s_0\)</span> and <span
+class="math inline">\(s_1\)</span> depends on the path taken.</p>
+<p><strong>Example 8.3:</strong> Let <span class="math inline">\(s_0 =
+-r + 0j\)</span> and <span class="math inline">\(s_1 = r + 0j\)</span>,
+for <span class="math inline">\(r &gt; 0\)</span> fixed. Consider two
+curves connecting the two points:</p>
+<ul>
+<li><p><span class="math inline">\(C_1 =\)</span> clockwise arc from
+<span class="math inline">\(s_0\)</span> to <span
+class="math inline">\(s_1\)</span> of radius <span
+class="math inline">\(r\)</span> <span class="math display">\[s(p) =
+re^{j(\pi - p)} \text{ for } 0 \leq p \leq \pi\]</span> <span
+class="math display">\[s^\prime(p) = -jre^{j(\pi - p)}\]</span></p></li>
+<li><p><span class="math inline">\(C_2 =\)</span> counter-clockwise arc
+from <span class="math inline">\(s_0\)</span> to <span
+class="math inline">\(s_1\)</span> of radius <span
+class="math inline">\(r\)</span> <span class="math display">\[s(p) =
+re^{j(\pi + p)} \text{ for } 0 \leq p \leq \pi\]</span> <span
+class="math display">\[s^\prime(p) = jre^{j(\pi + p)}\]</span></p></li>
+</ul>
+<p>and the function <span class="math inline">\(f(s) =
+\frac{1}{s}\)</span>.</p>
+<figure>
+<p><img src="figures/fig8_3.svg"
+alt="two contours of integration for the example" /></p>
+<figcaption>Two half-circles (arcs) making up the contour for
+integration.</figcaption>
+</figure>
+<p>Using the contour integration formula for both contours</p>
+<p><span class="math display">\[\int_{C_1} \frac{1}{s} ds =
+\int\limits_{0}^{\pi} - \frac{1}{re^{j(\pi - p)}} jre^{j(\pi - p)} dp
+=  -j \int\limits_{0}^{\pi} dp = -j(\pi - 0) = - j\pi\]</span></p>
+<p><span class="math display">\[\int_{C_2}  \frac{1}{s} ds =
+\int\limits_{0}^{\pi} \frac{1}{re^{j(\pi + p)}} jre^{j(\pi + p)}  dp
+=  j \int\limits_{0}^{\pi} dp = j(\pi - 0) = j\pi\]</span></p>
+<p>Note that the two integrals are different, but that <span
+class="math inline">\(\int_{C_2} - \int_{C_1} = 2\pi j\)</span>, the
+same as for the circular contour. This make sense because the contour
+along <span class="math inline">\(C_2\)</span> and then backwards along
+<span class="math inline">\(C_1\)</span> is the same as a
+counter-clockwise the circle.</p>
+<p><strong>Example 8.4:</strong> Let <span class="math inline">\(f(s) =
+s^2\)</span> and the two contours from the previous example.</p>
+<p>Using the contour integration formula for both contours</p>
+<p><span class="math display">\[\int_{C_1} s^2 ds =
+\int\limits_{0}^{\pi} - r^2e^{j2(\pi - p)} jre^{j(\pi - p)} dp = -jr^3
+\int\limits_{0}^{\pi} e^{j3(\pi - p)} dp = -jr^3 \left.  \frac{-1}{3j}
+e^{j3(\pi - p)} \right|_{0}^{\pi} = \frac{1}{3} r^3 ( e^{j3(\pi - \pi)}
+- e^{j3(\pi - 0)} = \frac{2}{3} r^3\]</span></p>
+<p><span class="math display">\[\int_{C_2} s^2 ds =
+\int\limits_{0}^{\pi} r^2e^{j2(\pi + p)} jre^{j(\pi + p)}  dp =  jr^3
+\int\limits_{0}^{\pi} e^{j3(\pi + p)} dp = jr^3 \left.  \frac{1}{3j}
+e^{j3(\pi + p)} \right|_{0}^{\pi} = \frac{1}{3} r^3 ( e^{j3(\pi + \pi)}
+- e^{j3(\pi + 0)} = \frac{2}{3} r^3\]</span></p>
+<p>In contrast to the previous example the two integrals are the same,
+and that <span class="math inline">\(\int_{C_2} - \int_{C_1} =
+0\)</span>. The difference between the two examples is that while the
+two contours were the same the first example had a singularity while the
+second was analytic everywhere. This insight is formalized in the
+following.</p>
+<h2 id="fundamental-theorem-of-complex-analysis">Fundamental Theorem of
+Complex Analysis</h2>
+<p>Let <span class="math inline">\(f(s) = F^\prime(s)\)</span> over some
+region of <span class="math inline">\(\mathbb{C}\)</span> where <span
+class="math inline">\(f\)</span> is analytic. Given a curve <span
+class="math inline">\(C\)</span> from <span
+class="math inline">\(s_0\)</span> to <span
+class="math inline">\(s_1\)</span></p>
+<p><span class="math display">\[\int_C f(s) ds = \left. F(s)
+\right|_{s_0}^{s_1} = F(s_1) - F(s_0)\]</span></p>
+<p>For a closed, simple curve <span class="math inline">\(C\)</span>
+(<span class="math inline">\(s_0 = s_1\)</span>) where <span
+class="math inline">\(f\)</span> is analytic on and inside <span
+class="math inline">\(C\)</span>, then</p>
+<p><span class="math display">\[\oint_C f(s) ds = F(s_0) - F(s_1) =
+0\]</span></p>
+<p>This is <em>Cauchy’s integral theorem</em>.</p>
+<p>Now consider a curve <span class="math inline">\(C\)</span> and
+function <span class="math inline">\(f(s)\)</span> analytic on and
+inside <span class="math inline">\(C\)</span> and a function</p>
+<p><span class="math display">\[g(s) = \frac{f(s)}{s-s_0}\]</span> where
+<span class="math inline">\(s_0\in\mathbb{C}\)</span> is a singularity
+and <span class="math inline">\(C\)</span> encloses <span
+class="math inline">\(s_0\)</span>, then</p>
+<p><span class="math display">\[\oint_C g(s) ds = \oint_C
+\frac{f(s)}{s-s_0} ds = 2\pi j f(s_0)\]</span></p>
+<p>The term <span class="math inline">\(f(s_0)\)</span> is called the
+<em>residue</em>, the value of the analytic function <span
+class="math inline">\(f(s)\)</span> at the singularity of <span
+class="math inline">\(g(s)\)</span>. This is called the Residue Theorem,
+or the long-winded Fundamental Theorem of Complex nalysis.</p>
+<p>For the functions we will be interested in integrating (rational
+functions) this machinery is all we need, since integration is a linear
+operator, and <span class="math inline">\(f(s)\)</span> will take on two
+forms: <span class="math inline">\(s^n\)</span> or <span
+class="math inline">\(e^{st}\)</span>, both of which are analytic
+everywhere.</p>
+<p><strong>Example 8.5:</strong> Lets start with a simple example, <span
+class="math inline">\(f(s) = 1\)</span> and <span
+class="math inline">\(g(s) = \frac{f(s)}{s+1} = \frac{1}{s+1}\)</span>,
+which has a singularity at <span class="math inline">\(s_0 =
+-1\)</span>. We showed in example 8.1 that</p>
+<p><span class="math display">\[\oint_C \frac{1}{s} ds = 2\pi j\]</span>
+The residue theorem tells us</p>
+<p><span class="math display">\[\oint_C \frac{1}{s+1} ds = 2\pi j f(-1)
+= 2\pi j\]</span></p>
+<p>Lets verify that using the contour integral. Let <span
+class="math inline">\(C\)</span> be the circle of radius one, centered
+at -1, the location of the singularity.</p>
+<figure>
+<p><img src="figures/fig8_4.svg"
+alt="circular contour of integration for the example" /></p>
+<figcaption>Circular contour of integration.</figcaption>
+</figure>
+<p>We will use figures like the above frequently so it is worth taking
+some time to describe them fully. It is a plot of the singularity points
+(poles) as crosses on the complex plane, as well as the contour with its
+direction indicated by the arrow. In some cases we might also plot the
+roots of the numerator polynomial (called the zeros) as small unfilled
+circles.</p>
+<p>The contour can be described by</p>
+<p><span class="math display">\[s(p) = (\cos(p) - 1) + j\sin(p) \text{
+for } 0 \leq p \leq 2\pi\]</span> and <span
+class="math display">\[s^\prime(p) = -\sin(p) + j\cos(p)\]</span></p>
+<p>Substituting we get</p>
+<p><span class="math display">\[g(s(p)) = \frac{1}{s(p) + 1} =
+\frac{1}{\cos(p) + j\sin(p)}\]</span></p>
+<p>The contour integral is then</p>
+<p><span class="math display">\[\int\limits_{0}^{2\pi} \frac{-\sin(p) +
+j\cos(p)}{\cos(p) + j\sin(p)} dp = \int\limits_{0}^{2\pi}
+\frac{je^{jp}}{e^{jp}} dp = j \int\limits_{0}^{2\pi} dp = 2\pi
+j\]</span></p>
+<p>Why did we use a circle for the contour? Because it makes the
+integral easier. As long as the contour is closed and encompases the
+singularity you will get the same answer. However the steps to evaluate
+the integral will likely be more tedious.</p>
+<p>Also notice the residue theorem saves us a good deal of work, as we
+do not have to specify the contour and perform the contour integral.</p>
+<p><strong>Example 8.6:</strong> Here is an example where <span
+class="math inline">\(f(s)\)</span> is more complicated but still
+analytic inside the contour. These contour integrals are much harder to
+do by hand but the residue theorem makes them rather easy. Let <span
+class="math inline">\(f(s) = s^n\)</span> for <span
+class="math inline">\(n\in\mathbb{Z}^+\)</span> (a positive integer) and
+let <span class="math inline">\(g(s) = \frac{s^n}{s+1}\)</span>.</p>
+<p>For now, we will assume without proof that <span
+class="math inline">\(f(s) = s^n\)</span> is analytic and let <span
+class="math inline">\(C\)</span> be the unit circle centered at the pole
+(-1,0), as in the previous example. Then by the residue theorem</p>
+<p><span class="math display">\[\oint_C \frac{f(s)}{s+1} ds = \oint_C
+\frac{s^n}{s+1} ds = 2\pi j f(-1) = 2\pi j (-1)^n\]</span></p>
+<p>Similarly if <span class="math inline">\(f(s) = e^{st}\)</span> with
+the same <span class="math inline">\(g\)</span> and contour, then</p>
+<p><span class="math display">\[\oint_C \frac{f(s)}{s+1} ds = \oint_C
+\frac{e^{st}}{s+1} ds = 2\pi j f(-1) = 2\pi j e^{-t}\]</span></p>
+<h2 id="multiple-residues">Multiple Residues</h2>
+<p>What if there are more than one singularity? Let</p>
+<p><span class="math display">\[g(s) = \frac{f(s)}{(s-s_1)(s-s_2)\cdots
+(s-s_N)}\]</span> where <span class="math inline">\(f(s)\)</span> is
+analytic on and inside a closed contour <span
+class="math inline">\(C\)</span> enclosing all the <span
+class="math inline">\(N\)</span> singularities. Then</p>
+<p><span class="math display">\[\oint_C g(s) ds = \oint_C
+\frac{f(s)}{(s-s_1)(s-s_2)\cdots (s-s_N)} ds = 2\pi j \sum\limits_{n =
+1}^{N} K_n\]</span> where <span class="math inline">\(K_n\)</span> is
+the n-th residue <span class="math display">\[K_n = \left. (s-s_n)g(s)
+\right|_{s = s_n}\]</span></p>
+<p><strong>Example 8.7:</strong> Let <span class="math inline">\(f(s) =
+se^{st}\)</span> be assumed analytic and</p>
+<p><span class="math display">\[g(s) = \frac{f(s)}{s^2 + 3s + 2} =
+\frac{f(s)}{(s+1)(s+2)}\]</span> Let <span
+class="math inline">\(C\)</span> be a circle of radius three centered at
+the origin, which encloses the singularities at (-1,0) and (-2.0).
+Then</p>
+<p><span class="math display">\[\oint_C g(s) ds = 2\pi j [K_1 +
+K_2]\]</span> where</p>
+<p><span class="math display">\[K_1 = \left. (s+1)g(s) \right|_{s = -1}
+= \left. \frac{f(s)}{s+2} \right|_{s = -1} = \left. \frac{se^{st}}{s+2}
+\right|_{s = -1} = -e^{-t}\]</span></p>
+<p><span class="math display">\[K_2 = \left. (s+2)g(s) \right|_{s = -2}
+= \left. \frac{f(s)}{s+1} \right|_{s = -2} = \left. \frac{se^{st}}{s+1}
+\right|_{s = -2} = 2e^{-2t}\]</span></p>
+<p>So the final result is</p>
+<p><span class="math display">\[\oint_C \frac{se^{st}}{s^2 + 3s + 2} ds
+= 2\pi j \left[-e^{-t} + 2e^{-2t} \right]\]</span></p>
+<h2 id="use-in-inverse-transforms">Use in Inverse Transforms</h2>
+<p>We will be interested in two specific complex integrals:</p>
+<ul>
+<li><p>Inverse Laplace Transform: for <span
+class="math inline">\(s\in\mathbb{C}\)</span> and real <span
+class="math inline">\(t &gt; 0\)</span> <span
+class="math display">\[x(t) = \frac{1}{2\pi j} \int\limits_{\gamma
+-j\infty}^{\gamma + j\infty} X(s) e^{st} ds\]</span></p></li>
+<li><p>Inverse Z Transform: for <span
+class="math inline">\(z\in\mathbb{C}\)</span> and integer <span
+class="math inline">\(n &gt; 0\)</span> <span
+class="math display">\[x[n] = \frac{1}{2\pi j} \oint X(z) z^{n-1}
+dz\]</span></p></li>
+</ul>
+<p>where <span class="math inline">\(X(s)\)</span> and <span
+class="math inline">\(X(z)\)</span> will be rational complex functions.
+<span class="math display">\[X(s) = \frac{P(s)}{Q(s)}\]</span></p>
+<p><span class="math display">\[X(z) = \frac{P(z)}{Q(z)}\]</span></p>
+<p>So as long as <span class="math inline">\(P(z) z^{n-1}\)</span> and
+<span class="math inline">\(P(s) e^{st}\)</span> are analytic then the
+residue theorem can be used to evaluate the transforms.</p>
+<h3 id="bromwitch-contour">Bromwitch contour</h3>
+<p>Notice the contour for the inverse Laplace transform is not written
+as as closed integral but with limits that include imaginary values at
+infinity.</p>
+<p><span class="math display">\[\int\limits_{\gamma -j\infty}^{\gamma +
+j\infty} X(s) e^{st} ds\]</span></p>
+<p>where <span class="math inline">\(\gamma\)</span> is larger than the
+largest singularity of <span class="math inline">\(X(s)\)</span>. This
+can be visualized as the linear contour</p>
+<p><span class="math display">\[s(p) = \gamma + jp \text{ for }
+p\in\mathbb{R}\]</span></p>
+<figure>
+<p><img src="figures/fig8_5.svg"
+alt="linear contour of integration" /></p>
+<figcaption>Linear contour of integration for the Laplace
+transform</figcaption>
+</figure>
+<p>Recall however that there is only one point at infinity for complex
+numbers. To convert this to a closed integral so we can apply the
+residue theorem we need to define the <em>Bromwitch contour</em>.</p>
+<figure>
+<p><img src="figures/fig8_6.svg"
+alt="Bromwitch contour of integration" /></p>
+<figcaption>Bromwitch contour of integration for the Laplace
+transform.</figcaption>
+</figure>
+<p>This closed piecewise contour consists of four sub-contours. To make
+this contour be the closed equivalent of the one above we let the value
+of <span class="math inline">\(a\)</span>, where the contour crosses the
+imaginary axis approach infinity. The integral that corresponds to the
+inverse Laplace transform then becomes</p>
+<p><span class="math display">\[\int\limits_{\gamma -j\infty}^{\gamma +
+j\infty} X(s) e^{st} ds = \lim_{a \rightarrow \infty} \int_{C_1} X(s)
+e^{st} ds + \int_{C_2} X(s) e^{st} ds + \int_{C_3} X(s) e^{st} ds +
+\int_{C_4} X(s) e^{st} ds = \oint_C X(s) e^{st} ds\]</span></p>
+<p>I think of this as the contour goes off to infinity, and comes back
+in from the other side, but this is just a mental convenience.</p>
+<p>We will see several examples of this contour over the next week.</p>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>

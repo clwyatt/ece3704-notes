@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-08-11" />
+  <title>Lecture 2 Modeling and Characterization of Signals and Systems</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture 2<br />
+Modeling and Characterization of Signals and Systems</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-08-11</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#signals" id="toc-signals">Signals</a></li>
+<li><a href="#systems" id="toc-systems">Systems</a></li>
+<li><a href="#example-problems" id="toc-example-problems">Example
+Problems</a></li>
+</ul>
+</nav>
+<p>Today’s lecture is a review of material from ECE 2714. We will review
+the modeling and characterization of continuous-time and discrete-time
+signals and systems.</p>
+<h2 id="signals">Signals</h2>
+<p>Signals are modeled as functions <span class="math inline">\(f: A
+\rightarrow B\)</span> where <span class="math inline">\(A\)</span> and
+<span class="math inline">\(B\)</span> are sets.</p>
+<p>Examples of some commonly encountered signals:</p>
+<ul>
+<li><p><span class="math inline">\(A\in \mathbb{R}\)</span>, <span
+class="math inline">\(B\in \mathbb{R}\)</span>: CT (Analog)
+signals</p></li>
+<li><p><span class="math inline">\(A\in \mathbb{Z}\)</span>, <span
+class="math inline">\(B\in \mathbb{R}\)</span>: DT real-valued
+signals</p></li>
+<li><p><span class="math inline">\(A\in \mathbb{Z}\)</span>, <span
+class="math inline">\(B\in \mathbb{C}\)</span>: DT complex-valued
+signals</p></li>
+<li><p><span class="math inline">\(A\in \mathbb{R}\)</span>, <span
+class="math inline">\(B\in \mathbb{R}^2\)</span>: two-channel CT (Analog
+Stereo) signals</p></li>
+</ul>
+<p>To model signals we can build them up from primitive signals using
+transformations and combinations.</p>
+<p>Some examples of primitive CT signals:</p>
+<ul>
+<li><p><span class="math inline">\(\delta(t)\)</span>, the delta
+function</p></li>
+<li><p><span class="math inline">\(u(t)\)</span>, the step
+function</p></li>
+<li><p><span class="math inline">\(e^{st}\; s\in\mathbb{C}\)</span>, the
+complex exponential</p></li>
+</ul>
+<p>Recall the important relations for the complex exponential. Let <span
+class="math inline">\(s = \alpha + j\beta\)</span>, where <span
+class="math inline">\(\alpha, \beta \in \mathbb{R}\)</span>, then</p>
+<p><span class="math display">\[e^{st} = e^{(\alpha + j\beta)t} =
+e^{\alpha t}\, e^{j\beta t} = e^{\alpha t}\left(\cos(\beta t) +
+j\sin(\beta t) \right)\]</span></p>
+<p>By combining primitive signals we can create other signals. For
+example, the cosine function can be written as the weighted, linear
+combination of two complex exponentials</p>
+<p><span class="math display">\[\cos(\omega t) = \frac{1}{2}
+e^{j\omega_0 t} + \frac{1}{2} e^{-j\omega_0 t}\]</span></p>
+<p>A similar example is the Fourier Series representation of periodic CT
+signals, <span class="math inline">\(x(t)\)</span>, that meet the
+Direchlet conditions. It is an infinite weighted, linear combination of
+complex exponentials</p>
+<p><span class="math display">\[x(t) = \sum\limits_{k =
+-\infty}^{\infty} a_k\, e^{jk\omega_0\, t}\]</span></p>
+<p>We can also think about decomposing complex signals into primitive
+functions rather than building them up. Recall the CT Fourier
+decomposition (transform) of a signal <span
+class="math inline">\(x(t)\)</span> is given by the improper, definite
+integral:</p>
+<p><span class="math display">\[X(\omega) =
+\int\limits_{-\infty}^{\infty} x(t) e^{j\omega\, t}\; dt\]</span></p>
+<p>which applies to many, but not all, signals.</p>
+<p>Some example primitives for DT signals are:</p>
+<ul>
+<li><p><span class="math inline">\(\delta[n]\)</span>, the discrete
+delta function</p></li>
+<li><p><span class="math inline">\(u[n]\)</span>, the discrete unit
+step</p></li>
+<li><p><span class="math inline">\(z^n,\; z\in\mathbb{C}\)</span>, the
+complex exponential</p></li>
+</ul>
+<p>Recall the DT complex exponential can be written as follows. Let
+<span class="math inline">\(z = r\, e^{j\theta}, \,
+r,\theta\in\mathbb{R}\)</span>, then</p>
+<p><span class="math display">\[z^n = \left( r\, e^{j\theta} \right)^n =
+r^n\, e^{j\theta\, n} = r^n\left(\cos(\theta\, n) + j\sin(\theta\, n)
+\right)\]</span></p>
+<p>Note: the type of signal, DT or CT, real-valued or complex valued,
+etc. can usually be inferred. To make this easier we use square brackets
+<span class="math inline">\([]\)</span> to define DT signals and
+parenthesis <span class="math inline">\(()\)</span> to define CT
+signals.</p>
+<p>As before, we can construct more complex DT signals by taking
+products and weighted linear combinations of these primitive signals,
+for example:</p>
+<ul>
+<li><p><span class="math inline">\(\left(\gamma\right)^n\; u[n],\;
+\gamma\in\mathbb{R}\)</span></p></li>
+<li><p><span class="math inline">\(\left(\gamma\right)^n\,\cos(\omega_0
+n)\; u[n],\; \gamma,\omega_0\in\mathbb{R}\)</span></p></li>
+</ul>
+<p>In many cases the same signals can be expressed in different forms.
+In the last example above</p>
+<p><span class="math display">\[\left(\gamma\right)^n\,\cos(\omega_0
+n)\; u[n] = \left(z\right)^n + \left(z^*\right)^n\]</span></p>
+<p>where <span class="math inline">\(z = \frac{\gamma}{2}\,
+e^{j\theta}\)</span>.</p>
+<p>The corresponding Fourier decomposition for a DT signal <span
+class="math inline">\(x[n]\)</span> is</p>
+<p><span class="math display">\[X(\omega) =
+\sum\limits_{-\infty}^{\infty} x[n] e^{j\omega\, n}\]</span></p>
+<p>a periodic function in <span class="math inline">\(2\pi\)</span>,
+which may or may not exist for any given signal of interest.</p>
+<p>Major classifications of signals are:</p>
+<ul>
+<li><p>casual, anti-causal, or neither</p></li>
+<li><p>periodic or aperiodic</p></li>
+<li><p>even, odd, or neither</p></li>
+<li><p>energy, power, or neither</p></li>
+</ul>
+<h2 id="systems">Systems</h2>
+<p>Systems either</p>
+<ol>
+<li><p>produce signals</p></li>
+<li><p>measure signals</p></li>
+<li><p>transform signals (inputs) into other signals (outputs)</p></li>
+</ol>
+<ul>
+<li><p>CT systems transform CT signals to CT signals.</p></li>
+<li><p>DT systems transform DT signals to DT signals.</p></li>
+<li><p>Hybrid systems convert between CT and DT signals.</p></li>
+</ul>
+<p>Major classifications of systems are:</p>
+<ul>
+<li><p>memory-less or dynamic</p></li>
+<li><p>casual or non-causal</p></li>
+<li><p>invertable or non-invertable</p></li>
+<li><p>BIBO stable or unstable</p></li>
+<li><p>time-varying or time-invariant</p></li>
+<li><p>linear or nonlinear</p></li>
+</ul>
+<p>The focus of ECE 2714 and this course is Linear, Time-Invariant (LTI)
+systems in CT and DT.</p>
+<p>CT systems are in general represented by differential equations, e.g.
+the driven, damped pendulum</p>
+<p><span class="math display">\[a\ddot{y} + b\dot(y) + c\sin(y) =
+x(t)\]</span></p>
+<p>CT LTI systems, stable or unstable, can be represented by</p>
+<ul>
+<li><p>linear, constant-coefficient differential equations (LCCDE) with
+zero initial conditions</p></li>
+<li><p>impulse response <span
+class="math inline">\(h(t)\)</span></p></li>
+<li><p>block diagram</p></li>
+<li><p>Eigenvalue or Transfer Function <span
+class="math inline">\(H(s)\)</span> (this concept is developed more in
+this course)</p></li>
+</ul>
+<p>Stable CT LIT systems can be also be represented by their frequency
+response</p>
+<p><span class="math display">\[H(j\omega) =
+\frac{Y(j\omega)}{X(j\omega)} = \mathcal{F} \left\{ h(t)
+\right\}\]</span></p>
+<p>DT systems can in general be represented by difference equations,
+e.g. logistic equation</p>
+<p><span class="math display">\[y[n+1] = a\, x[n]\,
+(1-x[n])\]</span></p>
+<p>DT LTI systems, stable or unstable, can be represented by</p>
+<ul>
+<li><p>linear, constant-coefficient difference equations (LCCDE) with
+zero auxiliary conditions</p></li>
+<li><p>impulse response <span
+class="math inline">\(h[n]\)</span></p></li>
+<li><p>block diagram</p></li>
+<li><p>Eigenvalue or Transfer Function <span
+class="math inline">\(H(z)\)</span> (this is developed more in this
+course)</p></li>
+</ul>
+<p>Stable DT LTI systems can also be represented by their frequency
+response</p>
+<p><span class="math display">\[H\left(e^{j\omega}\right) =
+\frac{Y\left(e^{j\omega}\right)}{X\left(e^{j\omega}\right)} =
+\mathcal{F}\left\{ h[n] \right\}\]</span></p>
+<p>ECE 2714 leaves open two major questions:</p>
+<ol>
+<li><p>how do we deal with signals that do not have Fourier
+transforms</p></li>
+<li><p>(related) how do we deal with unstable systems</p></li>
+</ol>
+<p>The first question is seemingly not that important we signals without
+Fourier transforms grow faster than is practically useful.</p>
+<p>The second question is more relevant since we might want to know</p>
+<ul>
+<li><p>how do we prevent unstable systems when designing</p></li>
+<li><p>how can we stabilize an unstable system</p></li>
+</ul>
+<p>The first and second questions are related since the impulse response
+<span class="math inline">\(h(t), h[n]\)</span> of unstable systems do
+not have Fourier transforms.</p>
+<p>We will address these issues this semester by building on two aspects
+of ECE 2714 only lightly covered:</p>
+<ul>
+<li><p>Laplace Transform</p></li>
+<li><p>Z Transform</p></li>
+</ul>
+<h2 id="example-problems">Example Problems</h2>
+<ol>
+<li><p>Given the following LCCDE using operator notation for
+time-derivatives, determine the impulse response, <span
+class="math inline">\(h(t)\)</span> <span class="math display">\[D^3y +
+6D^2y + 11Dy + 6y = Dx + x\]</span> <strong>Solution:</strong> We note
+<span class="math display">\[Q(D) = D^3 + 6D^2 + 11D + 6 =
+(D+1)(D+2)(D+3)\]</span> <span class="math display">\[P(D) = 0D^2 + D +
+1\]</span> The homogeneous solution is of the form <span
+class="math display">\[y_h(t) = C_1e^{-t} + C_2e^{-2t} +
+C_3e^{-3t}\]</span> We will also need tthe first and second derivatives:
+<span class="math display">\[D y_h(t) = -C_1e^{-t} -2 C_2e^{-2t} -3
+C_3e^{-3t}\]</span> <span class="math display">\[D^2 y_h(t) = C_1e^{-t}
++4C_2e^{-2t} +9 C_3e^{-3t}\]</span> Using the special initial conditions
+<span class="math inline">\(y_h(0) = 0\)</span>, <span
+class="math inline">\(D y_h(0) = 0\)</span>, <span
+class="math inline">\(D^2 y_h(0) = 1\)</span> we obtain the system of
+equations: <span class="math display">\[\begin{bmatrix}
+    1  &amp; 1  &amp; 1  \\
+    -1 &amp; -2 &amp; -3 \\
+    1  &amp; 4  &amp; 9
+  \end{bmatrix}
+  \begin{bmatrix}
+    C_1 \\ C_2 \\ C_3
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    0 \\ 0 \\ 1
+  \end{bmatrix}\]</span> Solving this gives the constants <span
+class="math inline">\(C_1 = \frac{1}{2}\)</span>, <span
+class="math inline">\(C_2 = -1\)</span>, <span class="math inline">\(C_3
+= \frac{1}{2}\)</span>. The form of the impulse response is <span
+class="math display">\[\begin{aligned}
+    h(t) &amp; = b_0\delta(t) + \left[ P(D) y_h(t) \right]
+u(t)                                                                             \\
+    &amp; = \left[-\frac{1}{2} e^{-t} + 2e^{-2t} - \frac{3}{2}e^{-3t} +
+\frac{1}{2}e^{-t} - 2e^{-2t} + \frac{1}{2}e^{-3t} \right] u(t) \\
+    &amp; = \left[e^{-2t} - e^{-3t}\right] u(t)
+  
+\end{aligned}\]</span> Note the term in front of <span
+class="math inline">\(e^{-t}\)</span> is zero. Why? We will see that
+Laplace gives us intuition about solutions like this and in many cases
+simplifies the analysis.</p></li>
+<li><p>Find the impuse response that corresponds to the block
+diagram</p>
+<figure>
+<p><img src="figures/fig2_1.svg"
+alt="block diagram for example problem" /></p>
+<figcaption>Block Diagram for example.</figcaption>
+</figure>
+<p><strong>Solution:</strong></p>
+<ul>
+<li><p>reading the block diagram <span class="math display">\[y[n] =
+-\frac{3}{4} y[n-1] - \frac{1}{8} y[n-2] + x[n] -
+x[n-1]\]</span></p></li>
+<li><p>putting into standard form <span class="math display">\[y[n+2] +
+\frac{3}{4} y[n+1] + \frac{1}{8} y[n] = x[n+2] -
+x[n+1]\]</span></p></li>
+<li><p>Note <span class="math display">\[Q(E) = E^2 + \frac{3}{4}E +
+\frac{1}{8} = \left(E + \frac{1}{2}\right)\left(E +
+\frac{1}{4}\right)\]</span> <span class="math display">\[P(E) = E^2 - E
++ 0\]</span></p></li>
+<li><p>the homogeneous form is then <span class="math display">\[y_h[n]
+= C_1 \left(-\frac{1}{2}\right)^n +
+C_2\left(-\frac{1}{4}\right)^n\]</span></p></li>
+<li><p>the impulse response is <span class="math display">\[h[n] =
+\frac{a_2}{b_2}\delta[n] + y_h[n]\, u[n]\]</span></p></li>
+<li><p>since <span class="math inline">\(a_2 = 0, b_2 =
+\frac{1}{8}\)</span> then <span class="math display">\[h[n] = C_1
+\left(-\frac{1}{2}\right)^n u[n] + C_2\left(-\frac{1}{4}\right)^n
+u[n]\]</span></p></li>
+<li><p>to find the constants we need two values of <span
+class="math inline">\(h\)</span>, from the recursive form <span
+class="math display">\[\begin{aligned}
+      h[n] &amp;= -\frac{3}{4} h[n-1] - \frac{1}{8} h[n-2] + \delta[n] -
+\delta[n-1]\\
+      h[0] &amp;= -\frac{3}{4} h[-1] - \frac{1}{8} h[-2] + \delta[0] -
+\delta[-1] = 1 = C_1 + C_2\\
+      h[1] &amp;= -\frac{3}{4} h[0] - \frac{1}{8} h[-1] + \delta[1] -
+\delta[0] = -\frac{7}{4} = -\frac{1}{2} C_1 -\frac{1}{4} C_2\\
+    
+\end{aligned}\]</span> This implies <span class="math inline">\(C_1 =
+6\)</span> and <span class="math inline">\(C_2 = -5\)</span>.</p></li>
+<li><p>the final solution is then <span class="math display">\[h[n] = 6
+\left(-\frac{1}{2}\right)^n u[n] -5 \left(-\frac{1}{4}\right)^n
+u[n]\]</span></p></li>
+</ul></li>
+</ol>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>

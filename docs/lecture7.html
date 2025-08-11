@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-08-11" />
+  <title>Lecture 7 Complex Analysis II</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture 7<br />
+Complex Analysis II</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-08-11</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#complex-derivatives" id="toc-complex-derivatives">Complex
+Derivatives</a>
+<ul>
+<li><a href="#examples" id="toc-examples">Examples</a></li>
+</ul></li>
+<li><a href="#rational-complex-functions"
+id="toc-rational-complex-functions">Rational Complex Functions</a>
+<ul>
+<li><a href="#partial-fraction-expansion"
+id="toc-partial-fraction-expansion">Partial Fraction Expansion</a></li>
+</ul></li>
+</ul>
+</nav>
+<p>In today’s lecture we continue our introduction to complex analysis
+by defining analytic complex functions, the complex derivative, and
+looking closer at rational complex functions.</p>
+<h2 id="complex-derivatives">Complex Derivatives</h2>
+<p>A complex function <span class="math inline">\(f(s)\)</span> is
+<em>analytic</em> in some domain <span
+class="math inline">\(R\subset\mathbb{C}\)</span> of the function is</p>
+<ul>
+<li><p>single valued, and</p></li>
+<li><p>has a finite complex derivative <span
+class="math inline">\(f^\prime(s) \equiv \frac{df}{ds}\)</span> for all
+<span class="math inline">\(s\in R\)</span>.</p></li>
+</ul>
+<p>Let <span class="math inline">\(f(s) = f(x + jy) = u(x,y) +
+jv(x,y)\)</span>. The function has a complex derivative if and only
+if</p>
+<p><span class="math display">\[\frac{\partial u}{\partial x} =
+\frac{\partial v}{\partial y}\]</span> and <span
+class="math display">\[\frac{\partial u}{\partial y} = -\frac{\partial
+v}{\partial x}\]</span> These are called the Cauchy-Riemann conditions.
+If these conditions are met then the complex derivative is given by</p>
+<p><span class="math display">\[f^\prime(s) = \frac{\partial u}{\partial
+x} + j \frac{\partial v}{\partial x} = \frac{\partial v}{\partial y} - j
+\frac{\partial u}{\partial y}\]</span></p>
+<p>If a complex function is analytic over the entire complex plane, i.e.
+<span class="math inline">\(R = \mathbb{C}\)</span>, it is called an
+<em>entire</em> function.</p>
+<p>If a complex function is not analytic at a point <span
+class="math inline">\(s_0\)</span>, but is analytic in the neighborhood
+of <span class="math inline">\(s_0\)</span>, then the point is called a
+or a <em>singular point</em> of the function.</p>
+<h3 id="examples">Examples</h3>
+<p><strong>Example 1:</strong> Let <span class="math inline">\(s =
+x+jy\)</span> and define</p>
+<p><span class="math display">\[f(s) = e^s = f(x+jy) = e^{x+jy} = e^x
+e^{jy}\]</span> Using Euler’s relation</p>
+<p><span class="math display">\[f(x+jy) =
+\underbrace{e^x\cos(y)}_{u(x,y)} + j\underbrace{e^x
+\sin(y)}_{v(x,y)}\]</span> Checking the Cauchy-Riemann conditions</p>
+<p><span class="math display">\[\frac{\partial u}{\partial x} =
+e^x\cos(y)\]</span></p>
+<p><span class="math display">\[\frac{\partial u}{\partial y} =
+-e^x\sin(y)\]</span></p>
+<p><span class="math display">\[\frac{\partial v}{\partial x} =
+e^x\sin(y)\]</span> <span class="math display">\[\frac{\partial
+v}{\partial y} = e^x\cos(y)\]</span> Thus <span
+class="math inline">\(\frac{\partial u}{\partial x} = \frac{\partial
+v}{\partial y} = e^x\cos(y)\)</span> and <span
+class="math inline">\(\frac{\partial u}{\partial y} = -\frac{\partial
+v}{\partial x} = -e^x\sin(y)\)</span> and the function is analytic
+everywhere and thus an entire function. The complex derivative is</p>
+<p><span class="math display">\[f^\prime(s) = e^x\cos(y) + je^x\sin(y) =
+e^x e^{jy} = e^{x+jy} = e^s\]</span> just as if <span
+class="math inline">\(s\)</span> was real and <span
+class="math inline">\(f\)</span> a real function.</p>
+<p><strong>Example 2:</strong> Let <span class="math inline">\(f(s) =
+\frac{1}{s}\)</span>, for <span class="math inline">\(|s| &gt;
+0\)</span>, i.e. <span class="math inline">\(s \neq 0\)</span>. Then</p>
+<p><span class="math display">\[f(s) = f(x+jy) = \frac{1}{x+jy} =
+\frac{1}{x+jy} \cdot \frac{x-jy}{x-jy} = \frac{x-jy}{x^2 + y^2} =
+\underbrace{\frac{x}{x^2 + y^2}}_{u(x,y)} + j \underbrace{\frac{-y}{x^2
++ y^2}}_{v(x,y)}\]</span></p>
+<p>Checking the Cauchy-Riemann conditions</p>
+<p><span class="math display">\[\frac{\partial u}{\partial x} =
+\frac{-x^2 + y^2}{(x^2 + y^2)^2}\]</span></p>
+<p><span class="math display">\[\frac{\partial u}{\partial y} =
+\frac{-2xy}{(x^2 + y^2)^2}\]</span></p>
+<p><span class="math display">\[\frac{\partial v}{\partial x} =
+\frac{2xy}{(x^2 + y^2)^2}\]</span></p>
+<p><span class="math display">\[\frac{\partial v}{\partial y} =
+\frac{-x^2 + y^2}{(x^2 + y^2)^2}\]</span></p>
+<p>we we see that the function is analytic for <span
+class="math inline">\(s \in \mathbb{C} - (0 + j0)\)</span> and</p>
+<p><span class="math display">\[f^\prime(s) = \frac{-x^2 + y^2}{(x^2 +
+y^2)^2} + j \frac{2xy}{(x^2 + y^2)^2}\]</span></p>
+<p>With some work you can show this is the same as</p>
+<p><span class="math display">\[f^\prime(s) =
+-\frac{1}{s^2}\]</span></p>
+<p>again, just as if <span class="math inline">\(s\)</span> was real and
+<span class="math inline">\(f\)</span> a real function.</p>
+<p><strong>Example 3:</strong> Now for a counter-example. Consider</p>
+<p><span class="math display">\[f(s) = s^* = f(x + jy) = x - jy\]</span>
+Thus <span class="math inline">\(u(x,y) = x\)</span> and <span
+class="math inline">\(v(x,y) = -y\)</span>. Checking the Cauchy-Riemann
+conditions,</p>
+<p><span class="math display">\[\frac{\partial u}{\partial x} =
+1\]</span></p>
+<p><span class="math display">\[\frac{\partial u}{\partial y} =
+0\]</span></p>
+<p><span class="math display">\[\frac{\partial v}{\partial x} =
+0\]</span></p>
+<p><span class="math display">\[\frac{\partial v}{\partial y} =
+-1\]</span></p>
+<p>we see <span class="math inline">\(\frac{\partial u}{\partial x} = 1
+\neq \frac{\partial v}{\partial y} = -1\)</span> thus the function is
+not analytic and no derivative exists.</p>
+<p><strong>Example 4:</strong> Show that <span class="math inline">\(s_0
+= -1\)</span> is a singularity of an analytic complex function <span
+class="math display">\[f(s) = \frac{1}{s+1} = f(x +jy) = \frac{1}{(1+x)
++ jy}\]</span> Rearranging to get the real part and imaginary part</p>
+<p><span class="math display">\[\frac{1}{(1+x) + jy}\frac{(1+x) -
+jy}{(1+x) - jy} = \underbrace{\frac{1+x}{(1+x)^2 + y^2}}_{u(x,y)} + j
+\underbrace{\frac{-y}{(1+x)^2 + y^2}}_{v(x,y)}\]</span></p>
+<p>Checking the Cauchy-Riemann conditions,</p>
+<p><span class="math display">\[\frac{\partial u}{\partial x} =
+\frac{-(1+x)^2 + y^2}{[(1+x)^2 + y^2]^2}\]</span></p>
+<p><span class="math display">\[\frac{\partial u}{\partial y} =
+\frac{-2(1+x)y}{[(1+x)^2 + y^2]^2}\]</span></p>
+<p><span class="math display">\[\frac{\partial v}{\partial x} =
+\frac{2(1+x)y}{[(1+x)^2 + y^2]^2}\]</span></p>
+<p><span class="math display">\[\frac{\partial v}{\partial y} =
+\frac{-(1+x)^2 + y^2}{[(1+x)^2 + y^2]^2}\]</span></p>
+<p>we see that <span class="math inline">\(\frac{\partial u}{\partial x}
+= \frac{\partial v}{\partial y}\)</span> and <span
+class="math inline">\(\frac{\partial u}{\partial y} = -\frac{\partial
+v}{\partial x}\)</span> except at <span class="math inline">\(x=-1, y =
+0\)</span> where</p>
+<p><span class="math display">\[\frac{-(1+x)^2 + y^2}{[(1+x)^2 + y^2]^2}
+= \frac{0}{0} = \text{undefined}\]</span></p>
+<p>Thus the function is analytic except at <span
+class="math inline">\(s_0 = -1 + j0 = -1\)</span>.</p>
+<h2 id="rational-complex-functions">Rational Complex Functions</h2>
+<p>The previous example is a <em>rational function</em>, a ratio of
+polynomials in <span class="math inline">\(s\)</span>. These will be
+very important later in the course. We will need to be very adept at
+doing manipulations of such functions. The general case can be written
+as</p>
+<p><span class="math display">\[f(s) = \frac{\sum\limits_{k=0}^M b_k
+s^k}{\sum\limits_{k=0}^N a_k s^k} \equiv \frac{P(s)}{Q(s)}\]</span></p>
+<ul>
+<li><p>If <span class="math inline">\(M &lt; N\)</span> the ratio is
+said to be <em>strictly proper</em>.</p></li>
+<li><p>If <span class="math inline">\(M \leq N\)</span> the ratio is
+<em>proper</em>.</p></li>
+<li><p>If <span class="math inline">\(M &gt; N\)</span> the ratio is
+<em>improper</em>.</p></li>
+</ul>
+<p>Example: <span class="math inline">\(M = 2, N=3\)</span></p>
+<p><span class="math display">\[f(s) = \frac{b_0 + b_1 s + b_2 s^2}{a_0
++ a_1 s + a_2 s^2 + a_3 s^3}\]</span> is a strictly proper rational
+function.</p>
+<p>The roots of the denominator polynomial <span
+class="math inline">\(Q(s)\)</span> are the singularities of <span
+class="math inline">\(f\)</span>. We will often be interested in writing
+rational functions as a <em>partial fraction expansion</em> of the
+factors of the denominator.</p>
+<h3 id="partial-fraction-expansion">Partial Fraction Expansion</h3>
+<p>A ratio of polynomials that is improper can be written as the sum of
+a polynomial and a strictly proper rational function. Example</p>
+<p><span class="math display">\[f(s) = \frac{2s^3 + 9s^2 + 11s + 2}{s^2
++ 4s + 3} = (2s+1) + \frac{s-1}{s^2 + 4s + 3}\]</span></p>
+<p>Once a rational function is proper we can expand it in terms of the
+factors of <span class="math inline">\(Q(s)\)</span>. Example</p>
+<p><span class="math display">\[f(s) = \frac{1}{s^2 + 3s +2} =
+\frac{1}{(s+1)(s+2)} = \frac{A}{s+1} + \frac{B}{s+2}\]</span></p>
+<p>To find <span class="math inline">\(A\)</span> and <span
+class="math inline">\(B\)</span> we can "clear" the fractions</p>
+<p><span class="math display">\[\frac{A}{s+1} + \frac{B}{s+2} =
+\frac{1}{(s+1)(s+2)} = \frac{A(s+2) + B(s+1)}{(s+1)(s+2)}\]</span> which
+gives the equation for the numerator <span class="math display">\[A(s+2)
++ B(s+1) = 1 + 0s\]</span> which requires <span class="math inline">\(A
+= 1\)</span> and <span class="math inline">\(B = -1\)</span>, so that
+<span class="math display">\[f(s) = \frac{1}{s+1} +
+\frac{-1}{s+2}\]</span></p>
+<p>Clearing fractions can be tedious with higher order systems. A
+shortcut is to use the Heaviside "cover-up" method, or finding the
+<em>residues</em>.</p>
+<p><strong>Case #1:</strong> non-repeated singularities <span
+class="math display">\[f(s) = \frac{P(s)}{(s-\alpha_1)(s-\alpha_2)\cdots
+(s-\alpha_N)}\]</span> where <span
+class="math inline">\(\alpha_i\)</span> are the distinct singularities
+(roots of <span class="math inline">\(Q(s)\)</span>). Then <span
+class="math display">\[f(s) = \frac{K_1}{s-\alpha_1} +
+\frac{K_1}{s-\alpha_1} + \cdots + \frac{K_N}{s-\alpha_N}\]</span></p>
+<p>To find the <span class="math inline">\(K_i\)</span> values we
+multiply through by that term (<span
+class="math inline">\(s-\alpha_i\)</span>) and evaluate the result when
+<span class="math inline">\(s = \alpha_i\)</span> <span
+class="math display">\[K_i = \left. (s-\alpha_i)f(s) \right|_{s =
+\alpha_i}\]</span></p>
+<p>Example:</p>
+<p><span class="math display">\[f(s) = \frac{s^2 + 2s +
+7}{(s_1)(s-3)(s+5)} = \frac{K_1}{s+1} + \frac{K_2}{s-3} +
+\frac{K_3}{s+5}\]</span></p>
+<p>We note that <span class="math inline">\(M = 2\)</span> and <span
+class="math inline">\(N = 3\)</span> so that the function is strictly
+proper. To find the constants</p>
+<p><span class="math display">\[K_1 = \left. \frac{s^2 + 2s +
+7}{(s-3)(s+5)} \right|_{s = -1} = -\frac{3}{8}\]</span></p>
+<p><span class="math display">\[K_2 = \left. \frac{s^2 + 2s +
+7}{(s+1)(s+5)} \right|_{s = 3} = \frac{11}{16}\]</span></p>
+<p><span class="math display">\[K_3 = \left. \frac{s^2 + 2s +
+7}{(s+1)(s-3)} \right|_{s = -5} = \frac{11}{16}\]</span></p>
+<p>This works even if the roots are complex. For example:</p>
+<p><span class="math display">\[f(s) = \frac{1}{(s + 1 + j)(s + 1 -j)} =
+\frac{K_1}{s + 1 + j} + \frac{K_2}{s + 1 -j}\]</span></p>
+<p><span class="math display">\[K_1 = \left. \frac{1}{s + 1 - j}
+\right|_{s = -1-j} = -\frac{1}{2j}\]</span></p>
+<p><span class="math display">\[K_2 = \left. \frac{1}{s + 1 + j}
+\right|_{s = -1+j} = \frac{1}{2j}\]</span></p>
+<p><strong>Case #2:</strong> However we will often want to avoid working
+with complex roots directly. Another approach is to combine them into a
+quadratic term. Here is an example:</p>
+<p><span class="math display">\[f(s) = \frac{s+2}{s^3 + 3s^2 + 4s + 2} =
+\frac{s+2}{(s+1)(s+1 +j)(s +1 -j)} = \frac{s+2}{(s+1)(s^2 +2s + 2)} =
+\frac{A}{s+1} + \frac{Bs + C}{s^2 + 2s + 2}\]</span></p>
+<p>To find <span class="math inline">\(A\)</span> we use the same
+residue method</p>
+<p><span class="math display">\[A = \left. \frac{s+2}{s^2 + 2s + 2}
+\right|_{s = -1} = 1\]</span></p>
+<p>To find <span class="math inline">\(B\)</span> and <span
+class="math inline">\(C\)</span> we can clear fractions or use another
+shortcut. To find <span class="math inline">\(C\)</span>, let <span
+class="math inline">\(s = 0\)</span>. We get</p>
+<p><span class="math display">\[\frac{A}{1} + \frac{C}{2} = 1\]</span>
+which implies that <span class="math inline">\(C = 0\)</span>. To find
+<span class="math inline">\(B\)</span> multiply through by <span
+class="math inline">\(s\)</span> and let <span
+class="math inline">\(s\rightarrow \infty\)</span>.</p>
+<p><span class="math display">\[\frac{As}{s+1} + \frac{Bs^2 + Cs}{s^2 +
+2s + 2} = \frac{s^2 + 2s}{s^3 + 3s^2 + 4s + 2}\]</span></p>
+<p>In the first term divide top and bottom by <span
+class="math inline">\(s\)</span>, in the second term by <span
+class="math inline">\(s^2\)</span>, and on the right-hand side by <span
+class="math inline">\(s^3\)</span>:</p>
+<p><span class="math display">\[\frac{A}{1+s^{-1}} + \frac{B +
+Cs^{-1}}{1 + 2s^{-1} + 2s^{-2}} = \frac{s^{-1} + 2s^{-2}}{1 + 3s^{-1} +
+4s^{-2} + 2s^{-3}}\]</span></p>
+<p>Now let <span class="math inline">\(s\rightarrow \infty\)</span>. We
+get</p>
+<p><span class="math display">\[\frac{A}{1} + \frac{B}{1} = \frac{0}{1}
+= 0\]</span> which implies <span class="math inline">\(B =
+-1\)</span>.</p>
+<p>Or you can just clear the fractions and substitute for <span
+class="math inline">\(A\)</span> and <span
+class="math inline">\(C\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+  As^2 + 2As + 2A + Bs^2 + Cs + Bs + C &amp;= s+2\\
+  (A+B)s^2 + (2A + B + c)s + 2A +C = s+2\\
+\end{aligned}\]</span> We only need one equation, so lets use <span
+class="math inline">\(2A + B + C = 1\)</span>. Solving for <span
+class="math inline">\(B\)</span> and substituting for <span
+class="math inline">\(A.C\)</span> gives <span class="math inline">\(B =
+-1\)</span> as above.</p>
+<p>Thus the final result is</p>
+<p><span class="math display">\[f(s) = \frac{1}{s+1} + \frac{-s}{s^2 +
+2s + 2}\]</span></p>
+<p><strong>Case # 3:</strong> One other complication is when we have
+repeated roots (a root <span class="math inline">\(\lambda\)</span>,
+repeated <span class="math inline">\(r &gt; 1\)</span> times).</p>
+<p><span class="math display">\[f(s) \frac{P(s)}{(s-\lambda)^r\,
+(s-\alpha_1)(s-\alpha_2)\cdots(s-\alpha_{N-r})}\]</span></p>
+<p>To handle this case we expand the ratio as</p>
+<p><span class="math display">\[f(s) = \frac{a_0}{(s-\lambda)^r} +
+\frac{a_1}{(s-\lambda)^{r-1}} + \cdots + \frac{a_{r-1}}{s-\lambda} +
+\frac{K_1}{s-\alpha_1} + + \frac{K_2}{s-\alpha_2} + \cdots + +
+\frac{K_{N-r}}{s-\alpha_{N-r}}\]</span></p>
+<p>The <span class="math inline">\(K_i\)</span> values are determined
+using the same residue method as before. The <span
+class="math inline">\(a_i\)</span> values are found using a variation on
+the residue method:</p>
+<p><span class="math display">\[a_i = \left.
+\frac{1}{i!}\frac{d^i}{ds^i}[(s-\lambda)^r f(s)] \right|_{s =
+\lambda}\]</span></p>
+<p>That is rather complicated so lets finish up with an example. Find
+the partial fraction expansion of</p>
+<p><span class="math display">\[f(s) =
+\frac{s+3}{(s+1)^2(s+2)}\]</span></p>
+<p>Using the pattern above we expand the terms as</p>
+<p><span class="math display">\[f(s) = \frac{K_1}{s+2} +
+\frac{a_0}{(s+1)^2} + \frac{a_1}{s+1}\]</span> then find the
+residues</p>
+<p><span class="math display">\[K_1 = \left. \frac{s+3}{(s+1)^2}
+\right|_{s = -2} = 1\]</span></p>
+<p><span class="math display">\[a_0 = \left.
+\frac{1}{0!}\frac{d^0}{ds^0}\left[\frac{s+3}{s+2}\right] \right|_{s =
+-1} = 2\]</span></p>
+<p><span class="math display">\[a_1 = \left.
+\frac{1}{1!}\frac{d}{ds}\left[\frac{s+3}{s+2}\right] \right|_{s = -1} =
+\left. \frac{(s+2)(1) - (s+3)(1)}{(s+2)^2} \right|_{s = -1} =
+-1\]</span></p>
+<p>Thus the result is</p>
+<p><span class="math display">\[f(s) = \frac{1}{s+2} + \frac{2}{(s+1)^2}
++ \frac{-1}{s+1}\]</span></p>
+<p>As you might expect there are computational tools that do this job
+for you.</p>
+<ul>
+<li><p>Mathematica: <code>Apart</code> function</p></li>
+<li><p>Matlab (using symbolic toolbox) and Maxima: <code>partfrac</code>
+function</p></li>
+</ul>
+<p>You can use this to check work and help on homework, but you will
+need to be able to do this by hand on exams.</p>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>
