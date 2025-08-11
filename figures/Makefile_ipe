@@ -1,0 +1,23 @@
+# build pdf, svg, and png versions of ipe figures
+
+SOURCES=$(wildcard *.ipe)
+PDFTARGETS= $(SOURCES:%.ipe=%.pdf)
+SVGTARGETS= $(SOURCES:%.ipe=%.svg)
+PNGTARGETS= $(SOURCES:%.ipe=%.png)
+
+all: $(PDFTARGETS) $(SVGTARGETS) $(PNGTARGETS) 
+
+%.svg: %.ipe
+	@echo Converting to $@
+	iperender -svg $< $@
+
+%.pdf: %.ipe
+	@echo Converting to $@
+	iperender -pdf $< $@
+	
+%.png: %.ipe
+	@echo Converting to $@
+	iperender -png $< $@
+
+clean:
+	$(RM) *.svg *.pdf *.png

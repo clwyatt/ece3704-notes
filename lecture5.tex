@@ -69,7 +69,7 @@ If $x(t)$ is not band-limited, or $T > \frac{1}{2B}$, then we get \textit{aliasi
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\linewidth, alt="the magnitude spectrum of a band-limited signal"]{bandlimited.svg}
+  \includegraphics[width=0.8\linewidth, alt="the magnitude spectrum of a band-limited signal"]{figures/bandlimited.svg}
   \caption{Illustration of the magnitude spectrum of a band-limited signal.}
 \end{figure}
 
@@ -77,7 +77,7 @@ After sampling ($y(t) = x_1(t)\cdot x_2(t)$) and assuming $\omega_0 > 4\pi B$ th
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\linewidth, alt="the magnitude spectrum of a band-limited signal after sampling at the Nyquist rate"]{bandlimitedsampled1.svg}
+  \includegraphics[width=0.8\linewidth, alt="the magnitude spectrum of a band-limited signal after sampling at the Nyquist rate"]{figures/bandlimitedsampled1.svg}
   \caption{Illustration of the magnitude spectrum of a band-limited signal after sampling at the Nyquist rate.}
 \end{figure}
 
@@ -85,7 +85,7 @@ If instead $\omega_0 < 4\pi B$ the images overlap and we get aliasing, where hig
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\linewidth, alt="the magnitude spectrum of a band-limited signal after sampling below the Nyquist rate"]{bandlimitedsampled2.svg}
+  \includegraphics[width=0.8\linewidth, alt="the magnitude spectrum of a band-limited signal after sampling below the Nyquist rate"]{figures/bandlimitedsampled2.svg}
   \caption{Illustration of the magnitude spectrum of a band-limited signal after sampling below the Nyquist rate.}
 \end{figure}
 
@@ -97,7 +97,7 @@ We can generate short pulses that approximate the impulse however. This is done 
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\linewidth, alt="schematic of a circuit implementing a sample and hold"]{sample_hold.svg}
+  \includegraphics[width=0.8\linewidth, alt="schematic of a circuit implementing a sample and hold"]{figures/sample_hold.svg}
 \end{figure}
 where $p(t)$ is the pulse train with pulse width $P < T$
 \[
@@ -143,7 +143,7 @@ If this port is connected to a resistor network consisting of resistor values $R
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\linewidth, alt={Resistor ladder circuit diagram for a sample and hold system. The circuit has a horizontal row of six 2R resistors, each connected to a digital input labeled b0 through b3, bN2, and bN1. Below each 2R resistor is a corresponding R resistor, forming vertical pairs. The right end of the ladder connects to a voltage output labeled positive V-o.}]{fig5_1.svg}
+  \includegraphics[width=0.8\linewidth, alt={Resistor ladder circuit diagram for a sample and hold system. The circuit has a horizontal row of six 2R resistors, each connected to a digital input labeled b0 through b3, bN2, and bN1. Below each 2R resistor is a corresponding R resistor, forming vertical pairs. The right end of the ladder connects to a voltage output labeled positive V-o.}]{figures/fig5_1.svg}
 \end{figure}
 
 then depending on the bit pattern at the output port $V$, the output of the buffer op-amp will be
@@ -158,11 +158,6 @@ If the port value is changed every sample time $T$, then the resister ladder and
 The zero-order hold is followed by the reconstruction (anti-imaging) filter which low-pass filters the output and smooths-out the jumps from value to value.
 
 With or without and anti-imaging filter the signal is positive. This can be followed by a summing amplifier to shoft the signal voltage up or down and amplify as needed.
-
-\section{Lab 1}
-
-The goal of Lab 1 is the build a sampling and reconstruction system using a protoboard and microcontroller, an implement a DT identity (all-pass) system.
-
 
 
 \end{document}
