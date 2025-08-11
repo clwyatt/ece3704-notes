@@ -42,11 +42,16 @@ Forward Laplace Transform</h1>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
+<li><a href="#forward-laplace-transform"
+id="toc-forward-laplace-transform">Forward Laplace Transform</a>
+<ul>
 <li><a href="#examples" id="toc-examples">Examples</a></li>
+</ul></li>
 </ul>
 </nav>
 <p>In today’s lecture we introduce the Laplace Transform for CT signals
 and systems.</p>
+<h2 id="forward-laplace-transform">Forward Laplace Transform</h2>
 <p>Recall from ECE 2714 that the Eigenfunction for CT LTI systems is the
 input <span class="math inline">\(x(t) = e^{st}\)</span> for <span
 class="math inline">\(s\in\mathbb{C}\)</span>. The resulting output, if
@@ -104,7 +109,7 @@ class="math inline">\(a\)</span>, thus</p>
 <p><span class="math display">\[\mathcal{L}_2\left\{ u(t) \right\} =
 \mathcal{L}_2\left\{ e^{-at} u(t) \right\}_{a = 0} = \frac{1}{s} \text{
 for Re}(s) &gt; 0\]</span></p>
-<p>Lets compare the result in Example 9.1 to the CTFT transform.</p>
+<p>Lets compare the result in Example 9.1 to the CTFT.</p>
 <p><span class="math display">\[\begin{aligned}
   X(j\omega) &amp;= \int\limits_{-\infty}^{\infty} x(t) e^{-j\omega t}
 dt\\
@@ -238,12 +243,135 @@ example where this is important in lecture 13.</p>
 <p><span class="math display">\[\begin{aligned}
   X(s) &amp;= \int\limits_{-\infty}^{\infty} x(t) e^{-st} dt\\
   &amp;= \int\limits_{-\infty}^{\infty} \delta(t) e^{-st} dt\\
-  &amp;= s^{-s(0)} = 1\text{ for } s\in\mathbb{C}
+  &amp;= e^{-s(0)} = 1\text{ for } s\in\mathbb{C}
 \end{aligned}\]</span></p>
 <p><strong>Example 9.6:</strong> <span class="math inline">\(x(t) =
 e^{j\omega t}\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+  X(s) &amp;= \int\limits_{-\infty}^{\infty} x(t) e^{-st} dt\\
+  &amp;= \int\limits_{-\infty}^{\infty} e^{j\omega t} e^{-st} dt\\
+  &amp;= \int\limits_{-\infty}^{\infty} e^{-(s-j\omega)t} dt\\
+  &amp;= \frac{-1}{s-j\omega} \left. e^{-(s-j\omega)t}
+\right|_{-\infty}^{\infty}\\
+  &amp;= \frac{-1}{s-j\omega} \left[ \lim_{T\rightarrow \infty}
+e^{-(s-j\omega)T} -  \lim_{T\rightarrow -\infty} e^{-(s-j\omega)T}
+\right]
+\end{aligned}\]</span></p>
+<p>The first limit will converge to zero if and only if</p>
+<p><span class="math display">\[\begin{aligned}
+  \text{Re}(s-j\omega) &amp;&gt; 0\\
+  \text{Re}(s) &amp;&gt; 0\\
+\end{aligned}\]</span></p>
+<p>The second limit will converge to zero if and only if</p>
+<p><span class="math display">\[\begin{aligned}
+  \text{Re}(s-j\omega) &amp;&lt; 0\\
+  \text{Re}(s) &amp;&lt; 0\\
+\end{aligned}\]</span></p>
+<p>These two conditions are mutually exclusive so it appears the
+transform does not exist. However, consider the edge case when the <span
+class="math inline">\(\text{Re}(s) = 0\)</span>. Then the Laplace
+transform becomes equivalent to the Fourier Transform and</p>
+<p><span class="math display">\[\mathcal{L}\left\{e^{j\omega t}\right\}
+= \frac{1}{2\pi} \delta(s - \omega) \text{ for Re}(s) = 0\]</span></p>
 <p><strong>Example 9.7:</strong> Compare the previous example to <span
 class="math inline">\(x(t) = e^{j\omega t}u(t)\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+  X(s) &amp;= \int\limits_{-\infty}^{\infty} x(t) e^{-st} dt\\
+  &amp;= \int\limits_{0}^{\infty} e^{j\omega t} e^{-st} dt\\
+  &amp;= \int\limits_{0}^{\infty} e^{-(s-j\omega)t} dt\\
+  &amp;= \frac{-1}{s-j\omega} \left. e^{-(s-j\omega)t}
+\right|_{0}^{\infty}\\
+  &amp;= \frac{-1}{s-j\omega} \left[ \lim_{T\rightarrow \infty}
+e^{-(s-j\omega)T} -  1 \right]
+\end{aligned}\]</span></p>
+<p>The limit will converge to zero if</p>
+<p><span class="math display">\[\begin{aligned}
+  \text{Re}(s-j\omega) &amp;&gt; 0\\
+  \text{Re}(s) &amp;&gt; 0\\
+\end{aligned}\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[\mathcal{L}\left\{e^{j\omega
+t}u(t)\right\} = \frac{1}{s-j\omega} \text{ for Re}(s) &gt;
+0\]</span></p>
+<p><strong>Example 9.6:</strong> <span class="math inline">\(x(t) =
+\cos(\omega t)u(t)\)</span>.</p>
+<p>First, write the cosine using Euler’s identity <span
+class="math display">\[x(t) = \frac{1}{2}e^{j\omega t} +
+\frac{1}{2}e^{-j\omega t}\]</span></p>
+<p>Similar to the previous example then</p>
+<p><span class="math display">\[\begin{aligned}
+  X(s) &amp;= \int\limits_{-\infty}^{\infty} x(t) e^{-st} dt\\
+  &amp;= \int\limits_{0}^{\infty} \frac{1}{2}e^{j\omega t} e^{-st} dt +
+\int\limits_{0}^{\infty} \frac{1}{2}e^{-j\omega t} e^{-st}\\
+  &amp;= \int\limits_{0}^{\infty} \frac{1}{2}e^{-(s-j\omega)t} dt +
+\int\limits_{0}^{\infty} \frac{1}{2}e^{-(s+j\omega)t} dt\\
+  &amp;= \frac{1}{2} \left[ \frac{1}{s-j\omega} +
+\frac{1}{s+j\omega}\right] \text{ for Re}(s) &gt; 0\\
+  &amp;= \frac{s}{s^2 + \omega^2} \text{ for Re}(s) &gt; 0
+\end{aligned}\]</span></p>
+<p>Note the examples thus far cover many of the cases we are interested
+in</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span
+class="math inline">\(x(t)\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(X(s)\)</span></th>
+<th style="text-align: left;">ROC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\delta(t)\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;"><span
+class="math inline">\(s\in\mathbb{C}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(u(t)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{s}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\text{Re}(s)
+&gt; 0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(e^{-at}u(t)\)</span>, <span
+class="math inline">\(a\in\mathbb{R}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{s+a}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\text{Re}(s)
+&gt; -a\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\cos(\omega
+t)u(t)\)</span>, <span
+class="math inline">\(\omega\in\mathbb{R}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\frac{s}{s^2
++ \omega^2}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\text{Re}(s)
+&gt; 0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\sin(\omega
+t)u(t)\)</span></td>
+<td style="text-align: center;">?</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(e^{-at}\cos(\omega t)u(t)\)</span>, <span
+class="math inline">\(a,\omega\in\mathbb{R}\)</span></td>
+<td style="text-align: center;">?</td>
+<td style="text-align: left;">?</td>
+</tr>
+</tbody>
+</table>
+<p>The problem set for this week has you derive the last two rows of the
+above table.</p>
 </main>
 
 <footer>
