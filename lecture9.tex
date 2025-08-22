@@ -166,7 +166,7 @@ x(t) = \left\{ \begin{array}{cc}
   &= \left. \frac{-1}{s-1} e^{-(s-1)t} \right|_{-\infty}^{0} + \left. \frac{-1}{s+1} e^{-(s+1)t} \right|_{0}^{\infty}\\
   &= \frac{-1}{s-1} \left[e^{-(s+1)(0)} - \lim_{T\rightarrow \infty} e^{-(s-1)T} \right] + \frac{-1}{s+1} \left[\lim_{T\rightarrow \infty} e^{-(s+1)T} - e^{-(s+1)(0)} \right]\\
   &= \frac{-1}{s-1} \left[1 - \underbrace{0}_{\text{Re}(s) < 1} \right] + \frac{-1}{s+1} \left[\underbrace{0}_{\text{Re}(s) > -1} - 1 \right]\\
-  &= \underbrace{\frac{-1}{s-1}}_{\text{Re}(s) < 1} \underbrace{\frac{-1}{s+1}}_{\text{Re}(s) > -1}
+  &= \underbrace{\frac{-1}{s-1}}_{\text{Re}(s) < 1} +  \underbrace{\frac{-1}{s+1}}_{\text{Re}(s) > -1}
 \end{align}
 
 The first term corresponds to the anti-causal part of the signal and has an ROC that it to the left of a real constant (+1). The second term corresponds to the causal part of the signal and has an ROC that it to the right of a real constant (-1). The overall ROC is the intersection, or the strip between -1 and 1:
