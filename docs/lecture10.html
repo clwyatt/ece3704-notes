@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-09-11" />
+  <title>Lecture 10 Inverse Laplace Transform</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture 10<br />
+Inverse Laplace Transform</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-09-11</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#inverse-unilateral-laplace-transform"
+id="toc-inverse-unilateral-laplace-transform">Inverse Unilateral Laplace
+Transform</a></li>
+<li><a href="#inverse-bilateral-laplace-transform"
+id="toc-inverse-bilateral-laplace-transform">Inverse Bilateral Laplace
+Transform</a></li>
+</ul>
+</nav>
+<p>In today’s lecture we introduce the Inverse Laplace Transform for CT
+signals and systems.</p>
+<h2 id="inverse-unilateral-laplace-transform">Inverse Unilateral Laplace
+Transform</h2>
+<p>Consider a causal function <span class="math inline">\(f(t)\)</span>
+that may or may not be absolutely integrable. Let <span
+class="math inline">\(g(t)=f(t) e^{-c t}\)</span> for some <span
+class="math inline">\(c&gt;0\)</span> such that</p>
+<p><span class="math display">\[\int_{0}^{\infty}|g(t)| dt =
+\int_{0}^{\infty}\left|f(t) e^{-c t}\right| dt &lt; \infty\]</span></p>
+<p>Then the Fourier Transform of <span
+class="math inline">\(g(t)\)</span> exists</p>
+<p><span class="math display">\[\begin{aligned}
+G(\omega) &amp; =\int_{-\infty}^{\infty} g(t) e^{-j \omega t} dt =
+\int_{0}^{\infty} f(t) e^{-c t} e^{-j \omega t} dt \\
+&amp; =\int_{0}^{\infty} f(t) e^{-(c+j \omega) t} dt \\
+&amp; =\left.\mathcal{L}_{1}\{f(t)\}\right|_{s = c+j\omega} \quad c
+\text{ fixed s.t. } c+j\omega \in \text{ROC}
+\end{aligned}\]</span></p>
+<p>The inverse Fourier Transform is</p>
+<p><span class="math display">\[g(t)=f(t) e^{-c t}=\frac{1}{2 \pi}
+\int_{-\infty}^{\infty} G(\omega) e^{j \omega t} d\omega\]</span></p>
+<p>multiply through by <span class="math inline">\(e^{c t}\)</span></p>
+<p><span class="math display">\[\begin{aligned}
+e^{c t} g(t)=f(t) &amp; =\frac{1}{2 \pi} \int_{-\infty}^{\infty}
+G(\omega) e^{c t} e^{j \omega t} d\omega \\
+&amp; =\frac{1}{2 \pi} \int_{-\infty}^{\infty} G(\omega) e^{(c+j \omega)
+t} d\omega
+\end{aligned}\]</span></p>
+<p>Substitute <span class="math inline">\(G(\omega)\)</span><br />
+<span class="math display">\[f(t)=\frac{1}{2 \pi}
+\int_{-\infty}^{\infty}\left[\underbrace{\int_{0}^{\infty} f(\tau)
+e^{-(c+j \omega) \tau}}_{\left.F(s)\right|_{s=c+j \omega}} d\tau\right]
+e^{(c+j \omega) t} d \omega\]</span> <span
+class="math display">\[f(t)=\frac{1}{2 \pi} \int_{-\infty}^{\infty}
+F(c+j \omega) e^{(c+j \omega) t} d \omega\]</span></p>
+<p>Let <span class="math inline">\(s=c+j \omega\)</span>. Since <span
+class="math inline">\(c\)</span> is a constant <span
+class="math inline">\(ds = 0+j d\omega\)</span> implying <span
+class="math inline">\(d \omega=\frac{1}{j} d s\)</span> and <span
+class="math display">\[f(t)=\frac{1}{2 \pi j}
+\int\limits_{c-j\infty}^{c+j\infty} F(s) e^{st}\; ds\]</span> a complex
+integral.</p>
+<p>Note: we can think of <span class="math inline">\(c\)</span> as the
+real values such that <span class="math inline">\(f(t) e^{-c t}\)</span>
+has a Fourier Transform. This is the ROC.</p>
+<p>Does the above integral look like our contar Integrals from previous
+lectures?</p>
+<p>Yes, if we use the Bromwitch contour.</p>
+<figure>
+<p><img src="figures/fig10_1.svg"
+alt="contour of integration for inverse laplace transform. See caption." /></p>
+<figcaption>The linear contour of integration for the inverse Laplace
+transform becomes the Bromwitch contour as <span
+class="math inline">\(R\rightarrow\infty\)</span>.</figcaption>
+</figure>
+<p><span class="math display">\[f(t)=\frac{1}{2 \pi j} \int\limits_{c-j
+\infty}^{c+j \infty} F(s) e^{s t} d s = \lim_{R \rightarrow \infty}
+\oint_{C(R)} F(s) e^{s t} ds\]</span></p>
+<p>where <span class="math inline">\(C(R)\)</span> is the Bromwitch
+contour.<br />
+This allows us to use the method of residues since <span
+class="math inline">\(C \in \text{ROC}\)</span> implies <span
+class="math inline">\(C(R)\)</span> encloses all singulartes of <span
+class="math inline">\(F(s)\)</span>.</p>
+<p><strong>Example:</strong> Recall that <span
+class="math inline">\(\mathcal{L}\{x(t)\}=\mathcal{L}\left\{e^{-a t}
+u(t)\right\}\)</span> for <span class="math inline">\(a\in
+\mathbb{R}\)</span> was <span class="math inline">\(\frac{1}{s+a}
+\text{Re}(s) &gt; -a\)</span></p>
+<p>Then</p>
+<p><span class="math display">\[x(t)=\mathcal{L}_1
+\left\{\frac{1}{s+a}\right\}=\frac{1}{2 \pi j} \int_{c-j \infty}^{c+
+j\\infty} \frac{1}{s+a} e^{s t} d s \quad \text{for} c &gt; -a\]</span>
+or using the Bromwitch contour <span class="math display">\[x(t)
+=\lim_{R \rightarrow \infty} \frac{1}{2 \pi j} \oint_{C(R)} \frac{e^{s
+t}}{s+a} ds  \qquad c&gt;-a\]</span></p>
+<p>Now from last time, since <span class="math inline">\(e^{s
+t}\)</span> is analytic and <span class="math inline">\(C(R)\)</span>
+encloses the singulary at <span class="math inline">\(-a\)</span>, from
+the Residue Theorem</p>
+<p><span class="math display">\[\oint \frac{e^{st}}{s+a}\; ds = 2\pi j
+k_1\]</span> where the residual is</p>
+<p><span class="math display">\[k_1 = \left. (s+a) \frac{e^{st}}{s+a}
+\right|_{s = -a} = \left. e^{st} \right|_{s = -a} = e^{-a t} \qquad t
+&gt; 0\]</span></p>
+<p>Thus</p>
+<p><span class="math display">\[x(t) = \frac{1}{2\pi j} \cdot 2\pi j
+e^{-at} \qquad t &gt; 0 = e^{-at}u(t)\]</span></p>
+<h2 id="inverse-bilateral-laplace-transform">Inverse Bilateral Laplace
+Transform</h2>
+<p>Given a non-causal signal <span class="math inline">\(x(t)\)</span>
+we can write it as</p>
+<p><span class="math display">\[x(t) =\underbrace{x_{1}(t)
+u(-t)}_{\text{anticausal part}} +\underbrace{x_{2}(t)
+u(t)}_{\text{causal part}}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+  L_2\left\{ x(t) \right\} &amp;= \int_{-\infty}^{0} x_{1}(t) e^{-s t}
+\; dt + \int_{0}^{\infty} x_{2}(t) e^{-s t} \; dt\\
+  &amp;= \int_{0}^{\infty} x_{1}(-t) e^{s t} \; dt + \mathcal{L}_1
+\left\{x_{2}(t)\right\}\\
+  &amp;= \left. \mathcal{L}_1 \left\{x_{1}(-t)\right\} \right|_{s = -s}
++ \mathcal{L}_1 \left\{x_{2}(t)\right\}\\
+  X(s) &amp;= \underbrace{X_1(s)}_{\text{Re}(s) &lt; U} +
+\underbrace{X_2(s)}_{\text{Re}(s) &gt; L}
+\end{aligned}\]</span> where the ROC of <span
+class="math inline">\(X(s)\)</span> is the intersection of the ROC for
+<span class="math inline">\(X_1\)</span> and <span
+class="math inline">\(X_2\)</span>, a strip in the complex plane <span
+class="math inline">\(L &lt; \text{Re}(s) &lt; U\)</span>.</p>
+<p>To use this for the inverse we apply this in reverse.</p>
+<p><span class="math display">\[x(t) = \left.
+\mathcal{L}_1^{-1}\left\{X_1(-s)\right\}\right|_{t\rightarrow -t}
++  \mathcal{L}_1^{-1}\left\{X_2(s)\right\}\]</span></p>
+<p><strong>Example:</strong> Recall an example of a forward bilateral
+Laplace transform from lecture 9 <span
+class="math display">\[\mathcal{L}_{2}\left\{e^{-|t|}\right\}=\underbrace{\frac{-1}{s-1}}_{\text{Re}(s)
+&lt; 1}+\underbrace{\frac{1}{s+1}}_{\text{Re}(s) &gt; -1} =
+X(s)\]</span></p>
+<p>Then <span
+class="math display">\[x(t)=\mathcal{L}_{2}^{-1}\{X(s)\}=\left.\mathcal{L}_{1}^{-1}\left\{\frac{1}{s+1}\right\}\right|_{t\rightarrow
+-t} \mathcal{L}_1^{-1}\left\{\frac{1}{s+1}\right\}\]</span></p>
+<p>From our previous result when <span
+class="math inline">\(a=1\)</span></p>
+<p><span class="math display">\[\begin{aligned}
+x(t) &amp; =\left.e^{-t} u(t)\right|_{t \rightarrow -t}+e^{-t} u(t) \\
+&amp; =e^{t} u(-t)+e^{-t} u(t)=e^{-|t|}
+\end{aligned}\]</span></p>
+<p><strong>Example:</strong> Find the inverse Laplace transform of <span
+class="math display">\[X(s) = \frac{1}{s} \quad \text{Re}(s) &gt; 0\;
+.\]</span></p>
+<p>Solution: Since the ROC corresponds to a causal signal, for <span
+class="math inline">\(t &gt; 0\)</span> <span
+class="math display">\[\begin{aligned}
+x(t) &amp;= \frac{1}{2 \pi j} \int\limits_{c-j \infty}^{c+j \infty} X(s)
+e^{s t} \; ds \quad c &gt; 0 \\
+  &amp;= \frac{1}{2 \pi j} \oint \frac{e^{s t}}{s} \; ds\\
+&amp;= \frac{1}{2 \pi j} 2 \pi j \; k \\
+&amp;= \left.s \frac{e^{st}}{s}\right|_{s=0}\\
+&amp;=1 \quad t &gt; 0 \\
+\end{aligned}\]</span> which can be written as <span
+class="math inline">\(x(t) = u(t)\)</span> for all times <span
+class="math inline">\(t\)</span>.</p>
+<p><strong>Example:</strong> Find the inverse Laplace transform of <span
+class="math display">\[X(s) = \frac{10}{s^{2} + 5s + 6} \quad
+\text{Re}(s) &gt;-2 \; .\]</span></p>
+<p>First we use the partial fraction expansion.</p>
+<p><span class="math display">\[X(s) = \frac{10}{(s+2)(s+3)}
+=\frac{A}{s+2}+\frac{B}{s+3}\]</span></p>
+<p><span
+class="math display">\[A=\left.\frac{10}{s+3}\right|_{s=-2}=\frac{10}{1}=10\]</span></p>
+<p><span
+class="math display">\[B=\left.\frac{10}{s+2}\right|_{s=-3}=\frac{10}{-1}=-10\]</span></p>
+<p>Then <span
+class="math display">\[x(t)=\mathcal{L}_{1}^{-1}\left\{\frac{10}{s+2}\right\}+\mathcal{L}_{1}^{-1}\left\{\frac{-10}{s+3}\right\}\]</span></p>
+<p>Using the Residue theorem,</p>
+<p><span class="math display">\[\begin{aligned}
+x(t)&amp;=\frac{10}{2 \pi j} \int\limits_{c-j\infty}^{c+j \infty}
+\frac{e^{s t}}{s+2} \; ds - \frac{10}{2 \pi j} \int\limits_{c-j
+\infty}^{c+j \infty} \frac{e^{s t}}{s+3} \; ds \\
+&amp; c&gt;-2 \quad c&gt;-2 \\
+&amp; =\frac{10}{2 \pi j} \oint \frac{e^{s t}}{s+2} \; d s - \frac{10}{2
+\pi j} \oint \frac{e^{s t}}{s+3} \; ds \\
+&amp; =\frac{10}{2 \pi j} 2 \pi j e^{-2 t} - \frac{10}{2 \pi j} 2 \pi j
+e^{-3 t} \\
+&amp;=10 e^{-2 t}-10 e^{-3 t} \quad t&gt;0
+\end{aligned}\]</span></p>
+<p>Writing the expression for all <span class="math inline">\(t\)</span>
+gives:</p>
+<p><span class="math display">\[x(t)=10\left(e^{-2 t}-e^{-3 t}\right)
+u(t) .\]</span></p>
+<p><strong>Example:</strong> Here is an example with complex
+singularties. Find the inverse Laplace transform of</p>
+<p><span class="math display">\[X(s)=\frac{s}{s^{2}+2 s+5} \quad
+\text{Re}(s)&gt;-1\]</span></p>
+<p>Using the partial fraction expansion</p>
+<p><span class="math display">\[X(s) = \frac{s}{(s + 1 + j2)(s + 1 -
+j2)} = \frac{A}{s + 1 + j2} + \frac{B}{s + 1 - j2}\]</span> where <span
+class="math display">\[A=\frac{-1-j^{2}}{-1-j^{2}+1-j^{2}}=\frac{-1-j^{2}}{-j^{4}}=\frac{1}{2}-\frac{1}{4}
+j\]</span></p>
+<p><span
+class="math display">\[B=\frac{-1+j^{2}}{-1+j^{2}+1+j^{2}}=\frac{-1+j^{2}}{j^{4}}=\frac{A}{2}+\frac{1}{4}
+j\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[x(t) =
+\mathcal{L}_{1}^{-1}\left\{\frac{\frac{1}{2}-\frac{1}{4}
+j}{s+1+j2}\right\}+\mathcal{L}_{1}^{-1}\left\{\frac{\frac{1}{2}+\frac{1}{4}
+j}{s+1-j2}\right\}\]</span></p>
+<p>Using residues, let <span class="math inline">\(c = 0 &gt;
+-1\)</span></p>
+<p><span class="math display">\[x(t) = \frac{1}{2 \pi j} \int\limits_{-j
+\infty}^{j\infty} \frac{\frac{1}{2}-\frac{1}{4} j}{s+1+j2} e^{st}\; ds +
+\frac{1}{2 \pi j} \int\limits_{-j \infty}^{j\infty}
+\frac{\frac{1}{2}+\frac{1}{4} j}{s+1-j2} e^{st}\; ds\]</span></p>
+<p><span class="math display">\[x(t)=\frac{1}{2 \pi j} 2 \pi j \,
+k_{1}+\frac{1}{2 \pi j} 2 \pi j\, k_{2}\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+&amp; k_{1}=\left(\frac{1}{2}-\frac{1}{4} j\right) e^{(-1-j 2) t} \quad
+k_{2}=\left(\frac{1}{2}+\frac{1}{4} j\right) e^{(-1+j 2) t} \\
+&amp; x(t)=k_{1}+k_{2}=\left(\frac{1}{2}-\frac{1}{4} j\right) e^{(-1-j
+2) t}+\left(\frac{1}{2}+\frac{1}{4} j\right) e^{(-1+j 2) t} \\
+&amp; \text { } \quad \text{for } t &gt; 0
+\end{aligned}\]</span></p>
+<p>with some effort you can write this as</p>
+<p><span class="math display">\[x(t)=e^{-t}\left(\cos (2 t)-\frac{1}{2}
+\sin (2 t)\right)\; u(t)\]</span></p>
+<p>for all <span class="math inline">\(t\)</span>.</p>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>
