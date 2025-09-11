@@ -14,3 +14,4 @@ date: Fall 2025
 7. [Complex Analysis II](lecture7.html)
 8. [Complex Analysis III](lecture8.html)
 9. [Forward Laplace Transform](lecture9.html)
+10. [Inverse Laplace Transform](lecture10.html)
