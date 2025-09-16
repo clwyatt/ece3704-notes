@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2025-08-11" />
+  <meta name="dcterms.date" content="2025-09-16" />
   <title>Lecture 7 Complex Analysis II</title>
   <style>
     code{white-space: pre-wrap;}
@@ -38,7 +38,7 @@
 <h1 class="title">Lecture 7<br />
 Complex Analysis II</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2025-08-11</p>
+<p class="date">2025-09-16</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -61,7 +61,7 @@ looking closer at rational complex functions.</p>
 <h2 id="complex-derivatives">Complex Derivatives</h2>
 <p>A complex function <span class="math inline">\(f(s)\)</span> is
 <em>analytic</em> in some domain <span
-class="math inline">\(R\subset\mathbb{C}\)</span> of the function is</p>
+class="math inline">\(R\subset\mathbb{C}\)</span> if the function is</p>
 <ul>
 <li><p>single valued, and</p></li>
 <li><p>has a finite complex derivative <span
@@ -85,7 +85,7 @@ x} + j \frac{\partial v}{\partial x} = \frac{\partial v}{\partial y} - j
 <p>If a complex function is not analytic at a point <span
 class="math inline">\(s_0\)</span>, but is analytic in the neighborhood
 of <span class="math inline">\(s_0\)</span>, then the point is called a
-or a <em>singular point</em> of the function.</p>
+<em>singularity</em> or a <em>singular point</em> of the function.</p>
 <h3 id="examples">Examples</h3>
 <p><strong>Example 1:</strong> Let <span class="math inline">\(s =
 x+jy\)</span> and define</p>
@@ -198,12 +198,12 @@ said to be <em>strictly proper</em>.</p></li>
 function.</p>
 <p>The roots of the denominator polynomial <span
 class="math inline">\(Q(s)\)</span> are the singularities of <span
-class="math inline">\(f\)</span>. We will often be interested in writing
-rational functions as a <em>partial fraction expansion</em> of the
-factors of the denominator.</p>
+class="math inline">\(f\)</span>.</p>
 <h3 id="partial-fraction-expansion">Partial Fraction Expansion</h3>
-<p>A ratio of polynomials that is improper can be written as the sum of
-a polynomial and a strictly proper rational function. Example</p>
+<p>We will often be interested in writing rational functions as a
+<em>partial fraction expansion</em> of the factors of the denominator. A
+ratio of polynomials that is improper can be written as the sum of a
+polynomial and a strictly proper rational function. Example</p>
 <p><span class="math display">\[f(s) = \frac{2s^3 + 9s^2 + 11s + 2}{s^2
 + 4s + 3} = (2s+1) + \frac{s-1}{s^2 + 4s + 3}\]</span></p>
 <p>Once a rational function is proper we can expand it in terms of the
@@ -237,7 +237,7 @@ class="math display">\[K_i = \left. (s-\alpha_i)f(s) \right|_{s =
 \alpha_i}\]</span></p>
 <p>Example:</p>
 <p><span class="math display">\[f(s) = \frac{s^2 + 2s +
-7}{(s_1)(s-3)(s+5)} = \frac{K_1}{s+1} + \frac{K_2}{s-3} +
+7}{(s+1)(s-3)(s+5)} = \frac{K_1}{s+1} + \frac{K_2}{s-3} +
 \frac{K_3}{s+5}\]</span></p>
 <p>We note that <span class="math inline">\(M = 2\)</span> and <span
 class="math inline">\(N = 3\)</span> so that the function is strictly

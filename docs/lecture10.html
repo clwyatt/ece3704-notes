@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2025-09-11" />
+  <meta name="dcterms.date" content="2025-09-13" />
   <title>Lecture 10 Inverse Laplace Transform</title>
   <style>
     code{white-space: pre-wrap;}
@@ -38,7 +38,7 @@
 <h1 class="title">Lecture 10<br />
 Inverse Laplace Transform</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2025-09-11</p>
+<p class="date">2025-09-13</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -123,7 +123,7 @@ u(t)\right\}\)</span> for <span class="math inline">\(a\in
 <p>Then</p>
 <p><span class="math display">\[x(t)=\mathcal{L}_1
 \left\{\frac{1}{s+a}\right\}=\frac{1}{2 \pi j} \int_{c-j \infty}^{c+
-j\\infty} \frac{1}{s+a} e^{s t} d s \quad \text{for} c &gt; -a\]</span>
+j\infty} \frac{1}{s+a} e^{s t} d s \quad \text{for} c &gt; -a\]</span>
 or using the Bromwitch contour <span class="math display">\[x(t)
 =\lim_{R \rightarrow \infty} \frac{1}{2 \pi j} \oint_{C(R)} \frac{e^{s
 t}}{s+a} ds  \qquad c&gt;-a\]</span></p>
@@ -228,10 +228,10 @@ singularties. Find the inverse Laplace transform of</p>
 <p>Using the partial fraction expansion</p>
 <p><span class="math display">\[X(s) = \frac{s}{(s + 1 + j2)(s + 1 -
 j2)} = \frac{A}{s + 1 + j2} + \frac{B}{s + 1 - j2}\]</span> where <span
-class="math display">\[A=\frac{-1-j^{2}}{-1-j^{2}+1-j^{2}}=\frac{-1-j^{2}}{-j^{4}}=\frac{1}{2}-\frac{1}{4}
+class="math display">\[A=\frac{-1-j2}{-1-j2+1-j2}=\frac{-1-j2}{-j4}=\frac{1}{2}-\frac{1}{4}
 j\]</span></p>
 <p><span
-class="math display">\[B=\frac{-1+j^{2}}{-1+j^{2}+1+j^{2}}=\frac{-1+j^{2}}{j^{4}}=\frac{A}{2}+\frac{1}{4}
+class="math display">\[B=\frac{-1+j2}{-1+j2+1+j2}=\frac{-1+j2}{j4}=\frac{1}{2}+\frac{1}{4}
 j\]</span></p>
 <p>Then</p>
 <p><span class="math display">\[x(t) =

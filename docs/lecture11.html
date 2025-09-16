@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-09-16" />
+  <title>Lecture 11 Properties of Laplace Transform</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture 11<br />
+Properties of Laplace Transform</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-09-16</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#linearity-property" id="toc-linearity-property">Linearity
+Property</a>
+<ul>
+<li><a href="#proof" id="toc-proof">Proof</a></li>
+<li><a href="#example-11.1" id="toc-example-11.1">Example 11.1</a></li>
+<li><a href="#example-11.2" id="toc-example-11.2">Example 11.2</a></li>
+</ul></li>
+<li><a href="#time-shift-property" id="toc-time-shift-property">Time
+Shift Property</a>
+<ul>
+<li><a href="#proof-1" id="toc-proof-1">Proof</a></li>
+<li><a href="#example-11.3" id="toc-example-11.3">Example 11.3</a></li>
+<li><a href="#example-11.4" id="toc-example-11.4">Example 11.4</a></li>
+</ul></li>
+<li><a href="#frequency-shift" id="toc-frequency-shift">Frequency
+Shift</a>
+<ul>
+<li><a href="#example-11.5" id="toc-example-11.5">Example 11.5</a></li>
+</ul></li>
+<li><a href="#time-differentiation" id="toc-time-differentiation">Time
+Differentiation</a></li>
+<li><a href="#frequency-differentiation"
+id="toc-frequency-differentiation">Frequency Differentiation</a>
+<ul>
+<li><a href="#example-11.6" id="toc-example-11.6">Example 11.6</a></li>
+</ul></li>
+<li><a href="#integration-property"
+id="toc-integration-property">Integration Property</a>
+<ul>
+<li><a href="#example-11.7" id="toc-example-11.7">Example 11.7</a></li>
+</ul></li>
+</ul>
+</nav>
+<p>Last week we learned how to compute the forward Laplace transform and
+Inverse Laplace transform for causal signals using the integrals</p>
+<p><span class="math display">\[\begin{aligned}
+X(s)=\int\limits_{0}^{\infty} x(t) e^{-s t}\; dt \quad\text{and}\quad
+x(t)=\frac{1}{2 \pi j} \int\limits_{c- j \infty}^{c+j \infty} X(s) e^{s
+t}\; ds
+\end{aligned}\]</span></p>
+<p>Today we will go over several usefull proparties of these transforms,
+that when combined with a table of transforms will allow us to analyze
+wide variety of stable and unstable systems,</p>
+<h2 id="linearity-property">Linearity Property</h2>
+<p>For <span
+class="math inline">\(X_{1}(s)=\mathcal{L}\left\{x_{1}(t)\right\}\)</span>
+and <span
+class="math inline">\(X_{2}(s)=\mathcal{L}\left\{x_{2}(t)\right\}\)</span></p>
+<p><span class="math display">\[\mathcal{L}\left\{a x_{1}(t)+b
+y_{2}(t)\right\}=a X_{1}(s)+b X_{2}(s)\]</span> for <span
+class="math inline">\(a, b \in \mathbb{C}\)</span></p>
+<h3 id="proof">Proof</h3>
+<p><span class="math display">\[\begin{aligned}
+\mathcal{L}\left\{a x_{1}(t)+b x_{2}(t)\right\} &amp;
+=\int_{0}^{\infty}\left(a x_{1}(t)+b x_{2}(t)\right) e^{-s t} d t \\
+&amp; =a \int_{0}^{\infty} x_{1}(t) e^{-s t} d t+b
+\int_{-\infty}^{\infty} x_{2}(t) e^{-s t} d t \\
+&amp; =a X_{1}(s)+b X_{2}(s)
+\end{aligned}\]</span></p>
+<h3 id="example-11.1">Example 11.1</h3>
+<p>If <span class="math inline">\(x(t)=4 e^{-t} u(t)-7 e^{-5 t} u(t)
+\quad X(s)=\)</span> ?</p>
+<p><span class="math display">\[\begin{aligned}
+\mathcal{L}\{x(t)\} &amp; =\mathcal{L}\left\{4 e^{-t} u(t)-7 e^{-5 t}
+u(t)\right\} \\
+&amp; =4 \mathcal{L}\left\{e^{-t} u(t)\right\}-7\mathcal{L}\left\{e^{-5
+t} u(t)\right\} \\
+&amp; =\frac{4}{s+1}+\frac{-7}{s+5}
+\end{aligned}\]</span></p>
+<h3 id="example-11.2">Example 11.2</h3>
+<p>This also works in reverse. If <span
+class="math inline">\(X(s)=\frac{10}{s+2}+\frac{3}{s+10}=\frac{13
+s+106}{s^{2}+12 s+20}\)</span></p>
+<p><span class="math display">\[\begin{aligned}
+x(t)=\mathcal{L}^{-1}\left\{\frac{10}{s+2}+\frac{3}{s+10}\right\} &amp;
+=10 \mathcal{L}^{-1}\left\{\frac{1}{s+2}\right\}+3
+\mathcal{L}^{-1}\left\{\frac{1}{s+10}\right\} \\
+&amp; =10 e^{-2 t} u(t)+3 e^{-10 t} u(t)
+\end{aligned}\]</span></p>
+<h2 id="time-shift-property">Time Shift Property</h2>
+<p>For causal <span class="math inline">\(x(t)\)</span> with <span
+class="math inline">\(X(s) = \mathcal{L}\left\{x(t)\right\}\)</span>,
+then for time delay <span class="math inline">\(t_0 \geq 0\)</span></p>
+<p><span class="math display">\[\mathcal{L}\left\{ x(t-t_0) \right\} =
+X(s) e^{-s t_0}\]</span></p>
+<p>Note, in general, the time shift can only be a delay since an advance
+could make the signal non-causal. A more complete definition would be
+that as long as the time shift does not cause the signal to become
+non-causal.</p>
+<h3 id="proof-1">Proof</h3>
+<p><span
+class="math display">\[\mathcal{L}\left\{x\left(t-t_{0}\right)\right\}
+=\int_{0}^{\infty} x\left(t-t_{0}\right) e^{-s t} \; dt\]</span></p>
+<p>Let <span class="math inline">\(\tau = t-t_0\)</span>, then <span
+class="math inline">\(t = \tau + t_0\)</span> and <span
+class="math inline">\(d\tau = dt\)</span>, thus</p>
+<p><span class="math display">\[\begin{aligned}
+\mathcal{L}\left\{x\left(t-t_{0}\right)\right\} &amp;=
+\int_{t_{0}}^{\infty} x(\tau) e^{-s\left(\tau+t_{0}\right)} d\tau\\
+&amp; =\int_{0}^{\infty} x(\tau) e^{-s \tau} e^{-s t_{0}} \; d\tau =
+e^{-s t_{0}} X(s)
+\end{aligned}\]</span></p>
+<h3 id="example-11.3">Example 11.3</h3>
+<p>Let <span class="math inline">\(x(t)=v(t)=v(t-10)\)</span>, a causal
+pulse of 10 seconds.</p>
+<p><span class="math display">\[\begin{aligned}
+\mathcal{L}\{x(t)\} &amp; =\mathcal{L}\{u(t)-u(t-10)\} &amp; &amp; \\
+&amp; =\mathcal{L}\{u(t)\}-\mathcal{L}\{u(t-10)\} &amp; &amp; \text { by
+linearity property } \\
+&amp; =\frac{1}{5}-\frac{1}{5} e^{-10s} &amp; &amp; \text { by timeshift
+property. }
+\end{aligned}\]</span></p>
+<h3 id="example-11.4">Example 11.4</h3>
+<p>When doing inverse transforms, collect all terms with common shift
+and do PFE seperately in each. For example let</p>
+<p><span class="math display">\[X(s)=\frac{e^{-7 s} s^2 + \left(e^{-4s}
++ 3e^{-7s}\right)s + \left(4e^{-4s} + 2e^{-7s}
+\right)}{(s+4)\left(s^{2}+3 s+2\right)}\]</span></p>
+<p>First rewrite in terms of the delays:</p>
+<p><span class="math display">\[X(s)=\frac{e^{-4 s}(s+4)+e^{-7
+s}\left(s^{2}+3s+2\right)}{(s+4)\left(s^{2}+3 s+2\right)}\]</span></p>
+<p>Then seperate and take the inverse of each term independently,
+e.g.</p>
+<p><span class="math display">\[\begin{aligned}
+&amp; =\frac{e^{-4 s}}{s^{2}+3s+2}+\frac{e^{-7 s}}{s+4} \\
+&amp; =e^{-4 s}\left[\frac{k_{1}}{s+1}+\frac{k_{2}}{s+2}\right]+e^{-7
+s}\left[\frac{1}{s+4}\right] \\
+&amp; =e^{-4 s}\left[\frac{1}{s+1}+\frac{-1}{s+2}\right]+e^{-7
+s}\left[\frac{1}{s+4}\right] \\
+x(t) &amp; =\left[e^{-t} u(t)-e^{-2 t} u(t)\right]_{t\rightarrow t-4} +
+\left[e^{-4 t} u(t)\right]_{t\rightarrow t-7} \\
+&amp; =e^{-(t-4)} u(t-4)-e^{-2(t-4)} u(t-4)+e^{-4(t-7)} u(t-7)
+\end{aligned}\]</span></p>
+<h2 id="frequency-shift">Frequency Shift</h2>
+<p>Consider a causal signal <span class="math inline">\(f(t)\)</span>
+with Laplace transform <span class="math inline">\(F(s)\)</span>. Let
+<span class="math inline">\(x(t)=f(t) e^{s_{0} t}\)</span> for <span
+class="math inline">\(s_{0} \in \mathbb{C}\)</span></p>
+<p>Then</p>
+<p><span
+class="math display">\[\mathcal{L}\{x(t)\}=F\left(s-s_{0}\right)=\left.F(s)\right|_{s
+\rightarrow s-s_{0}}\]</span></p>
+<p>The proof is a bonus problem on this week’s problem set.</p>
+<h3 id="example-11.5">Example 11.5</h3>
+<p><span class="math inline">\(x(t)=\cos \left(\omega_{0} t\right) u(t)
+\quad \omega_{0} \in \mathbb{R}, \quad x(s)=\)</span> ?</p>
+<p><span class="math display">\[\begin{aligned}
+x(t) &amp; =\frac{1}{2} e^{j \omega_{0} t} u(t)+\frac{1}{2} e^{-j
+\omega_{0} t} u(t) \quad \text { by Eulers } \\
+\mathcal{L}\{x(t)\} &amp; =\frac{1}{2} y\left\{e^{j \omega_{0} t}
+u(t)\right\}+\frac{1}{2} y\left\{e^{-j \omega_{0} t} u(t)\right\} \text
+{ by linearity } \\
+&amp; =\left.\frac{1}{2} \mathcal{L}\{u(t)\}\right|_{s \rightarrow s-j
+\omega_{0}}+\left.\frac{1}{2} \mathcal{L}\{u(t)\}\right|_{s \rightarrow
+s + j\omega_{0}} \\
+&amp; =\frac{1}{2} \frac{1}{s-j \omega_{0}}+\frac{1}{2} \frac{1}{s+j
+\omega_{0}} \\
+&amp; =\frac{1}{2}\left[\frac{s+j \omega_{0}+s-j \omega_{0}}{\left(s-j
+\omega_{0}\right)\left(s+j \omega_{0}\right.}\right] \\
+&amp; =\frac{1}{2}\left[\frac{2
+s}{s^{2}+\omega_{0}^{2}}\right]=\frac{s}{s^{2}+\omega_{0}^{2}}
+\end{aligned}\]</span></p>
+<h2 id="time-differentiation">Time Differentiation</h2>
+<p>Let <span class="math inline">\(X(s)=\mathcal{L}\{x(t)\}\)</span>
+then</p>
+<p><span class="math display">\[\mathcal{L}\left\{\frac{d x}{d
+t}\right\} \text { for } t \geq 0 \text { is } s
+X(s)-x\left(0^{-}\right)\]</span> where <span
+class="math inline">\(x\left(0^{-}\right)\)</span> is the signal value
+at <span class="math inline">\(t=0^{-}\)</span>, which for a causal
+signal is zero. Repeated differentiation gives general form</p>
+<p><span class="math display">\[\mathcal{L}\left\{\frac{d^{n} x}{d
+t^{n}}\right\}=\left. s^{n} X(s)-\sum\limits_{k=1}^{n} s^{n-k}
+\frac{d^{k-1}}{d t^{k-1}} x(t) \right|_{t=0^{-}}\]</span></p>
+<p>We will discuss this property in detail with examples when we cover
+solving LCCDE next time.</p>
+<h2 id="frequency-differentiation">Frequency Differentiation</h2>
+<p>Let <span class="math inline">\(x(t)
+\stackrel{\mathcal{L}}{\longleftrightarrow} X(s)\)</span>, then</p>
+<p><span class="math display">\[-t x(t)
+\stackrel{\mathcal{L}}{\longleftrightarrow} \frac{d X(s)}{d
+s}\]</span></p>
+<p>Note this is complex differentiation as desccribed in lecture 7.</p>
+<h3 id="example-11.6">Example 11.6</h3>
+<p>Find <span class="math inline">\(\mathcal{L}\{t u(t)\}\)</span>, the
+ramp signal.</p>
+<p><span class="math display">\[\begin{aligned}
+\mathcal{L}\{t u(t)\} &amp; =-\mathcal{L}\{-t u(t)\}=-\frac{d X(s)}{d s}
+\text { where } X(s) =\mathcal{L}\{u(t)\} =\frac{1}{s}\\
+&amp; =-\frac{-1}{s^{2}}=\frac{1}{s^{2}}
+\end{aligned}\]</span></p>
+<h2 id="integration-property">Integration Property</h2>
+<p>Let <span class="math inline">\(x(t)
+\stackrel{\mathcal{L}}{\longleftrightarrow} X(s)\)</span>, then</p>
+<p><span class="math display">\[\int\limits_{0^-}^t  x(\tau) \; d\tau
+\stackrel{\mathcal{L}}{\longleftrightarrow} \frac{X(s)}{s}\]</span></p>
+<h3 id="example-11.7">Example 11.7</h3>
+<p>Recall the integrator block</p>
+<p>Taking the Laplace transform of input and output</p>
+<p>This is why the integrator block is often depicted as</p>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>
