@@ -14,7 +14,7 @@ In today's lecture we continue our introduction to complex analysis by defining 
 
 \section{Complex Derivatives}
 
-A complex function $f(s)$ is \textit{analytic} in some domain $R\subset\mathbb{C}$ of the function is
+A complex function $f(s)$ is \textit{analytic} in some domain $R\subset\mathbb{C}$ if the function is
 
 \begin{itemize}
 \item single valued, and
@@ -38,7 +38,7 @@ f^\prime(s) = \frac{\partial u}{\partial x} + j \frac{\partial v}{\partial x} = 
 
 If a complex function is analytic over the entire complex plane, i.e. $R = \mathbb{C}$, it is called an \textit{entire} function.
 
-If a complex function is not analytic at a point $s_0$, but is analytic in the neighborhood of $s_0$, then the point is called a \texit{singularity} or a \textit{singular point} of the function.
+If a complex function is not analytic at a point $s_0$, but is analytic in the neighborhood of $s_0$, then the point is called a \textit{singularity} or a \textit{singular point} of the function.
 
 \subsection{Examples}
 
@@ -196,11 +196,11 @@ f(s) = \frac{b_0 + b_1 s + b_2 s^2}{a_0 + a_1 s + a_2 s^2 + a_3 s^3}
 is a strictly proper rational function.
 
 
-The roots of the denominator polynomial $Q(s)$ are the singularities of $f$. We will often be interested in writing rational functions as a \textit{partial fraction expansion} of the factors of the denominator.
+The roots of the denominator polynomial $Q(s)$ are the singularities of $f$.
 
 \subsection{Partial Fraction Expansion}
 
-A ratio of polynomials that is improper can be written as the sum of a polynomial and a strictly proper rational function. Example
+We will often be interested in writing rational functions as a \textit{partial fraction expansion} of the factors of the denominator. A ratio of polynomials that is improper can be written as the sum of a polynomial and a strictly proper rational function. Example
 
 \[
 f(s) = \frac{2s^3 + 9s^2 + 11s + 2}{s^2 + 4s + 3} = (2s+1) + \frac{s-1}{s^2 + 4s + 3}
@@ -245,7 +245,7 @@ K_i = \left. (s-\alpha_i)f(s) \right|_{s = \alpha_i}
 Example:
 
 \[
-f(s) = \frac{s^2 + 2s + 7}{(s_1)(s-3)(s+5)} = \frac{K_1}{s+1} + \frac{K_2}{s-3} + \frac{K_3}{s+5}
+f(s) = \frac{s^2 + 2s + 7}{(s+1)(s-3)(s+5)} = \frac{K_1}{s+1} + \frac{K_2}{s-3} + \frac{K_3}{s+5}
 \]
 
 We note that $M = 2$ and $N = 3$ so that the function is strictly proper. To find the constants

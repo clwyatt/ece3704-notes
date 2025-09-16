@@ -1,0 +1,217 @@
+\documentclass{article}
+
+\usepackage{url}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,svg}
+
+\begin{document}
+\title{Lecture 11\\ Properties of Laplace Transform}
+\author{C.L. Wyatt}
+\date{\today}
+\maketitle
+
+Last week we learned how to compute the forward Laplace transform and Inverse Laplace transform for causal signals using the integrals
+
+
+$$
+\begin{aligned}
+X(s)=\int\limits_{0}^{\infty} x(t) e^{-s t}\; dt \quad\text{and}\quad x(t)=\frac{1}{2 \pi j} \int\limits_{c- j \infty}^{c+j \infty} X(s) e^{s t}\; ds
+\end{aligned}
+$$
+
+Today we will go over several usefull proparties of these transforms, that when combined with a table of transforms will allow us to analyze wide variety of stable and unstable systems,
+
+\section{Linearity Property}
+
+For $X_{1}(s)=\mathcal{L}\left\{x_{1}(t)\right\}$ and $X_{2}(s)=\mathcal{L}\left\{x_{2}(t)\right\}$
+
+$$
+\mathcal{L}\left\{a x_{1}(t)+b y_{2}(t)\right\}=a X_{1}(s)+b X_{2}(s)
+$$
+for $a, b \in \mathbb{C}$
+
+\subsection{Proof}
+
+$$
+\begin{aligned}
+\mathcal{L}\left\{a x_{1}(t)+b x_{2}(t)\right\} & =\int_{0}^{\infty}\left(a x_{1}(t)+b x_{2}(t)\right) e^{-s t} d t \\
+& =a \int_{0}^{\infty} x_{1}(t) e^{-s t} d t+b \int_{-\infty}^{\infty} x_{2}(t) e^{-s t} d t \\
+& =a X_{1}(s)+b X_{2}(s)
+\end{aligned}
+$$
+
+\subsection{Example 11.1}
+If $x(t)=4 e^{-t} u(t)-7 e^{-5 t} u(t) \quad X(s)=$ ?
+
+$$
+\begin{aligned}
+\mathcal{L}\{x(t)\} & =\mathcal{L}\left\{4 e^{-t} u(t)-7 e^{-5 t} u(t)\right\} \\
+& =4 \mathcal{L}\left\{e^{-t} u(t)\right\}-7\mathcal{L}\left\{e^{-5 t} u(t)\right\} \\
+& =\frac{4}{s+1}+\frac{-7}{s+5}
+\end{aligned}
+$$
+
+\subsection{Example 11.2}
+
+This also works in reverse. If $X(s)=\frac{10}{s+2}+\frac{3}{s+10}=\frac{13 s+106}{s^{2}+12 s+20}$
+
+$$
+\begin{aligned}
+x(t)=\mathcal{L}^{-1}\left\{\frac{10}{s+2}+\frac{3}{s+10}\right\} & =10 \mathcal{L}^{-1}\left\{\frac{1}{s+2}\right\}+3 \mathcal{L}^{-1}\left\{\frac{1}{s+10}\right\} \\
+& =10 e^{-2 t} u(t)+3 e^{-10 t} u(t)
+\end{aligned}
+$$
+
+\section{Time Shift Property}
+
+For causal $x(t)$ with $X(s) = \mathcal{L}\left\{x(t)\right\}$, then for time delay $t_0 \geq 0$
+
+\[
+\mathcal{L}\left\{ x(t-t_0) \right\} = X(s) e^{-s t_0}
+\]
+
+Note, in general, the time shift can only be a delay since an advance could make the signal non-causal. A more complete definition would be that as long as the time shift does not cause the signal to become non-causal.
+
+\subsection{Proof}
+
+\[
+\mathcal{L}\left\{x\left(t-t_{0}\right)\right\} =\int_{0}^{\infty} x\left(t-t_{0}\right) e^{-s t} \; dt
+\]
+
+Let $\tau = t-t_0$, then $t = \tau + t_0$ and $d\tau = dt$, thus
+
+$$
+\begin{aligned}
+\mathcal{L}\left\{x\left(t-t_{0}\right)\right\} &= \int_{t_{0}}^{\infty} x(\tau) e^{-s\left(\tau+t_{0}\right)} d\tau\\
+& =\int_{0}^{\infty} x(\tau) e^{-s \tau} e^{-s t_{0}} \; d\tau = e^{-s t_{0}} X(s)
+\end{aligned}
+$$
+
+\subsection{Example 11.3}
+
+Let $x(t)=v(t)=v(t-10)$, a causal pulse of 10 seconds.
+
+$$
+\begin{aligned}
+\mathcal{L}\{x(t)\} & =\mathcal{L}\{u(t)-u(t-10)\} & & \\
+& =\mathcal{L}\{u(t)\}-\mathcal{L}\{u(t-10)\} & & \text { by linearity property } \\
+& =\frac{1}{5}-\frac{1}{5} e^{-10s} & & \text { by timeshift property. }
+\end{aligned}
+$$
+
+
+\subsection{Example 11.4}
+
+When doing inverse transforms, collect all terms with common shift and do PFE seperately in each. For example let
+
+\[
+X(s)=\frac{e^{-7 s} s^2 + \left(e^{-4s} + 3e^{-7s}\right)s + \left(4e^{-4s} + 2e^{-7s} \right)}{(s+4)\left(s^{2}+3 s+2\right)}
+\]
+
+First rewrite in terms of the delays:
+
+\[
+X(s)=\frac{e^{-4 s}(s+4)+e^{-7 s}\left(s^{2}+3s+2\right)}{(s+4)\left(s^{2}+3 s+2\right)}
+\]
+
+Then seperate and take the inverse of each term independently, e.g.
+
+$$
+\begin{aligned}
+& =\frac{e^{-4 s}}{s^{2}+3s+2}+\frac{e^{-7 s}}{s+4} \\
+& =e^{-4 s}\left[\frac{k_{1}}{s+1}+\frac{k_{2}}{s+2}\right]+e^{-7 s}\left[\frac{1}{s+4}\right] \\
+& =e^{-4 s}\left[\frac{1}{s+1}+\frac{-1}{s+2}\right]+e^{-7 s}\left[\frac{1}{s+4}\right] \\
+x(t) & =\left[e^{-t} u(t)-e^{-2 t} u(t)\right]_{t\rightarrow t-4} + \left[e^{-4 t} u(t)\right]_{t\rightarrow t-7} \\
+& =e^{-(t-4)} u(t-4)-e^{-2(t-4)} u(t-4)+e^{-4(t-7)} u(t-7)
+\end{aligned}
+$$
+
+\section{Frequency Shift}
+
+Consider a causal signal $f(t)$ with Laplace transform $F(s)$. Let $x(t)=f(t) e^{s_{0} t}$ for $s_{0} \in \mathbb{C}$
+
+Then
+
+\[
+\mathcal{L}\{x(t)\}=F\left(s-s_{0}\right)=\left.F(s)\right|_{s \rightarrow s-s_{0}}
+\]
+
+The proof is a bonus problem on this week's problem set.
+
+\subsection{Example 11.5}
+
+$x(t)=\cos \left(\omega_{0} t\right) u(t) \quad \omega_{0} \in \mathbb{R}, \quad x(s)=$ ?
+
+$$
+\begin{aligned}
+x(t) & =\frac{1}{2} e^{j \omega_{0} t} u(t)+\frac{1}{2} e^{-j \omega_{0} t} u(t) \quad \text { by Eulers } \\
+\mathcal{L}\{x(t)\} & =\frac{1}{2} y\left\{e^{j \omega_{0} t} u(t)\right\}+\frac{1}{2} y\left\{e^{-j \omega_{0} t} u(t)\right\} \text { by linearity } \\
+& =\left.\frac{1}{2} \mathcal{L}\{u(t)\}\right|_{s \rightarrow s-j \omega_{0}}+\left.\frac{1}{2} \mathcal{L}\{u(t)\}\right|_{s \rightarrow s + j\omega_{0}} \\
+& =\frac{1}{2} \frac{1}{s-j \omega_{0}}+\frac{1}{2} \frac{1}{s+j \omega_{0}} \\
+& =\frac{1}{2}\left[\frac{s+j \omega_{0}+s-j \omega_{0}}{\left(s-j \omega_{0}\right)\left(s+j \omega_{0}\right.}\right] \\
+& =\frac{1}{2}\left[\frac{2 s}{s^{2}+\omega_{0}^{2}}\right]=\frac{s}{s^{2}+\omega_{0}^{2}}
+\end{aligned}
+$$
+
+\section{Time Differentiation}
+
+Let $X(s)=\mathcal{L}\{x(t)\}$ then
+
+$$
+\mathcal{L}\left\{\frac{d x}{d t}\right\} \text { for } t \geq 0 \text { is } s X(s)-x\left(0^{-}\right)
+$$
+where $x\left(0^{-}\right)$ is the signal value at $t=0^{-}$, which for a causal signal is zero. Repeated differentiation gives general form
+
+$$
+\mathcal{L}\left\{\frac{d^{n} x}{d t^{n}}\right\}=\left. s^{n} X(s)-\sum\limits_{k=1}^{n} s^{n-k} \frac{d^{k-1}}{d t^{k-1}} x(t) \right|_{t=0^{-}}
+$$
+
+We will discuss this property in detail with examples when we cover solving LCCDE next time.
+
+\section{Frequency Differentiation}
+
+Let $x(t) \stackrel{\mathcal{L}}{\longleftrightarrow} X(s)$, then 
+
+
+$$
+-t x(t) \stackrel{\mathcal{L}}{\longleftrightarrow} \frac{d X(s)}{d s}
+$$
+
+Note this is complex differentiation as desccribed in lecture 7.
+
+\subsection{Example 11.6}
+
+Find $\mathcal{L}\{t u(t)\}$, the ramp signal.
+
+$$
+\begin{aligned}
+\mathcal{L}\{t u(t)\} & =-\mathcal{L}\{-t u(t)\}=-\frac{d X(s)}{d s} \text { where } X(s) =\mathcal{L}\{u(t)\} =\frac{1}{s}\\
+& =-\frac{-1}{s^{2}}=\frac{1}{s^{2}}
+\end{aligned}
+$$
+
+\section{Integration Property}
+
+Let $x(t) \stackrel{\mathcal{L}}{\longleftrightarrow} X(s)$, then 
+
+$$
+\int\limits_{0^-}^t  x(\tau) \; d\tau \stackrel{\mathcal{L}}{\longleftrightarrow} \frac{X(s)}{s}
+$$
+
+\subsection{Example 11.7}
+
+Recall the integrator block
+
+Taking the Laplace transform of input and output
+
+
+This is why the integrator block is often depicted as
+
+
+
+
+
+
+
+
+\end{document}
