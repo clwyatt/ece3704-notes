@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2025-09-16" />
+  <meta name="dcterms.date" content="2025-09-18" />
   <title>Lecture 11 Properties of Laplace Transform</title>
   <style>
     code{white-space: pre-wrap;}
@@ -38,7 +38,7 @@
 <h1 class="title">Lecture 11<br />
 Properties of Laplace Transform</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2025-09-16</p>
+<p class="date">2025-09-18</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -73,6 +73,19 @@ id="toc-integration-property">Integration Property</a>
 <ul>
 <li><a href="#example-11.7" id="toc-example-11.7">Example 11.7</a></li>
 </ul></li>
+<li><a href="#time-scaling-property" id="toc-time-scaling-property">Time
+Scaling Property</a></li>
+<li><a href="#time-convolution" id="toc-time-convolution">Time
+Convolution</a>
+<ul>
+<li><a href="#example-11.8" id="toc-example-11.8">Example 11.8</a></li>
+</ul></li>
+<li><a href="#modulation-property"
+id="toc-modulation-property">Modulation Property</a></li>
+<li><a href="#initial-value-property"
+id="toc-initial-value-property">Initial Value Property</a></li>
+<li><a href="#final-value-property" id="toc-final-value-property">Final
+Value Property</a></li>
 </ul>
 </nav>
 <p>Last week we learned how to compute the forward Laplace transform and
@@ -82,9 +95,11 @@ X(s)=\int\limits_{0}^{\infty} x(t) e^{-s t}\; dt \quad\text{and}\quad
 x(t)=\frac{1}{2 \pi j} \int\limits_{c- j \infty}^{c+j \infty} X(s) e^{s
 t}\; ds
 \end{aligned}\]</span></p>
-<p>Today we will go over several usefull proparties of these transforms,
-that when combined with a table of transforms will allow us to analyze
-wide variety of stable and unstable systems,</p>
+<p>Today we will go over several usefully properties of these
+transforms, that when combined with a table of transforms will allow us
+to analyze wide variety of stable and unstable systems.</p>
+<p>Note: unless otherwise specified, in the following the Laplace
+transforms are one-sided (unilateral).</p>
 <h2 id="linearity-property">Linearity Property</h2>
 <p>For <span
 class="math inline">\(X_{1}(s)=\mathcal{L}\left\{x_{1}(t)\right\}\)</span>
@@ -151,19 +166,19 @@ pulse of 10 seconds.</p>
 \mathcal{L}\{x(t)\} &amp; =\mathcal{L}\{u(t)-u(t-10)\} &amp; &amp; \\
 &amp; =\mathcal{L}\{u(t)\}-\mathcal{L}\{u(t-10)\} &amp; &amp; \text { by
 linearity property } \\
-&amp; =\frac{1}{5}-\frac{1}{5} e^{-10s} &amp; &amp; \text { by timeshift
-property. }
+&amp; =\frac{1}{5}-\frac{1}{5} e^{-10s} &amp; &amp; \text { by
+time-shift property. }
 \end{aligned}\]</span></p>
 <h3 id="example-11.4">Example 11.4</h3>
 <p>When doing inverse transforms, collect all terms with common shift
-and do PFE seperately in each. For example let</p>
+and do PFE separately in each. For example let</p>
 <p><span class="math display">\[X(s)=\frac{e^{-7 s} s^2 + \left(e^{-4s}
 + 3e^{-7s}\right)s + \left(4e^{-4s} + 2e^{-7s}
 \right)}{(s+4)\left(s^{2}+3 s+2\right)}\]</span></p>
 <p>First rewrite in terms of the delays:</p>
 <p><span class="math display">\[X(s)=\frac{e^{-4 s}(s+4)+e^{-7
 s}\left(s^{2}+3s+2\right)}{(s+4)\left(s^{2}+3 s+2\right)}\]</span></p>
-<p>Then seperate and take the inverse of each term independently,
+<p>Then separate and take the inverse of each term independently,
 e.g.</p>
 <p><span class="math display">\[\begin{aligned}
 &amp; =\frac{e^{-4 s}}{s^{2}+3s+2}+\frac{e^{-7 s}}{s+4} \\
@@ -224,7 +239,7 @@ solving LCCDE next time.</p>
 <p><span class="math display">\[-t x(t)
 \stackrel{\mathcal{L}}{\longleftrightarrow} \frac{d X(s)}{d
 s}\]</span></p>
-<p>Note this is complex differentiation as desccribed in lecture 7.</p>
+<p>Note this is complex differentiation as described in lecture 7.</p>
 <h3 id="example-11.6">Example 11.6</h3>
 <p>Find <span class="math inline">\(\mathcal{L}\{t u(t)\}\)</span>, the
 ramp signal.</p>
@@ -240,8 +255,140 @@ ramp signal.</p>
 \stackrel{\mathcal{L}}{\longleftrightarrow} \frac{X(s)}{s}\]</span></p>
 <h3 id="example-11.7">Example 11.7</h3>
 <p>Recall the integrator block</p>
-<p>Taking the Laplace transform of input and output</p>
+<figure>
+<p><img src="figures/fig11_1.svg"
+alt="integrator block. See caption." /></p>
+<figcaption>The integrator block in the time domain. It computes the
+running integral of its input and is a building block for CT
+systems.</figcaption>
+</figure>
+<p>Taking the Laplace transform of input and output and assuming a
+causal input (zero initial conditions for non-input nodes)</p>
+<p><span class="math display">\[Y(s) = \frac{1}{s} X(s) \quad
+.\]</span></p>
 <p>This is why the integrator block is often depicted as</p>
+<figure>
+<p><img src="figures/fig11_2.svg"
+alt="integrator block in Laplace domain. See caption." /></p>
+<figcaption>The integrator block in the Laplace domain.</figcaption>
+</figure>
+<h2 id="time-scaling-property">Time Scaling Property</h2>
+<p>Given <span class="math inline">\(x(t)
+\stackrel{\mathcal{L}}{\longleftrightarrow} X(s)\)</span>. For <span
+class="math inline">\(a&gt;0\)</span></p>
+<p><span class="math display">\[\mathcal{L}\{x(a t)\}
+\longleftrightarrow \frac{1}{a} X\left(\frac{s}{a}\right)\]</span></p>
+<p>Recall this corresponds to speeding up or slowing down a signal.</p>
+<h2 id="time-convolution">Time Convolution</h2>
+<p>Let <span class="math inline">\(x_{1}(t)
+\stackrel{\mathcal{L}}{\longleftrightarrow} X_{1}(s)\)</span> and <span
+class="math inline">\(x_{2}(t)
+\stackrel{\mathcal{L}}{\longleftrightarrow} X_{2}(s)\)</span> then</p>
+<p><span class="math display">\[x_{1}(t) * x_{2}(t)
+\stackrel{\mathcal{L}}{\longleftrightarrow} X_{1}(s)\cdot
+X_{2}(s)\]</span></p>
+<p>So for causal systems with impulse response <span
+class="math inline">\(h(t)\)</span>, the output in the Laplace domain
+is</p>
+<p><span class="math display">\[Y(s)=H(s) X(s) \text { where }
+H(s)=\mathcal{L}\{h(t)\} \text { and }
+X(s)=\mathcal{L}\{x(t)\}\]</span></p>
+<p>To get <span
+class="math inline">\(y(t)=\mathcal{L}^{-1}\{Y(s)\}\)</span>. Recall
+<span class="math inline">\(H(s)\)</span> is transfer function. This
+implies <span class="math inline">\(H(s)=\frac{Y(s)}{X(s)}\)</span></p>
+<p>This gives us an analysis approach similar to how the Fourier
+transform was used in ECE 2714, except now it works for unstable
+systems.</p>
+<figure>
+<p><img src="figures/fig11_3.svg"
+alt="illustration of analysis approach using Laplace. See caption." /></p>
+<figcaption>Illustration of the various CT LTI systems analysis methods
+using Laplace.</figcaption>
+</figure>
+<h3 id="example-11.8">Example 11.8</h3>
+<p>Suppose we have a first order LTI System with <span
+class="math inline">\(h(t)=3 e^{-2 t} u(t)\)</span> with input <span
+class="math inline">\(x(t)=\cos (10 t) u(t)\)</span>. Find <span
+class="math inline">\(Y(s)\)</span> and <span
+class="math inline">\(y(t)\)</span> using Laplace.</p>
+<p><strong>Solution:</strong></p>
+<ul>
+<li><p>We note <span class="math inline">\(H(s)=\mathcal{L}\left\{3
+e^{-2 t} u(t)\right\}=\frac{3}{s+2}\)</span> (linearity +
+table)</p></li>
+<li><p>From table (or proved earlier) <span
+class="math inline">\(X(s)=\frac{s}{s^{2}+100}\)</span></p></li>
+<li><p>Thus <span class="math inline">\(Y(s)=H(s) \cdot
+X(s)=\frac{3}{s+2} \cdot \frac{s}{s^{2}+100}\)</span> by convolution
+property</p></li>
+</ul>
+<p>To find <span
+class="math inline">\(y(t)=\mathcal{L}^{-1}\{Y(s)\}\)</span> we
+write</p>
+<p><span class="math display">\[\begin{aligned}
+Y(s) &amp; =\frac{A}{s+2}+\frac{B s+C}{s^{2}+100}=\frac{3
+s}{(s+2)\left(s^{2}+100\right)} \\
+A &amp; =\left.\frac{3
+s}{s^{2}+100}\right|_{s=-2}=\frac{-6}{104}=-\frac{3}{52} \\
+Y(0) &amp; =\frac{A}{2}+\frac{C}{100}=0 \Rightarrow C=-50
+A=\frac{150}{52}=\frac{75}{26} \\
+s Y(s) &amp; =\frac{A s}{s+2}+\frac{B s^{2}+C s}{s^{2}+100}=\frac{3
+s^{2}}{(s+2)\left(s^{2}+100\right)} \\
+&amp;=
+\frac{A}{1+\frac{2}{s}}+\frac{B+\frac{C}{s}}{1+\frac{100}{s^{2}}}=\frac{3
+/ s}{(1+\frac{2}{s})\left(1+\frac{100}{s^{2}}\right)}
+\end{aligned}\]</span></p>
+<p>Let <span class="math inline">\(s\rightarrow 0 \quad A+B=0 \quad
+\Rightarrow B=-A=\frac{3}{52}\)</span>. So <span
+class="math display">\[Y(s)=\frac{-3 / 52}{s+2}+\frac{\frac{3}{52}
+s+\frac{75}{26}}{s^{2}+100}\]</span></p>
+<p>Now, expand the second term</p>
+<p><span class="math display">\[Y(s)=-\frac{3}{52} \cdot
+\frac{1}{s+2}+\frac{3}{52} \cdot \frac{s}{s^{2}+100}+\frac{75}{26}
+\frac{1}{s^{2}+100}\]</span></p>
+<p>Note <span class="math inline">\(\mathcal{L}\left\{\sin
+\left(\omega_0 t\right)
+u(t)\right\}=\frac{\omega_{0}}{s^{2}+\omega_{0}^{2}}\)</span>, write
+third term as</p>
+<p><span class="math display">\[\frac{1}{s^{2}+100}=\frac{1}{10} \cdot
+\frac{10}{s^{2}+100}\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[Y(s)=-\frac{3}{52} \cdot
+\frac{1}{s+2}+\frac{3}{52} \frac{5}{s^{2}+100}+\frac{75}{26} \cdot
+\frac{1}{10} \frac{10}{s^{2}+100}\]</span></p>
+<p>and using linearity with a table we get the final result:</p>
+<p><span class="math display">\[y(t)=-\frac{3}{52} e^{-2 t}
+u(t)+\frac{3}{52} \cos (10 t) u(t)+\frac{15}{52} \sin (10 t) u(t)
+.\]</span></p>
+<h2 id="modulation-property">Modulation Property</h2>
+<p>Let <span class="math inline">\(x_{1}(t)
+\stackrel{\mathcal{L}}{\longleftrightarrow} X_{1}(s)\)</span> and <span
+class="math inline">\(x_{2}(t)
+\stackrel{\mathcal{L}}{\longleftrightarrow} X_{2}(s)\)</span> then</p>
+<p><span class="math display">\[x_{1}(t) \cdot x_{2}(t)
+\stackrel{\mathcal{L}}{\longleftrightarrow} \frac{1}{2 \pi
+j}\left[X_{1}(s) * X_{2}(s)\right]\]</span></p>
+<p>where <span class="math inline">\(X_{1}(s) * X_{2}(s)=\int X_{1}(z)
+X_{2}(s-z) d z\)</span>. Let <span class="math inline">\(s=x+j
+y\)</span> and <span class="math inline">\(z = a+jb\)</span> for <span
+class="math inline">\(x,y, a, b\in\mathbb{R}\)</span>, then this
+convolution is</p>
+<p><span class="math display">\[X_{1}(s) * X_{2}(s) =
+\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} X_{1}(a+j b)
+X_{2}((x-a)+j(y-b)) \; da \, db\]</span></p>
+<p>Note, modulation is easier to analyze in the Fourier Domain, but
+requires both signals have Fourier transforms. The relationship between
+Fourier and Laplace will be discussed more in the next lecture.</p>
+<h2 id="initial-value-property">Initial Value Property</h2>
+<p><span class="math display">\[x\left(0^{+}\right)=\lim_{s \rightarrow
+\infty} s X(s)\]</span> if the limit exists. This is an easy way to
+check inverse transforms.</p>
+<h2 id="final-value-property">Final Value Property</h2>
+<p><span class="math display">\[\lim _{t \rightarrow \infty}
+x(t)=\lim_{s \rightarrow 0} s X(s)\]</span></p>
+<p>if all poles/singularities of <span
+class="math inline">\(X(s)\)</span> are in the left-hand plane.</p>
 </main>
 
 <footer>
