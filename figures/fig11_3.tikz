@@ -1,0 +1,37 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+
+  \node [input] at (0,0) (input1) {};
+  \node [input] at (0,-2) (input2) {};
+  \node [output] at (3,0) (output1) {};
+  \node [output] at (3,-2) (output2) {};
+
+  \node at (-1,0) (x) {$x(t)$};
+  \node at (-1,-2) (X) {$X(s)$};
+
+  \node at (5,0) (y) {$y(t) = h(t) * x(t)$};
+  \node at (5,-2) (Y) {$Y(s) = H(s) X(s)$};
+
+  \draw[->] (input1) -- node {$h(t)$} (output1);
+  \draw[->] (input2) -- node {$H(s)$} (output2);
+
+  \draw[<->] (x) -- node {$\mathcal{L}$} (X);
+  \draw[<->] (y) -- node {$\mathcal{L}$} (Y);
+
+  \draw[<->] (1.5,-0.25) -- node {$\mathcal{L}$} (1.5,-1.25);
+\end{tikzpicture}
+\end{document}
