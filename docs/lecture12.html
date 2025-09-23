@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-09-23" />
+  <title>Lecture 12 Solving LCCDE using Laplace</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture 12<br />
+Solving LCCDE using Laplace</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-09-23</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#causal-lti-systems-and-lccde"
+id="toc-causal-lti-systems-and-lccde">Causal LTI systems and LCCDE</a>
+<ul>
+<li><a href="#example-1" id="toc-example-1">Example 1</a></li>
+<li><a href="#example-2" id="toc-example-2">Example 2</a></li>
+<li><a href="#example-3" id="toc-example-3">Example 3</a></li>
+</ul></li>
+<li><a href="#systems-described-by-lccde-with-non-causal-inputs"
+id="toc-systems-described-by-lccde-with-non-causal-inputs">Systems
+described by LCCDE with non-causal inputs</a>
+<ul>
+<li><a href="#example-4" id="toc-example-4">Example 4</a></li>
+</ul></li>
+<li><a href="#response-of-systems-with-initial-conditions"
+id="toc-response-of-systems-with-initial-conditions">Response of Systems
+with Initial Conditions</a>
+<ul>
+<li><a href="#example-5" id="toc-example-5">Example 5</a></li>
+</ul></li>
+<li><a href="#system-stability-and-transfer-function"
+id="toc-system-stability-and-transfer-function">System Stability and
+Transfer Function</a>
+<ul>
+<li><a href="#example-6" id="toc-example-6">Example 6</a></li>
+<li><a href="#example-7" id="toc-example-7">Example 7</a></li>
+<li><a href="#a-more-nuanced-look-at-stability"
+id="toc-a-more-nuanced-look-at-stability">A more nuanced look at
+stability</a></li>
+</ul></li>
+<li><a
+href="#relationship-between-transfer-function-and-the-frequency-response"
+id="toc-relationship-between-transfer-function-and-the-frequency-response">Relationship
+between Transfer Function and the Frequency Response</a></li>
+<li><a href="#inverse-systems" id="toc-inverse-systems">Inverse
+Systems</a></li>
+</ul>
+</nav>
+<h2 id="causal-lti-systems-and-lccde">Causal LTI systems and LCCDE</h2>
+<p>Recall from ECE 2714 the CT LCCDE</p>
+<p><span class="math display">\[\begin{aligned}
+\sum_{k=0}^{N} a_{k} D^{k} y(t) &amp;= \sum_{k=0}^{M} b_{k} D^{k} x(t)
+\\
+a_{0} y(t)+a_{1} D_{y}(t)+\cdots a_{N} D^{N} y(t) &amp;= b_{0}
+x(t)+b_{1} D x(t)+\cdots+ b_{M} D^{M} x(t)
+\end{aligned}\]</span> where <span class="math inline">\(M \leq
+N\)</span> and <span class="math inline">\(D^{k}=\frac{d^{k}}{d
+t^{k}}\)</span>.</p>
+<p>When viewed as a system, this LCCDE corresponds to an impulse
+response <span class="math inline">\(h(t)\)</span>, and the Laplace
+transform of the impulse response corresponds to the transfer function /
+Eigenvalue <span class="math inline">\(H(s)\)</span>.</p>
+<p>Using the derivative property of the Laplace transform allows us to
+easily find the transfer function without first finding the impulse
+response. In fact this is even easier than using Fourier as we do not
+have to test for stability first.</p>
+<p>Consider first the case where there are zero initial conditions and a
+causal input <span class="math inline">\(x(t)\)</span>, so that <span
+class="math inline">\(y(0^-) = x(0^-) = Dy(0^-) = Dx(0^-) \cdots =
+0\)</span>. Then the derivative property is</p>
+<p><span class="math display">\[\mathcal{L}\left\{ D^n x(t)\right\} =
+s^n \, X(z)\; .\]</span></p>
+<p>This plus the linearity and convolution properties with some algebra
+allows us to find the transfer function.</p>
+<p>Given an input <span class="math inline">\(x(t)\)</span> or <span
+class="math inline">\(X(s)\)</span> (again causal) we can determine the
+output in the Laplace domain (<span
+class="math inline">\(s\)</span>-domain) using <span
+class="math inline">\(Y(s) = H(s) X(s)\)</span>, where <span
+class="math inline">\(X(s) = \mathcal{L}\left\{x(t)\right\}\)</span>,
+and us the inverse Laplace transform to get <span
+class="math inline">\(y(t)\)</span>.</p>
+<h3 id="example-1">Example 1</h3>
+<p>Find the transfer function that corresponds to the LCCDE,</p>
+<p><span class="math display">\[D y(t)+a y(t)=b x(t) \quad a, b \in
+\mathbb{C}\]</span> assuming zero-initial conditions.</p>
+<p><span class="math display">\[\begin{aligned}
+&amp; \mathcal{L}\left\{D y(t)+a y(t)\right\}=\mathcal{L}\{b x(t\} \\
+&amp; s Y(s)+a Y(s)=b X(s) \\
+&amp; Y(s)(s+a)=b X(s) \\
+&amp; \frac{Y(s)}{X(s)}=\frac{b}{s+a} \equiv H(s) \text { from
+Convolution Property. }
+\end{aligned}\]</span></p>
+<h3 id="example-2">Example 2</h3>
+<p>Find the transfer function that corresponds to the LCCDE, <span
+class="math display">\[D^{2} y(t)+a D y(t)+b y(t)=c x(t)+d D
+x(t)\]</span> with <span class="math inline">\(a, b, c, d \in
+\mathbb{C}\)</span> and assuming zero-initial conditions.</p>
+<p>Taking the Laplace transform of both sides</p>
+<p><span class="math display">\[\begin{aligned}
+&amp; \left(s^{2}+a s+b\right) Y(s)=(d s+c) X(s) \\
+&amp; H(s)=\frac{Y(s)}{X(s)}=\frac{d s+c}{s^{2}+a s+b}
+\end{aligned}\]</span></p>
+<h3 id="example-3">Example 3</h3>
+<p>Given <span class="math display">\[D^{2} y(t)-16 y(t)=x(t)\]</span>
+where <span class="math inline">\(x(t)=e^{-4 t} u(t)\)</span>, find
+<span class="math inline">\(y(t)\)</span>.</p>
+<p>Taking the Laplace transform of the LCCDE</p>
+<p><span class="math display">\[(s^2 - 16)Y(s) = X(s)\]</span></p>
+<p>Taking the Laplace transform of the input</p>
+<p><span class="math display">\[X(s) = \mathcal{L}\left\{ e^{-4 t} u(t)
+\right\} = \frac{1}{s+4}\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[Y(s) = \frac{1}{s^2 - 16} X(s) =
+\frac{1}{(s^2 - 16)(s+4)} = \frac{1}{(s - 4)(s+4)^2}\]</span></p>
+<p>To find <span class="math inline">\(y(t)\)</span> we first perform
+the partial fraction expansion of <span
+class="math inline">\(Y(s)\)</span></p>
+<p><span
+class="math display">\[y(t)=\mathcal{L}^{-1}\{Y(s)\}=\mathcal{L}^{-1}\left\{\frac{K_{1}}{(s+4)^{2}}+\frac{K_{2}}{s+4}+\frac{K_{3}}{s-4}\right\}\]</span>
+where <span
+class="math display">\[K_{1}=\left.\frac{1}{s-4}\right|_{s=-4}=-\frac{1}{8}\]</span>
+<span class="math display">\[K_{2}=\left.\frac{d}{d s}
+\frac{1}{s-4}\right|_{s=-4}=\left.\frac{-1}{(s-4)^{2}}\right|_{s=-4}=\frac{-1}{64}\]</span>
+and <span
+class="math display">\[K_{3}=\left.\frac{1}{(s+4)^{2}}\right|_{s=4}=\frac{1}{64}\]</span></p>
+<p>Thus</p>
+<p><span class="math display">\[y(t)=-\frac{1}{8} t e^{-4 t}
+u(t)-\frac{1}{64} e^{-4 t} u(t)+\frac{1}{64} e^{4 t} u(t)\]</span></p>
+<h2 id="systems-described-by-lccde-with-non-causal-inputs">Systems
+described by LCCDE with non-causal inputs</h2>
+<p>What is the input is not causal? Split the signal into an anti-causal
+and causal component:</p>
+<p><span class="math display">\[x(t) = x(t)u(-t) + x(t)u(t) = x_a(t) +
+x_c(t)\]</span></p>
+<p>Taking the bilateral Laplace</p>
+<p><span class="math display">\[X(s) = X_a(s) + X_c(s)\]</span> for ROC
+<span class="math inline">\(\gamma_c &lt; \text{Re}(s) &lt;
+\gamma_a\)</span>. Then</p>
+<p>Then, assuming a causal system with transfer function ROC <span
+class="math inline">\(\text{Re}(s) &gt; \gamma_h\)</span></p>
+<p><span class="math display">\[Y(s) = H(s) \cdot X(s) = H(s) X_a(s) +
+H(s) X_c(s)\]</span></p>
+<p>The resulting ROC for the first term is <span
+class="math inline">\(\text{max}(\gamma_h, \gamma_c) &lt; \text{Re}(s)
+&lt; \gamma_a\)</span>. Assuming <span
+class="math inline">\(\text{max}(\gamma_h, \gamma_c) &lt;
+\gamma_a\)</span>, this gives rise to two terms in the inverse, one
+anti-causal and one causal.</p>
+<p><span class="math display">\[f(t)\, u(-t) + g(t)\, u(t)\]</span></p>
+<p>Otherwise if <span class="math inline">\(\text{max}(\gamma_h,
+\gamma_c) &gt; \gamma_a\)</span> the ROC is the empty set, and no such
+signal exists.</p>
+<p>To determine which terms go in the anti-causal <span
+class="math inline">\(f(t)\)</span> and which ones in the causal <span
+class="math inline">\(g(t)\)</span> you use the relationship of the
+poles to the ROC. Poles that lie to the left of the ROC correspond to
+causal signals, while those that lie to the right of the ROC correspond
+to anti-causal signals.</p>
+<p>The resulting ROC for the second term is <span
+class="math inline">\(\text{Re}(s) &gt; \text{max}(\gamma_h,
+\gamma_c)\)</span>. This gives rise to a causal term in the inverse.
+<span class="math inline">\(y_c(t)\)</span>.</p>
+<p>Thus the total response is</p>
+<p><span class="math display">\[y(t) = f(t)\, u(-t) + g(t)\, u(t) +
+y_c(t)\]</span></p>
+<p>For this reason, it is cumbersome to use Laplace for non-causal
+inputs even if the system itself is causal. This same approach works for
+non-causal systems with causal inputs and non-causal systems with
+non-causal inputs.</p>
+<h3 id="example-4">Example 4</h3>
+<p>To illustrate this, consider a causal system with transfer
+function</p>
+<p><span class="math display">\[H(s) = \frac{1}{s+2}\]</span> for <span
+class="math inline">\(\text{Re}(s) &gt; -2\)</span>. Suppose the input
+to this system our non-causal example from lecture 10:</p>
+<p><span class="math display">\[x(t) = e^{-|t|} = e^t\, u(-t) + e^{-t}\,
+u(t)\]</span></p>
+<p>Then the bilateral Laplace of the input is</p>
+<p><span class="math display">\[X(s) =
+\underbrace{\frac{-1}{s-1}}_{\text{Re}(s) &lt; 1} +
+\underbrace{\frac{1}{s+1}}_{\text{Re}(s) &gt; -1}\]</span></p>
+<p>Then the output is</p>
+<p><span class="math display">\[Y(s) =
+\underbrace{\frac{-1}{(s-1)(s+2)}}_{-2 &lt;\text{Re}(s) &lt; 1} +
+\underbrace{\frac{1}{(s+1)(s+2)}}_{\text{Re}(s) &gt; -1}\]</span></p>
+<p>Doing the partial fraction expansion we obtain</p>
+<p><span class="math display">\[Y(s) =
+\underbrace{-\frac{1}{3}\frac{1}{s-1} + \frac{1}{3}\frac{1}{s+2}}_{-2
+&lt;\text{Re}(s) &lt; 1} + \underbrace{\frac{1}{s+1} -
+\frac{1}{s+2}}_{\text{Re}(s) &gt; -1}\]</span></p>
+<p>Consider the first two terms. Since the pole of the first term (at
+<span class="math inline">\(1\)</span>) lies to the right of the ROC it
+corresponds to an anti-causal function. The pole of the second term (at
+<span class="math inline">\(-2\)</span>) lies to the left of the ROC and
+so corresponds to a causal signal.</p>
+<p>For the last two terms, since both poles (at <span
+class="math inline">\(-1\)</span> and <span
+class="math inline">\(-2\)</span>) lie to the left of the ROC they are
+causal signals. Since the second and third terms have the same pole and
+both correspond to causal signals they can be combined. Thus</p>
+<p><span class="math display">\[y(t) = -\frac{1}{3} \left.
+\mathcal{L}^{-1}\left\{ \frac{-1}{-s-1}\right\} \right|_{t\rightarrow
+-t} + \mathcal{L}^{-1}\left\{ \frac{1}{s+1}\right\} -\frac{2}{3}
+\mathcal{L}^{-1}\left\{ \frac{1}{s+2}\right\}\]</span> Using the table
+of transforms and linearity <span class="math display">\[y(t) =
+\frac{1}{3}e^t\, u(-t) + e^{-t}u(t) - \frac{2}{3}
+e^{-2t}u(t)\]</span></p>
+<p>It is instructive to perform this same analysis using convolution,
+which should give the same results. It is debatable as to which approach
+is more complex.</p>
+<h2 id="response-of-systems-with-initial-conditions">Response of Systems
+with Initial Conditions</h2>
+<p>What is the initial conditions of the LCCDE are not zero? Then it is
+no longer an LTI system, but we can still use Laplace to analyze the
+solution to the LCDDE for causal inputs/forcing functions.</p>
+<h3 id="example-5">Example 5</h3>
+<p>Consider the circuit below, where the switch moves position at <span
+class="math inline">\(t=0\)</span> and the voltage <span
+class="math inline">\(x(t)\)</span> is a causal signal.</p>
+<p>TODO Figure</p>
+<p>For <span class="math inline">\(t &lt; 0\)</span> it is a DC circuit
+and <span class="math inline">\(y(t) = V\)</span>. For <span
+class="math inline">\(t \geq 0\)</span> we have the governing
+equation</p>
+<p><span class="math display">\[\frac{dy}{dt}(t) + \frac{1}{RC} y(t) =
+\frac{1}{RC} x(t)\]</span> but now the initial condition on the
+capacitor is non-zero, i.e. <span class="math inline">\(y(0^-) =
+V\)</span>.</p>
+<p>Taking the Laplace transform and using the derivative property</p>
+<p><span class="math display">\[sY(s) - y(0^-) + \frac{1}{RC} Y(s) =
+\frac{1}{RC} X(s)\]</span></p>
+<p>Solving for the output we get</p>
+<p><span class="math display">\[Y(s) = \frac{V}{s + \frac{1}{RC}} +
+\frac{\frac{1}{RC}}{s + \frac{1}{RC}} X(s)\]</span></p>
+<p>The first term is called the zero-input response. The second term in
+the zero state response. Note that when <span class="math inline">\(V =
+0\)</span> the zero input response is zero and we have an LTI
+system.</p>
+<h2 id="system-stability-and-transfer-function">System Stability and
+Transfer Function</h2>
+<p>Given a causal LTI system with transfer function <span
+class="math inline">\(H(s)\)</span>, the system is stable if
+<strong>all</strong> poles are in the left-hand side of the complex
+plane. If <strong>any</strong> poles are in the right hand plane the
+system is unstable.</p>
+<h3 id="example-6">Example 6</h3>
+<p>Given a system described by the LCDDE</p>
+<p><span class="math display">\[D^2 y(t) - y(t) = x(t)\]</span> with
+zero initial conditions, determine if it is BIBO stable.</p>
+<p>Taking the transform to find the transfer function</p>
+<p><span class="math display">\[H(s) = \frac{1}{s-1}\]</span> for <span
+class="math inline">\(\text{Re}(s) &gt; 1\)</span>. It has a single pole
+at <span class="math inline">\(+1\)</span>, thus the system is
+unstable.</p>
+<h3 id="example-7">Example 7</h3>
+<p>Given a system described by the LCDDE</p>
+<p><span class="math display">\[D^2 y(t) + 2DY(t) + y(t) = -7 x(t) +
+Dx(t)\]</span> with zero initial conditions, determine if it is BIBO
+stable.</p>
+<p>Taking the transform to find the transfer function</p>
+<p><span class="math display">\[H(s) = \frac{s+7}{s^2 + 2s + 1} =
+\frac{s-7}{(s + 1 + j)(s + 1 - j)}\]</span> for <span
+class="math inline">\(\text{Re}(s) &gt; -1\)</span>. It has two poles at
+<span class="math inline">\(-1 \pm j\)</span> and a zero at <span
+class="math inline">\(+7\)</span>, thus the system is stable. Note the
+location of the zero does not matter (in most cases).</p>
+<h3 id="a-more-nuanced-look-at-stability">A more nuanced look at
+stability</h3>
+<p><strong>Remark 1</strong>. In practice some care must be taken when
+canceling common factors in <span class="math inline">\(P(s)\)</span>
+and <span class="math inline">\(Q(s)\)</span> when deriving the transfer
+function. This is called a pole-zero cancellation. Why?</p>
+<p>Suppose</p>
+<p><span class="math display">\[H(s) =
+\frac{(s+b_0)(s+b_1)\cdots(s+b_M)}{(s+a_0)(s+a_1)\cdots(s+a_N)}\]</span>
+and <span class="math inline">\(b_0 = a_0\)</span>, then the first
+multiplicative term in <span class="math inline">\(P(s)\)</span> and
+<span class="math inline">\(Q(s)\)</span> cancel</p>
+<p><span class="math display">\[H(s) =
+\frac{(s+b_1)\cdots(s+b_M)}{(s+a_1)\cdots(s+a_N)}\]</span></p>
+<p>If <span class="math inline">\(\text{Re}(b_0) = \text{Re}(a_0) &gt;
+0\)</span>, such that the canceled pole was stable, there are no issues.
+However if <span class="math inline">\(\text{Re}(b_0) = \text{Re}(a_0)
+&lt; 0\)</span> and <span class="math inline">\(b_0 \approx
+a_0\)</span>, e.g. <span class="math inline">\(a_0 = b_0 +
+\epsilon\)</span> for small error <span class="math inline">\(\epsilon
+\approx 0\)</span> then <span class="math inline">\(\frac{s+b_0}{s+a_0}
+\neq 1\)</span>. Instead it is <span
+class="math inline">\(\frac{s+b_0}{s+b_0+\epsilon}\)</span> which is
+unstable if <span class="math inline">\(b_0 + \epsilon &lt;
+0\)</span>.</p>
+<p><strong>Remark 2</strong>. There is an edge case. If any non-repeated
+pole is on the imaginary axis and all other poles are in the left-hand
+plane the system is marginally stable. A repeated pole on the imaginary
+axis causes a term that grows with time, thus causing an unbounded
+output.</p>
+<h2
+id="relationship-between-transfer-function-and-the-frequency-response">Relationship
+between Transfer Function and the Frequency Response</h2>
+<p>Recall the bilateral Laplace Transform of the impulse response is the
+transfer function:</p>
+<p><span class="math display">\[H(s) = \int\limits_{-\infty}^{\infty}
+h(t) e^{-st} dt\]</span> where the ROC is either</p>
+<ul>
+<li><p><span class="math inline">\(\text{Re}(s) &gt; \gamma_c\)</span>
+for a causal system</p></li>
+<li><p><span class="math inline">\(\text{Re}(s) &lt; \gamma_a\)</span>
+for an anti-causal system</p></li>
+<li><p><span class="math inline">\(\gamma_c &lt; \text{Re}(s) &lt;
+\gamma_a\)</span> for a general non-causal system</p></li>
+</ul>
+<p>Similarly the frequency response of a stable system is the Fourier
+transform of the impulse response</p>
+<p><span class="math display">\[H(j\omega) =
+\int\limits_{-\infty}^{\infty} h(t) e^{-j\omega t} dt\]</span></p>
+<p>If the ROC contains the imaginary axis, or equivalently if the system
+is stable, then we can evaluate the transfer function at <span
+class="math inline">\(s = j\omega\)</span> for real <span
+class="math inline">\(\omega\)</span></p>
+<p><span class="math display">\[\left. H(s) \right|_{s = j\omega} =
+\int\limits_{-\infty}^{\infty} h(t) e^{-j\omega\, t} dt =
+H(j\omega)\]</span></p>
+<p>That is the frequency response exists if the system is stable and is
+the same as the transfer function evaluated on the imaginary axis.</p>
+<p>This is often how analysis proceeds in signal processing: system
+description to transfer function to frequency response.</p>
+<h2 id="inverse-systems">Inverse Systems</h2>
+<p>Recall from ECE 2714 that an inverse system <span
+class="math inline">\(\mathcal{S}_2\)</span> of a system <span
+class="math inline">\(\mathcal{S}_1\)</span> is one where, when they are
+placed in series, the input equals the output.</p>
+<p>In terms of the impulse response this implies</p>
+<p><span class="math display">\[h(t) = h_1(t) * h_2(t) =
+\delta(t)\]</span></p>
+<p>Inverse systems are hard to construct in this form, however taking
+the Laplace transform</p>
+<p><span class="math display">\[H(s) = H_1(s)\cdot H_2(s) = 1\]</span>
+This implies that we can construct the inverse system as</p>
+<p><span class="math display">\[H_2(s) = \frac{1}{H_1(s)}\]</span></p>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>
