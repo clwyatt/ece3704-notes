@@ -1,0 +1,345 @@
+\documentclass{article}
+
+\usepackage{url}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,svg}
+
+\begin{document}
+\title{Lecture 12\\ Solving LCCDE using Laplace}
+\author{C.L. Wyatt}
+\date{\today}
+\maketitle
+
+\section{Causal LTI systems and LCCDE}
+
+Recall from ECE 2714 the CT LCCDE
+
+\begin{align*}
+\sum_{k=0}^{N} a_{k} D^{k} y(t) &= \sum_{k=0}^{M} b_{k} D^{k} x(t) \\
+a_{0} y(t)+a_{1} D_{y}(t)+\cdots a_{N} D^{N} y(t) &= b_{0} x(t)+b_{1} D x(t)+\cdots+ b_{M} D^{M} x(t)
+\end{align*}
+where $M \leq N$ and $D^{k}=\frac{d^{k}}{d t^{k}}$.
+
+When viewed as a system, this LCCDE corresponds to an impulse response $h(t)$, and the Laplace transform of the impulse response corresponds to the transfer function / Eigenvalue $H(s)$.
+
+Using the derivative property of the Laplace transform allows us to easily find the transfer function without first finding the impulse response. In fact this is even easier than using Fourier as we do not have to test for stability first.
+
+Consider first the case where there are zero initial conditions and a causal input $x(t)$, so that $y(0^-) = x(0^-) = Dy(0^-) = Dx(0^-) \cdots = 0$. Then the derivative property is
+
+\[
+\mathcal{L}\left\{ D^n x(t)\right\} = s^n \, X(z)\; .
+\]
+
+This plus the linearity and convolution properties with some algebra allows us to find the transfer function.
+
+Given an input $x(t)$ or $X(s)$ (again causal) we can determine the output in the Laplace domain ($s$-domain) using $Y(s) = H(s) X(s)$, where $X(s) = \mathcal{L}\left\{x(t)\right\}$, and us the inverse Laplace transform to get $y(t)$.
+
+\subsection{Example 1}
+
+Find the transfer function that corresponds to the LCCDE, 
+
+$$
+D y(t)+a y(t)=b x(t) \quad a, b \in \mathbb{C}
+$$
+assuming zero-initial conditions.
+
+$$
+\begin{aligned}
+& \mathcal{L}\left\{D y(t)+a y(t)\right\}=\mathcal{L}\{b x(t\} \\
+& s Y(s)+a Y(s)=b X(s) \\
+& Y(s)(s+a)=b X(s) \\
+& \frac{Y(s)}{X(s)}=\frac{b}{s+a} \equiv H(s) \text { from Convolution Property. }
+\end{aligned}
+$$
+
+\subsection{Example 2}
+Find the transfer function that corresponds to the LCCDE,
+$$
+D^{2} y(t)+a D y(t)+b y(t)=c x(t)+d D x(t) 
+$$
+with $a, b, c, d \in \mathbb{C}$ and assuming zero-initial conditions.
+
+Taking the Laplace transform of both sides
+
+$$
+\begin{aligned}
+& \left(s^{2}+a s+b\right) Y(s)=(d s+c) X(s) \\
+& H(s)=\frac{Y(s)}{X(s)}=\frac{d s+c}{s^{2}+a s+b}
+\end{aligned}
+$$
+
+\subsection{Example 3}
+
+Given
+$$
+D^{2} y(t)-16 y(t)=x(t)
+$$
+where $x(t)=e^{-4 t} u(t)$, find $y(t)$.
+
+Taking the Laplace transform of the LCCDE
+
+$$
+(s^2 - 16)Y(s) = X(s)
+$$
+
+Taking the Laplace transform of the input
+
+$$
+X(s) = \mathcal{L}\left\{ e^{-4 t} u(t) \right\} = \frac{1}{s+4}
+$$
+
+Then
+
+$$
+Y(s) = \frac{1}{s^2 - 16} X(s) = \frac{1}{(s^2 - 16)(s+4)} = \frac{1}{(s - 4)(s+4)^2} 
+$$
+
+To find $y(t)$ we first perform the partial fraction expansion of $Y(s)$
+
+\[
+y(t)=\mathcal{L}^{-1}\{Y(s)\}=\mathcal{L}^{-1}\left\{\frac{K_{1}}{(s+4)^{2}}+\frac{K_{2}}{s+4}+\frac{K_{3}}{s-4}\right\}
+\]
+where
+\[
+K_{1}=\left.\frac{1}{s-4}\right|_{s=-4}=-\frac{1}{8}
+\]
+\[
+K_{2}=\left.\frac{d}{d s} \frac{1}{s-4}\right|_{s=-4}=\left.\frac{-1}{(s-4)^{2}}\right|_{s=-4}=\frac{-1}{64}
+\]
+and
+\[
+K_{3}=\left.\frac{1}{(s+4)^{2}}\right|_{s=4}=\frac{1}{64}
+\]
+
+Thus
+
+$$
+y(t)=-\frac{1}{8} t e^{-4 t} u(t)-\frac{1}{64} e^{-4 t} u(t)+\frac{1}{64} e^{4 t} u(t)
+$$
+
+\section{Systems described by LCCDE with non-causal inputs}
+
+What is the input is not causal? Split the signal into an anti-causal and causal component:
+
+$$
+x(t) = x(t)u(-t) + x(t)u(t) = x_a(t) + x_c(t)
+$$
+
+Taking the bilateral Laplace
+
+$$
+X(s) = X_a(s) + X_c(s)
+$$
+for ROC $\gamma_c < \text{Re}(s) < \gamma_a$. Then
+
+Then, assuming a causal system with transfer function ROC $\text{Re}(s) > \gamma_h$ 
+
+$$
+Y(s) = H(s) \cdot X(s) = H(s) X_a(s) + H(s) X_c(s) 
+$$
+
+The resulting ROC for the first term is $\text{max}(\gamma_h, \gamma_c) < \text{Re}(s) < \gamma_a$. Assuming $\text{max}(\gamma_h, \gamma_c) < \gamma_a$, this gives rise to two terms in the inverse, one anti-causal and one causal.
+
+$$
+f(t)\, u(-t) + g(t)\, u(t)
+$$
+
+Otherwise if $\text{max}(\gamma_h, \gamma_c) > \gamma_a$ the ROC is the empty set, and no such signal exists.
+
+To determine which terms go in the anti-causal $f(t)$ and which ones in the causal $g(t)$ you use the relationship of the poles to the ROC. Poles that lie to the left of the ROC correspond to causal signals, while those that lie to the right of the ROC correspond to anti-causal signals. 
+
+The resulting ROC for the second term is $\text{Re}(s) > \text{max}(\gamma_h, \gamma_c)$. This gives rise to a causal term in the inverse. $y_c(t)$.
+
+Thus the total response is
+
+$$
+y(t) = f(t)\, u(-t) + g(t)\, u(t) + y_c(t)
+$$
+
+For this reason, it is cumbersome to use Laplace for non-causal inputs even if the system itself is causal. This same approach works for non-causal systems with causal inputs and non-causal systems with non-causal inputs.
+
+\subsection{Example 4}
+
+To illustrate this, consider a causal system with transfer function
+
+$$
+H(s) = \frac{1}{s+2}
+$$
+for $\text{Re}(s) > -2$. Suppose the input to this system our non-causal example from lecture 10:
+
+$$
+x(t) = e^{-|t|} = e^t\, u(-t) + e^{-t}\, u(t)
+$$
+
+Then the bilateral Laplace of the input is
+
+$$
+X(s) = \underbrace{\frac{-1}{s-1}}_{\text{Re}(s) < 1} + \underbrace{\frac{1}{s+1}}_{\text{Re}(s) > -1} 
+$$
+
+Then the output is
+
+$$
+Y(s) = \underbrace{\frac{-1}{(s-1)(s+2)}}_{-2 <\text{Re}(s) < 1} + \underbrace{\frac{1}{(s+1)(s+2)}}_{\text{Re}(s) > -1}
+$$
+
+Doing the partial fraction expansion we obtain
+
+$$
+Y(s) = \underbrace{-\frac{1}{3}\frac{1}{s-1} + \frac{1}{3}\frac{1}{s+2}}_{-2 <\text{Re}(s) < 1} + \underbrace{\frac{1}{s+1} - \frac{1}{s+2}}_{\text{Re}(s) > -1}
+$$
+
+Consider the first two terms. Since the pole of the first term (at $1$) lies to the right of the ROC it corresponds to an anti-causal function. The pole of the second term (at $-2$) lies to the left of the ROC and so corresponds to a causal signal.
+
+For the last two terms, since both poles (at $-1$ and $-2$) lie to the left of the ROC they are causal signals. Since the second and third terms have the same pole and both correspond to causal signals they can be combined. Thus
+
+$$
+y(t) = -\frac{1}{3} \left. \mathcal{L}^{-1}\left\{ \frac{-1}{-s-1}\right\} \right|_{t\rightarrow -t} + \mathcal{L}^{-1}\left\{ \frac{1}{s+1}\right\} -\frac{2}{3} \mathcal{L}^{-1}\left\{ \frac{1}{s+2}\right\} 
+$$
+Using the table of transforms and linearity
+$$
+y(t) = \frac{1}{3}e^t\, u(-t) + e^{-t}u(t) - \frac{2}{3} e^{-2t}u(t)
+$$
+
+It is instructive to perform this same analysis using convolution, which should give the same results. It is debatable as to which approach is more complex.
+
+\section{Response of Systems with Initial Conditions}
+
+What is the initial conditions of the LCCDE are not zero? Then it is no longer an LTI system, but we can still use Laplace to analyze the solution to the LCDDE for causal inputs/forcing functions.
+
+\subsection{Example 5}
+
+Consider the circuit below, where the switch moves position at $t=0$ and the voltage $x(t)$ is a causal signal.
+
+TODO Figure
+
+For $t < 0$ it is a DC circuit and $y(t) = V$. For $t \geq 0$ we have the governing equation
+
+$$
+\frac{dy}{dt}(t) + \frac{1}{RC} y(t) = \frac{1}{RC} x(t)
+$$
+but now the initial condition on the capacitor is non-zero, i.e. $y(0^-) = V$.
+
+Taking the Laplace transform and using the derivative property
+
+$$
+sY(s) - y(0^-) + \frac{1}{RC} Y(s) = \frac{1}{RC} X(s)
+$$
+
+Solving for the output we get
+
+$$
+Y(s) = \frac{V}{s + \frac{1}{RC}} + \frac{\frac{1}{RC}}{s + \frac{1}{RC}} X(s)
+$$
+
+The first term is called the zero-input response. The second term in the zero state response. Note that when $V = 0$ the zero input response is zero and we have an LTI system.
+
+\section{System Stability and Transfer Function}
+
+Given a causal LTI system with transfer function $H(s)$, the system is stable if \textbf{all} poles are in the left-hand side of the complex plane. If \textbf{any} poles are in the right hand plane the system is unstable. 
+
+\subsection{Example 6}
+
+Given a system described by the LCDDE
+
+$$
+D^2 y(t) - y(t) = x(t)
+$$
+with zero initial conditions, determine if it is BIBO stable.
+
+Taking the transform to find the transfer function
+
+$$
+H(s) = \frac{1}{s-1}
+$$
+for $\text{Re}(s) > 1$. It has a single pole at $+1$, thus the system is unstable.
+
+\subsection{Example 7}
+
+Given a system described by the LCDDE
+
+$$
+D^2 y(t) + 2DY(t) + y(t) = -7 x(t) + Dx(t)
+$$
+with zero initial conditions, determine if it is BIBO stable.
+
+Taking the transform to find the transfer function
+
+$$
+H(s) = \frac{s+7}{s^2 + 2s + 1} = \frac{s-7}{(s + 1 + j)(s + 1 - j)}
+$$
+for $\text{Re}(s) > -1$. It has two poles at $-1 \pm j$ and a zero at $+7$, thus the system is stable. Note the location of the zero does not matter (in most cases).
+
+\subsection{A more nuanced look at stability}
+
+\textbf{Remark 1}. In practice some care must be taken when canceling common factors in $P(s)$ and $Q(s)$ when deriving the transfer function. This is called a pole-zero cancellation. Why?
+
+Suppose
+
+$$
+H(s) = \frac{(s+b_0)(s+b_1)\cdots(s+b_M)}{(s+a_0)(s+a_1)\cdots(s+a_N)}
+$$
+and $b_0 = a_0$, then the first multiplicative term in $P(s)$ and $Q(s)$ cancel 
+
+$$
+H(s) = \frac{(s+b_1)\cdots(s+b_M)}{(s+a_1)\cdots(s+a_N)}
+$$
+
+If $\text{Re}(b_0) = \text{Re}(a_0) > 0$, such that the canceled pole was stable, there are no issues. However if $\text{Re}(b_0) = \text{Re}(a_0) < 0$ and $b_0 \approx a_0$, e.g. $a_0 = b_0 + \epsilon$ for small error $\epsilon \approx 0$ then $ \frac{s+b_0}{s+a_0} \neq 1$. Instead it is $\frac{s+b_0}{s+b_0+\epsilon}$ which is unstable if $b_0 + \epsilon < 0$. 
+
+
+\textbf{Remark 2}. There is an edge case. If any non-repeated pole is on the imaginary axis and all other poles are in the left-hand plane the system is marginally stable. A repeated pole on the imaginary axis causes a term that grows with time, thus causing an unbounded output.
+
+\section{Relationship between Transfer Function and the Frequency Response}
+
+Recall the bilateral Laplace Transform of the impulse response is the transfer function:
+
+$$
+H(s) = \int\limits_{-\infty}^{\infty} h(t) e^{-st} dt
+$$
+where the ROC is either
+
+\begin{itemize}
+\item $\text{Re}(s) > \gamma_c$ for a causal system
+\item $\text{Re}(s) < \gamma_a$ for an anti-causal system
+\item $\gamma_c < \text{Re}(s) < \gamma_a$ for a general non-causal system 
+\end{itemize}
+
+Similarly the frequency response of a stable system is the Fourier transform of the impulse response
+
+$$
+H(j\omega) = \int\limits_{-\infty}^{\infty} h(t) e^{-j\omega t} dt
+$$
+
+If the ROC contains the imaginary axis, or equivalently if the system is stable, then we can evaluate the transfer function at $s = j\omega$ for real $\omega$
+
+$$
+\left. H(s) \right|_{s = j\omega} = \int\limits_{-\infty}^{\infty} h(t) e^{-j\omega\, t} dt = H(j\omega)
+$$
+
+That is the frequency response exists if the system is stable and is the same as the transfer function evaluated on the imaginary axis.
+
+This is often how analysis proceeds in signal processing: system description to transfer function to frequency response.
+
+\section{Inverse Systems}
+
+Recall from ECE 2714 that an inverse system $\mathcal{S}_2$ of a system $\mathcal{S}_1$ is one where, when they are placed in series, the input equals the output.
+
+In terms of the impulse response this implies
+
+$$
+h(t) = h_1(t) * h_2(t) = \delta(t)
+$$
+
+Inverse systems are hard to construct in this form, however taking the Laplace transform
+
+$$
+H(s) = H_1(s)\cdot H_2(s) = 1
+$$
+This implies that we can construct the inverse system as
+
+$$
+H_2(s) = \frac{1}{H_1(s)}
+$$
+
+\end{document}

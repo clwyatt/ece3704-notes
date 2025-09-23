@@ -16,3 +16,4 @@ date: Fall 2025
 9. [Forward Laplace Transform](lecture9.html)
 10. [Inverse Laplace Transform](lecture10.html)
 11. [Properties of the Laplace Transform](lecture11.html)
+12. [Solving LCCDE using Laplace](lecture12.html)
