@@ -1,0 +1,12 @@
+\documentclass{standalone}
+\usepackage{circuitikz}
+
+\begin{document}
+
+\begin{circuitikz}[american voltages]
+
+\draw (0,0) to[R, l=$R$, i=$i_R(t)$, v=$v_R(t)$] (4,0);
+
+\end{circuitikz}
+
+\end{document}

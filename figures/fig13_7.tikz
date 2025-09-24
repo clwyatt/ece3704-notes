@@ -1,0 +1,43 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+    % We start by placing the blocks and inputs
+    \node[shape=coordinate] at (1,1) (input1) {};
+    \node[block] at (3,1) (block1) {$H_1(s)$};
+    \node[shape=coordinate] at ($(block1.east)+(0.5,0)$) (output1) {};
+    \draw[->] (input1) -- (block1);
+    \draw (block1) -- (output1);
+
+    \node[shape=coordinate] at (1,-1) (input2) {};
+    \node[block] at (3,-1) (block2) {$H_2(s)$};
+    \node[shape=coordinate] at ($(block2.east)+(0.5,0)$) (output2) {};
+    \draw[->] (input2) -- (block2);
+    \draw (block2) -- (output2);
+
+    \node [input, name=input] at (0,0) {};  	
+    \node [input, name=conn] at (1,0) {};
+    \draw (conn) -- (input1);
+    \draw (conn) -- (input2);
+    \node [sum, right of=input,node distance=5cm] (sum) {$\Sigma$};
+    \draw [->] (output1) -| (sum);
+    \draw [->] (output2) -| (sum);
+
+    \draw [draw] (input) -- node {$X(s)$} (conn);
+    \node [output, right of=sum] (output) {};
+    \draw [->] (sum) -- node {$Y(s)$} (output);
+\end{tikzpicture}
+
+\end{document}
