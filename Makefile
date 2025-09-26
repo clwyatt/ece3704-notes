@@ -13,6 +13,7 @@ TARGETS= $(SOURCES:%.tex=docs/%.html)
 
 all: dir figures html docs/about.html docs/index.html
 	cp style.css docs
+	cp -r images docs
 
 html: $(TARGETS)
 

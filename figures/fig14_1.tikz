@@ -1,0 +1,44 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+
+\begin{tikzpicture}
+
+  \node at (-0.5,0) {$X(s)$};
+  \node[coordinate] at (0,0) (input) {};
+  \node[sum] at (2,0) (sum1) {$\Sigma$};
+  \node[sum] at (2,-1) (sum2) {$\Sigma$};	
+  \node[block] at (4,0) (system1) {$\frac{1}{s+9}$};
+  \node[block] at (4,-1) (system2) {$K_1$};
+  \node[block] at (4,-2) (system3) {$\frac{K_2}{s+7}$};
+  \node[coordinate] at (5,0) (output1) {};
+  \node[coordinate] at (6,0) (output2) {};
+  \node at (6.5,0) {$Y(s)$};
+
+  \draw[->] (input) -- (sum1);
+  \draw[->] (sum1) -- (system1);
+  \draw (system1) -- (output1);
+  \draw[->] (output1) -- (output2);
+  \draw[->] (output1) |- (system2);
+  \draw[->] (output1) |- (system3);
+  \draw[->] (system2) -- (sum2);
+  \draw[->] (system3) -| (sum2);
+  \draw[->] (sum2) -- (sum1);
+  \node at (1.7,-0.4) {$-$};
+  
+\end{tikzpicture}
+
+\end{document}
+
