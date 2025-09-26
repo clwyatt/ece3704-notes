@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-09-26" />
+  <title>Lecture 14 Bode Plots and Linear System ID</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture 14<br />
+Bode Plots and Linear System ID</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-09-26</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#from-transfer-functions-to-frequency-responses"
+id="toc-from-transfer-functions-to-frequency-responses">From Transfer
+Functions to Frequency Responses</a>
+<ul>
+<li><a href="#example-1" id="toc-example-1">Example 1</a></li>
+</ul></li>
+<li><a href="#routh-horwitz-criteria"
+id="toc-routh-horwitz-criteria">Routh-Horwitz Criteria</a>
+<ul>
+<li><a href="#example-1-revisited" id="toc-example-1-revisited">Example
+1 Revisited</a></li>
+<li><a href="#example-2" id="toc-example-2">Example 2</a></li>
+<li><a href="#example-3" id="toc-example-3">Example 3</a></li>
+</ul></li>
+<li><a href="#bode-plots-and-system-identification"
+id="toc-bode-plots-and-system-identification">Bode Plots and System
+Identification</a>
+<ul>
+<li><a href="#system-identification"
+id="toc-system-identification">System Identification</a></li>
+</ul></li>
+</ul>
+</nav>
+<h2 id="from-transfer-functions-to-frequency-responses">From Transfer
+Functions to Frequency Responses</h2>
+<p>Recall if a causal system is stable then the right-most pole is in
+the left-hand plane and the ROC includes the imaginary axis (<span
+class="math inline">\(\text{Re}(s) = 0\)</span>). If the system is
+non-causal and stable then the ROC is a strip in the complex plane that
+includes the imaginary axis. In either case, evaluating the transfer
+function <span class="math inline">\(H(s)\)</span> on the imaginary axis
+gives the frequency response <span
+class="math inline">\(H(j\omega)\)</span>.</p>
+<p><span class="math display">\[\left.H(s)\right|_{s=j \omega}=H(j
+\omega)\]</span></p>
+<p>Thus we have another way of finding the frequency response:</p>
+<ol>
+<li><p>Find the transfer function</p></li>
+<li><p>Determine if the system is stable</p></li>
+<li><p>Evaluate the transfer function on the imaginary axis</p></li>
+</ol>
+<h3 id="example-1">Example 1</h3>
+<p>Given the following block diagram, where <span
+class="math inline">\(K_1\)</span> and <span
+class="math inline">\(K_2\)</span> are gain parameters, determine the
+transfer function <span class="math inline">\(H(s)\)</span> and the
+frequency response <span class="math inline">\(H(j\omega)\)</span> if it
+exsists.</p>
+<p><img src="figures/fig14_1.svg"
+alt="&quot;block diagram for example 1&quot;" /></p>
+<p><strong>[Step 1]</strong></p>
+<p><span class="math display">\[H(s) = \frac{s+7}{s^2 + (16 + K_1)s + 49
++ 7K_1 + K_2}\]</span></p>
+<p><strong>[Step 2]</strong></p>
+<p><span class="math inline">\(H(s)\)</span> is stable if the roots of
+<span class="math inline">\(s^2 + (16 + K_1)s + 49 + 7K_1 + K_2\)</span>
+are in the left-hand plane (in controls these are called the closed-loop
+poles). From the quadratic formula the roots are <span
+class="math inline">\(\frac{1}{2}\left(-16-K_1 \pm \sqrt{60+4K_1 + K_1^2
+- 4K_2}\right)\)</span>. If the real parts are less than zero, the
+system is stable and the frequency response exists.</p>
+<p><strong>[Step 3]</strong></p>
+<p><span class="math display">\[H(j\omega) = \left. H(s)\right|_{s=j
+\omega} = \frac{7+j\omega}{49+7K_1 + K_2 - \omega^2 + j(16 +
+K_1)\omega}\]</span></p>
+<h2 id="routh-horwitz-criteria">Routh-Horwitz Criteria</h2>
+<p>For larger systems the order of the denominator polynomial makes
+determining stability more difficult, especially when there are
+parameters like in the example above. A shortcut is a numerical
+procedure known as the Routh-Horwitz criteria.</p>
+<p>Let <span class="math inline">\(H(s) = \frac{P(s)}{Q(s)}\)</span>.
+Write <span class="math inline">\(Q(s)\)</span> in the form</p>
+<p><span class="math display">\[Q(s) = a_0s^n + a_1s^{n-1} + \cdots +
+a_{n-1}s + a_n\]</span></p>
+<ol>
+<li><p>If any <span class="math inline">\(a_i\)</span> are zero, or
+negative with any other positive coefficients then the system is
+unstable.</p></li>
+<li><p>Else, form the Routh array</p>
+<p><span class="math display">\[\begin{aligned}
+    s^n &amp;\quad a_0 &amp;\quad a_2 &amp;\quad a_4 &amp;\quad \cdots\\
+    s^{n-1} &amp;\quad a_1 &amp;\quad a_3 &amp;\quad a_5 &amp;\quad
+\cdots\\
+    s^{n-2} &amp;\quad b_1 &amp;\quad b_2 &amp;\quad b_3 &amp;\quad
+\cdots\\
+    s^{n-3} &amp;\quad c_1 &amp;\quad c_2 &amp;\quad c_3 &amp;\quad
+\cdots\\
+    \vdots &amp;\quad \vdots &amp;\quad \vdots &amp;\quad \vdots
+&amp;\quad \cdots\\
+    s^2 &amp;\quad e_1 &amp;\quad e_2 &amp;\quad  &amp;\quad \\
+    s^1 &amp;\quad f_1 &amp;\quad  &amp;\quad  &amp;\quad \\
+    s^0 &amp;\quad g_1 &amp;\quad  &amp;\quad  &amp;\quad \\
+  
+\end{aligned}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[b_1 = \frac{a_1\cdot a_2 - a_0\cdot
+a_3}{a_1}\]</span> <span class="math display">\[b_2 = \frac{a_1\cdot a_4
+- a_0\cdot a_5}{a_1}\]</span> etc. <span class="math display">\[c_1 =
+\frac{b_1\cdot a_3 - a_1\cdot b_2}{b_1}\]</span> <span
+class="math display">\[c_2 = \frac{b_1\cdot a_5 - a_1\cdot
+b_3}{b_1}\]</span></p>
+<p>etc.</p></li>
+<li><p>All signs of the first column (<span class="math inline">\(a_0,
+a_1, b_1, c_1,\ldots, e_1, f_1,g_1\)</span>) must be positive for the
+system to be table.</p></li>
+</ol>
+<h3 id="example-1-revisited">Example 1 Revisited</h3>
+<p>Applying this procedure to our previous example, the Routh array
+is</p>
+<p><span class="math display">\[\begin{aligned}
+  s^2 &amp;\quad 1 &amp;\quad 49+7K_1 + K_2 \\
+  s^1 &amp;\quad 16+K_1 &amp;\quad 0 \\
+  s^0 &amp;\quad b_1 &amp;\quad \\
+\end{aligned}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[b_1 = \frac{(16+K_1)(49+7K_1 + K_2) -
+0(1)}{16+K_1} = 49 + 7K_1 + K_2\]</span></p>
+<p>Thus to be stable <span class="math inline">\(16+K_1 &gt; 0\)</span>
+and <span class="math inline">\(49 + 7K_1 + K_2 &gt; 0\)</span>, or
+<span class="math inline">\(K_1 &gt; -16\)</span> and <span
+class="math inline">\(K_2 &gt; -49-7K_1\)</span>.</p>
+<h3 id="example-2">Example 2</h3>
+<p>Given</p>
+<p><span class="math display">\[H(s) = \frac{5s^2 + 7s + 1}{s^4 + 2s^3 +
+3s^2 + 4s + 5}\]</span></p>
+<p>Find the frequency response if it exists, or state why it does not
+exist.</p>
+<p><span class="math display">\[Q(s) = s^4 + 2s^3 + 3s^2 + 4s +
+5\]</span></p>
+<p>All coefficients are positive. Forming the Routh array</p>
+<p><span class="math display">\[\begin{aligned}
+  s^4 &amp;\quad 1 &amp;\quad 3 &amp;\quad 5 &amp;\quad \cdots\\
+  s^3 &amp;\quad 2 &amp;\quad 4 &amp;\quad 0 &amp;\quad \cdots\\
+  s^2 &amp;\quad b_1 &amp;\quad b_2 &amp;\quad &amp;\quad \cdots\\
+  s^1 &amp;\quad c_1 &amp;\quad  &amp;\quad  &amp;\quad \\
+  s^0 &amp;\quad d_1 &amp;\quad  &amp;\quad  &amp;\quad \\
+\end{aligned}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[b_1 = \frac{2\cdot 3 - 1\cdot 4}{2} =
+1\]</span> <span class="math display">\[b_2 = \frac{2\cdot 5 - 1\cdot
+0}{2} = 5\]</span> <span class="math display">\[c_1 = \frac{4\cdot b_1 -
+2\cdot b_2}{b_1} = -6 \text{ (sign change detected)}\]</span> <span
+class="math display">\[d_1 = \frac{c_1\cdot b_2 - b_1\cdot 0}{c_1} = 5
+\text{ (another sign change detected)}\]</span></p>
+<p>Therefore the system is unstable and <span
+class="math inline">\(H(j\omega)\)</span> does not exist.</p>
+<p>Note: if you are only interested in the stability you can stop
+computing the coefficients of the Routh array as soon as you detect a
+sign change in the first column. However, if you continue to the end,
+the number of sign changes tells you how many poles are in the
+right-hand side of the complex plane.</p>
+<h3 id="example-3">Example 3</h3>
+<p><span class="math display">\[H(s) = \frac{-7s+4}{s^3 + 3s^2 + 2s +
+5}\]</span></p>
+<p><span class="math display">\[Q(s) = s^3 + 3s^2 + 2s + 5\]</span></p>
+<p>All the coefficients are positive. Forming the Routh array</p>
+<p><span class="math display">\[\begin{aligned}
+  s^3 &amp;\quad 1 &amp;\quad 2 &amp;\quad 0 &amp;\quad \cdots\\
+  s^2 &amp;\quad 3 &amp;\quad 5 &amp;\quad &amp;\quad \cdots\\
+  s^1 &amp;\quad b_1 &amp;\quad  &amp;\quad  &amp;\quad \\
+  s^0 &amp;\quad c_1 &amp;\quad  &amp;\quad  &amp;\quad \\
+\end{aligned}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[b_1 = \frac{2\cdot 3 - 1\cdot 5}{3} =
+\frac{1}{3}\]</span></p>
+<p><span class="math display">\[c_1 = \frac{5\cdot b_1 - 3\cdot 0}{b_1}
+= 5\]</span></p>
+<p>No sign changes implies the system is stable. Performing the
+substitution the frequency response is</p>
+<p><span class="math display">\[H(j\omega) = \frac{4-j7\omega}{5 -
+3\omega^2 + j(2\omega - \omega^3)}\]</span></p>
+<h2 id="bode-plots-and-system-identification">Bode Plots and System
+Identification</h2>
+<p>Recall the most common way to visualize a stable CT LTI system is via
+a Bode plot.</p>
+<ul>
+<li><p>semilog plot of <span class="math inline">\(|H(j\omega)|\)</span>
+or <span class="math inline">\(|H(j2\pi f)|\)</span> in dB</p></li>
+<li><p>semilog plot of <span class="math inline">\(\angle
+H(j\omega)\)</span> or <span class="math inline">\(\angle H(j2\pi
+f)\)</span> in radians or degrees</p></li>
+</ul>
+<p>This is easy to do given an expression for <span
+class="math inline">\(H(j\omega)\)</span> using a computer. But what if
+we are not given an expression? How do we proceed?</p>
+<h3 id="system-identification">System Identification</h3>
+<p>TODO FIGURE</p>
+<p>We may have a model for some parts of a system (blocks) but not
+others.</p>
+<p>A full coverage of linear system identification is outside the course
+scope, however we can easily measure points of <span
+class="math inline">\(H(j\omega)\)</span> using sinusoidal inputs.</p>
+<p>TODO FIGURE</p>
+<p>From this, knowledge of manually contructing Bode plots can give
+information about the order of the system, type if a filter, and a
+credible transfer function.</p>
+<p>Consider a generic transfer function of a stable system</p>
+<p><span
+class="math display">\[H(s)=\frac{\left(s+b_{1}\right)\left(s+b_{2}\right)
+\cdots\left(s+b_{M}\right)}{\left(s+a_{1}\right)\left(s+a_{2}\right)
+\cdots\left(s+a_{N}\right)}\]</span> where <span
+class="math inline">\(\operatorname{Re}(s)&gt;\max\limits_k
+\operatorname{Re}(a_k) &lt; 0\)</span>, <span
+class="math inline">\(N&gt;M\)</span>, and <span
+class="math inline">\(-b_{k}\)</span> are the zeros, <span
+class="math inline">\(-a_{k}\)</span> the poles.</p>
+<p>Rewrite by factoring as</p>
+<p><span class="math display">\[H(s)=K
+\frac{\left(1+\frac{s}{b_{1}}\right)\left(1+\frac{s}{b_{2}}\right)\cdots\left(1+\frac{s}{b_{M}}\right)}{\left(1+\frac{s}{a_{1}}\right)\left(1+\frac{s}{a_{2}}\right)\cdots
+\left(1+\frac{s}{a_{N}}\right)}\]</span> where</p>
+<p><span class="math display">\[K = \frac{b_1\cdot b_2\cdot b_3 \cdots
+b_M}{a_1\cdot a_2\cdot a_3 \cdots a_N}\]</span></p>
+<p>Since it is stable let <span
+class="math inline">\(s=j\omega\)</span>.</p>
+<p><span class="math display">\[H(j\omega)=K
+\frac{\left(1+\frac{j\omega}{b_{1}}\right)\left(1+\frac{j\omega}{b_{2}}\right)\cdots\left(1+\frac{j\omega}{b_{M}}\right)}{\left(1+\frac{j\omega}{a_{1}}\right)\left(1+\frac{j\omega}{a_{2}}\right)\cdots
+\left(1+\frac{j\omega}{a_{N}}\right)}\]</span></p>
+<p>Taking the magnitude</p>
+<p><span class="math display">\[\left|H(j\omega)\right|=\left|K\right|
+\frac{\left|1+\frac{j\omega}{b_{1}}\right|\left|1+\frac{j\omega}{b_{2}}\right|\cdots\left|1+\frac{j\omega}{b_{M}}\right|}{\left|1+\frac{j\omega}{a_{1}}\right|\left|1+\frac{j\omega}{a_{2}}\right|\cdots
+\left|1+\frac{j\omega}{a_{N}}\right|}\]</span></p>
+<p>Now, note the following properties of the <span
+class="math inline">\(\log\)</span> function</p>
+<ul>
+<li><p><span class="math inline">\(\log\left(a^b\right) = b\cdot
+\log(a)\)</span></p></li>
+<li><p><span class="math inline">\(\log(a\cdot b) = \log(a) +
+\log(b)\)</span></p></li>
+<li><p><span class="math inline">\(\log\left(\frac{a}{b}\right) =
+\log(a) - \log(b)\)</span></p></li>
+</ul>
+<p>Then when computing the magnitude in dB</p>
+<p><span class="math display">\[\begin{aligned}
+  20\log_{10} \left|H(j\omega)\right| &amp;= 20\log|K|\\
+  &amp;\quad + 20\log\left|1+\frac{j\omega}{b_{1}}\right| + \cdots +
+20\log\left|1+\frac{j\omega}{b_{M}}\right|\\
+  &amp;\quad + 20\log\left|1+\frac{j\omega}{a_{1}}\right| + \cdots +
+20\log\left|1+\frac{j\omega}{a_{N}}\right|
+\end{aligned}\]</span></p>
+<p>We see the magnitude plot in dB is a sum of plots for each term, with
+the non-gain terms having an identical form. Lets look at an asymptotic
+approximation to <span
+class="math inline">\(\left|1+\frac{j\omega}{a}\right|\)</span> for some
+<span class="math inline">\(a\in\mathbb{R}\)</span> and convert to
+dB</p>
+<ul>
+<li><p>when <span class="math inline">\(\omega &lt;&lt; |a|\)</span>,
+<span class="math inline">\(20\log\left|1+\frac{j\omega}{a}\right|
+\approx \left|1\right| = 0\)</span> dB</p></li>
+<li><p>when <span class="math inline">\(\omega &gt;&gt; |a|\)</span>,
+<span class="math inline">\(20\log\left|1+\frac{j\omega}{a}\right|
+\approx \left|\omega\right| = 20\)</span> dB per decade slope</p></li>
+</ul>
+<p>TODO FIGURE</p>
+<p>Since the plots add, if we have a mixture of real zeros and poles the
+plots add or subtract accordingly with slopes adding or subtracting.</p>
+<p>TODO FIGURE</p>
+<p>Thus the slope can be used to estimate the system order.</p>
+<p>Cases that are not addressed above:</p>
+<ul>
+<li><p>zero at the origin <span
+class="math display">\[20\log_{10}|j\omega| =
+20\log_{10}(\omega)\]</span></p></li>
+<li><p>pole at the origin <span
+class="math display">\[20\log_{10}\left|\frac{1}{j\omega}\right| =
+-20\log_{10}(\omega)\]</span></p></li>
+<li><p>second order with complex poles <span class="math inline">\(-a,
+-a^*\)</span> <span class="math display">\[H(s) =
+\frac{|a|^2}{(s+a)(s+a^*)} = \frac{\omega_0^2}{s^2 + 2\eta\omega_0 s +
+\omega+0^2}\]</span></p>
+<ul>
+<li><p><span class="math inline">\(\omega_0\)</span> is the natural
+frequency, <span class="math inline">\(\omega_0^2 =
+|a|^2\)</span></p></li>
+<li><p><span class="math inline">\(\eta\)</span> is the damping ratio
+(<span class="math inline">\(\eta &gt; 1\)</span> overdamped, <span
+class="math inline">\(\eta &lt; 1\)</span> underdamped, <span
+class="math inline">\(\eta = 1\)</span> critically damped), <span
+class="math inline">\(2\eta\omega_0 = \text{Re}(a)\)</span></p></li>
+<li><p>Q factor <span
+class="math inline">\(Q=\frac{1}{2\eta}\)</span></p></li>
+</ul>
+<p><span class="math display">\[20\log_{10}|H(j\omega)| =
+-10\log_{10}\left\{
+\left[1-\left(\frac{\omega}{\omega_0}\right)^2\right] + \left[2\eta
+\left(\frac{\omega}{\omega_0}\right)\right]^2\right\}\]</span></p></li>
+</ul>
+<figure>
+<p><img src="images/fig14_6.png"
+alt="illustration of second order frequency response." /></p>
+<figcaption>Frequency response of a second-order system with complex
+poles.</figcaption>
+</figure>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>
