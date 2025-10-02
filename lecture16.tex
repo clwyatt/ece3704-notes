@@ -1,0 +1,277 @@
+\documentclass{article}
+
+\usepackage{url}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,svg}
+
+\begin{document}
+\title{Lecture 15\\Filter Design in CT}
+\author{C.L. Wyatt}
+\date{\today}
+\maketitle
+
+\section{Ideal Filters and Paley-Wiener Conditions}
+
+Recall from ECE 2714 the four basic frequency selective filters:
+
+\begin{itemize}
+\item low-pass
+\item high-pass
+\item band-pass
+\item band-stop / band-reject / notch
+\end{itemize}
+
+Recall also that the ideal versions of these are non-realizable because the are non-causal and violate the Paley-Wiener conditions. These state that a causal filter:
+
+\begin{itemize}
+\item can have $H(\omega) = 0$ at only a finite number of frequencies
+\item cannot have $H(\omega) = 0$ over any finite range of frequencies
+\item transition from pass-band to stop-band and vise-versa cannot be zero width
+\item cannot specify $\|H(\omega)\|$ and $\angle H(\omega)$ independently
+\end{itemize}
+
+For example, the ideal low-pass filter has a frewuency response
+
+\[
+H(\omega) = \left\{ \begin{array}{cc}
+  1 & |\omega| < \omega_c\\
+  0 & \text{else}
+\end{array}
+\right.
+\]
+
+The inverse Fourier transform of the frequency response is the impulse response, in this case the sinc function
+
+\[
+h(t) = \mathcal{F}^{-1}\left\{H(j\omega)\right\} = \frac{1}{\pi t}\sin(\omega_c t)
+\]
+
+Since the impulse response it not a causal signal, the system is not causal and thus not physically realizable.
+
+\section{Practical Filters}
+
+Realizable filters must relax the strict conditions imposed by ideal filters. Practical filters are thus specified by one or more pass-bands, transition-bands, and stop-bands.
+
+\subsection{Low-Pass Specification}
+
+TODO: figure
+
+\begin{itemize}
+\item $G_p$ is the pass-band gain (usually unity)
+\item $\delta_p$ is the pass-band ripple
+\item $\omega_p$ is the pass-band edge frequency or filter bandwidth
+\item $\omega_s$ is the stop-band edge frequency
+\item $\delta_p$ is the stop-band ripple
+\item $\omega_s - \omega_p$ is the transition bandwidth
+\end{itemize}
+
+Generally, $G_p$, $\delta_p$, and $\delta_s$ are specified in dB and the edge frequencies in rad/s or Hz.
+
+\subsection{Band-Pass Specification}
+
+The band-pass has two stop-bands, two transition bands, and a pass-band defined by a center frequency $\omega_0$ and bandwidth or two pass-band edge frequencies.
+
+TODO: figure
+
+\section{Filter Design}
+
+We can focus on design pf just lowpass filters since we can transform a lowpass frequency response, $H_{LP}(\omega)$ into the others
+
+\[
+H_{HP}(\omega) = 1-H_{LP}(\omega)
+\]
+
+\[
+H_{BP}(\omega) = \frac{1}{2} H_{LP}(\omega-\omega_0) + \frac{1}{2} H_{LP}(\omega+\omega_0) 
+\]
+
+\[
+H_{BS}(\omega) = 1 - H_{BP}(\omega) 
+\]
+
+The design problem is to find a transfer function $H(s)$ that is stable and has a corresponding frequency response, $H(\omega)$, approximately that desired. The most popular approach is to use particular parametric forms for the magnitude of the frequency response. We then find the transfer function by imposing symmetry and stability conditions that make the filter stable and have a real-valued impulse response.
+
+\subsection{Butterworth Filters}
+
+Butterworth filters have a power spectrum of the form
+
+\[
+\left|H(\omega)\right|^2 = \frac{1}{1 + \left(\frac{\omega}{\omega_c}\right)^{2N}}
+\]
+
+for an order $N$ system. They are maximally flat and are well approximated by a piecewise linear $H(s)$ (see lecture 14).
+
+To find the corresponding transfer function we note
+
+\[
+\left|H(\omega)\right|^2 = H(\omega)H^*(\omega)
+\]
+Since we desired a real-valued impulse response we impose conjugate symmetry, i.e. $H^*(\omega) = H(-\omega)$. Thus
+
+\[
+\left|H(\omega)\right|^2 = H(\omega)H^*(\omega) = H(\omega)H(-\omega) = \left. H(s)H(-s) \right|_{s = j\omega}
+\]
+
+Then
+
+\[
+H(s)H(-s) = \frac{1}{1 + \left(\frac{-s^2}{\omega_c^2}\right)^{N}}
+\]
+
+When $N$ is odd
+
+\[
+\left(\frac{-s^2}{\omega_c^2}\right)^{N} = \frac{-s^{2N}}{\omega_c^{2N}}
+\]
+and
+
+\[
+H(s)H(-s) = \frac{-\omega_C^{2N}}{s^{2N} - \omega_C^{2N}}
+\]
+
+The poles are the roots of $s^{2N} - \omega_C^{2N} = 0$ or
+
+\[
+s^{2N} = \omega_C^{2N} = \omega_C^{2N} e^{j2\pi k} \quad\text{for} k = 0,1,2,\ldots,2N-1
+\]
+Thus we see that the poles are at $p_k = \omega_c e^{j\pi \frac{k}{N}}$.
+
+By a similar argument when $N$ is even $p_k = \omega_c e^{j\pi \frac{2k+1}{2N}}$ for $k = 0,1,2,\ldots,2N-1$. This allows us to write the transfer function as
+
+\[
+H(s) = \frac{\omega_C^N}{\prod\limits_{k} (s-p_k)} \quad\text{for}\quad \frac{\pi}{2} < \frac{k\pi}{N} < \frac{3\pi}{2}
+\]
+
+where the condition on $k$ is to ensure the poles are in the left-hand side of the complex plane, and thus correspond to a stable system.
+
+To help visualize this we can plot the poles of both $H(s)$ and $H(-s)$.
+
+TODO: figure
+
+If $H(s)$ has a pole $p_i = \alpha_i + j\omega_i$ then $H(-s)$ has a pole at $-p_i = -\alpha_i - j\omega_i$, the mirror image.
+
+This configuration is sometimes called a "wall" of poles at radius $\omega_c$. The order of the system, or equivalently the number of poles in the wall, $N$, must be chosen to meet the specifications.
+
+We will skip the derivation but just give an expression in terms of the filter specification. Let $A = G_p - \delta_p$ and $B=G_s$ be specified in dB, then to meet the specifications the filter order must be the smallest integer $N$ such that
+
+\[
+N \geq \frac{\log_{10}\left[ \frac{10^{-B/10}-1}{10^{-A/10}-1} \right]^{\frac{1}{2}}}{\log_{10}\left( \frac{\omega_s}{\omega_p}\right)}
+\]
+
+For example, suppose $G_p = 0$ dB, $\delta_p = 3$ dB, $G_s = -40$ dB, and $\omega_p = 2\pi\cdot 5000$, $\omega_s = 2\pi\cdot 20 000$.
+
+\[
+\left[ \frac{10^{40/10}-1}{10^{3/10}-1} \right]^{\frac{1}{2}} \approx 100.2327
+\]
+then
+
+\[
+N \geq \frac{\log_{10}(100.2327)}{\log_{10}\left( \frac{20000}{5000}\right)} = 3.323
+\]
+thus $N = 4$ is required to meet the specification.
+
+In Matlab/Octave (and Python \texttt{scipy.signal} library) the \texttt{butterd} function will give the order required to meet a given specifiication while the \texttt{butter} function will give the corresponding filter coefficients of the numerator and denominator polynomials, or equivalently the gain, zeros, and poles.
+
+\subsection{Chebyshev Filters}
+
+Type I Chebyshev filters have a power spectrum of the form
+
+\[
+\left| H(\omega) \right|^2 = \frac{1}{1 + \epsilon^2C_N^2\left( \frac{\omega}{\omega_p}\right)}
+\]
+where $\epsilon > 0$ and $C_N(v)$ is the Chebyshev polynomial of order $N$
+
+\[
+C_N(v) = \cos\left(N\cos^{-1}(v)\right)
+\]
+
+This polynomial is defined recursively with
+
+\[
+C_{N+1}(v) = 2vC_N(v) - C_{N-1}(v)
+\]
+where the base case of the recursion is $C_0(v) = 1$, $C_1(v) = v$. Thus
+
+\begin{align*}
+  C_2(v) &= 2v C_1(v) - C_0(v) = 2v^2 - 1\\
+  C_3(v) &= 2v C_2(v) - C_1(v) = 4v^3 - 3v\\
+  \vdots &= \vdots = \vdots
+\end{align*}
+
+The design procedure is then given $\epsilon$, $N$, $\omega_p$
+
+\begin{enumerate}
+\item Find $C_N(v)$
+\item Substitute $v = \frac{\omega}{\omega_p}$
+\item Find the poles of $H(s)$ equivalent to $|H(\omega)|$.
+\end{enumerate}
+
+Step 3 is similar to the Butterworth example
+
+\[
+\left| H(\omega) \right|^2 = \left. H(s)H(-s) \right|_{s=j\omega} = \frac{1}{1 + \epsilon^2C_N^2\left( \frac{s}{j\omega_p}\right)}
+\]
+
+The poles of $H(s)H(-s)$ are solution to $1 + \epsilon^2C_N^2\left( \frac{s}{j\omega_p}\right) = 0$ for $k = 0,1,\ldots, 2N-1$. Skipping the derivation
+
+\[
+p_k = j\omega_p \left[\cos(\alpha_k)\cosh(\beta_k) - j\sin(\alpha_k)\sinh(\beta_k) \right]
+\]
+where
+
+\[
+\alpha_k = \frac{\pi(2k+1)}{2N} \qquad \beta_k = \frac{\sinh^{-1}(1/\epsilon)}{N}
+\]
+
+It remains to find $N$ and $\epsilon$ that meet a desired specification. Again skipping the derivation, let $A = G_p - \delta_p$ and $B = G_s$.
+
+\[
+\epsilon = \left[10^{-A/10} - 1\right]^{\frac{1}{2}} \qquad N \geq \frac{\cosh^{-1}(F)}{\cosh^{-1}(\omega_0)}
+\]
+where
+\[
+F = \left[ \frac{10^{-B/10} - 1}{10^{-A/10} - 1} \right]^{\frac{1}{2}} \qquad\text{and}\qquad \omega_0 = \frac{\omega_s}{\omega_p}
+\]
+
+In Matlab/Octave (and Python \texttt{scipy.signal} library) the \texttt{cheb1ord} function will give the order required to meet a given specifiication while the \texttt{cheby1} function will give the corresponding filter coefficients of the numerator and denominator polynomials, or equivalently the gain, zeros, and poles.
+
+\section{Filter Transformations}
+
+Let $G(s)$ be the transfer function resulting from a lowpass design. Define
+
+\[
+H(\lambda) = \left. G(s) \right|_{s = f(\lambda)}
+\]
+for $s,\lambda\in\mathbb{C}$ and filter transformation function $f:\mathbb{C} \rightarrow \mathbb{C}$.
+
+\subsection{low-pass to high-pass}
+
+Define
+\begin{itemize}
+\item $\omega_{LP}$ as low-pass pass-band edge
+\item $\omega_{HP}$ as high-pass pass-band edge
+\end{itemize}
+then
+
+\[
+f(\lambda) = \frac{\omega_{LP}\cdot \omega_{HP}}{\lambda}
+\]
+
+\subsection{low-pass to band-pass}
+
+Define
+\begin{itemize}
+\item $\omega_{LP}$ as low-pass pass-band edge
+\item $\omega_{BR}$ as band-pass left pass-band edge
+\item $\omega_{BL}$ as band-pass right pass-band edge
+\end{itemize}
+then
+
+\[
+f(\lambda) = \frac{\lambda^2 + \omega_0^2}{B\lambda}
+\]
+
+where $\omega_0 = \left[ \omega_{BR}\cdot\omega_{BL}\right]^{\frac{1}{2}}$ and $B=\frac{\omega_{BR}-\omega_{BL}}{\omega_{LP}}$.
+
+
+\end{document}
