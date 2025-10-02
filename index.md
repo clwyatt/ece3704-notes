@@ -19,4 +19,5 @@ date: Fall 2025
 12. [Solving LCCDE using Laplace](lecture12.html)
 13. [CT System Analysis and Design using Laplace](lecture13.html)
 14. [Bode Plots and Linear System ID](lecture14.html)
+15. Midterm Exam
 16. [Filter Design in CT](lecture16.html)
