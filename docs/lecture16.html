@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-10-02" />
+  <title>Lecture 15 Filter Design in CT</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture 15<br />
+Filter Design in CT</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-10-02</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#ideal-filters-and-paley-wiener-conditions"
+id="toc-ideal-filters-and-paley-wiener-conditions">Ideal Filters and
+Paley-Wiener Conditions</a></li>
+<li><a href="#practical-filters" id="toc-practical-filters">Practical
+Filters</a>
+<ul>
+<li><a href="#low-pass-specification"
+id="toc-low-pass-specification">Low-Pass Specification</a></li>
+<li><a href="#band-pass-specification"
+id="toc-band-pass-specification">Band-Pass Specification</a></li>
+</ul></li>
+<li><a href="#filter-design" id="toc-filter-design">Filter Design</a>
+<ul>
+<li><a href="#butterworth-filters"
+id="toc-butterworth-filters">Butterworth Filters</a></li>
+<li><a href="#chebyshev-filters" id="toc-chebyshev-filters">Chebyshev
+Filters</a></li>
+</ul></li>
+<li><a href="#filter-transformations"
+id="toc-filter-transformations">Filter Transformations</a>
+<ul>
+<li><a href="#low-pass-to-high-pass"
+id="toc-low-pass-to-high-pass">low-pass to high-pass</a></li>
+<li><a href="#low-pass-to-band-pass"
+id="toc-low-pass-to-band-pass">low-pass to band-pass</a></li>
+</ul></li>
+</ul>
+</nav>
+<h2 id="ideal-filters-and-paley-wiener-conditions">Ideal Filters and
+Paley-Wiener Conditions</h2>
+<p>Recall from ECE 2714 the four basic frequency selective filters:</p>
+<ul>
+<li><p>low-pass</p></li>
+<li><p>high-pass</p></li>
+<li><p>band-pass</p></li>
+<li><p>band-stop / band-reject / notch</p></li>
+</ul>
+<p>Recall also that the ideal versions of these are non-realizable
+because the are non-causal and violate the Paley-Wiener conditions.
+These state that a causal filter:</p>
+<ul>
+<li><p>can have <span class="math inline">\(H(\omega) = 0\)</span> at
+only a finite number of frequencies</p></li>
+<li><p>cannot have <span class="math inline">\(H(\omega) = 0\)</span>
+over any finite range of frequencies</p></li>
+<li><p>transition from pass-band to stop-band and vise-versa cannot be
+zero width</p></li>
+<li><p>cannot specify <span class="math inline">\(\|H(\omega)\|\)</span>
+and <span class="math inline">\(\angle H(\omega)\)</span>
+independently</p></li>
+</ul>
+<p>For example, the ideal low-pass filter has a frewuency response</p>
+<p><span class="math display">\[H(\omega) = \left\{ \begin{array}{cc}
+  1 &amp; |\omega| &lt; \omega_c\\
+  0 &amp; \text{else}
+\end{array}
+\right.\]</span></p>
+<p>The inverse Fourier transform of the frequency response is the
+impulse response, in this case the sinc function</p>
+<p><span class="math display">\[h(t) =
+\mathcal{F}^{-1}\left\{H(j\omega)\right\} = \frac{1}{\pi t}\sin(\omega_c
+t)\]</span></p>
+<p>Since the impulse response it not a causal signal, the system is not
+causal and thus not physically realizable.</p>
+<h2 id="practical-filters">Practical Filters</h2>
+<p>Realizable filters must relax the strict conditions imposed by ideal
+filters. Practical filters are thus specified by one or more pass-bands,
+transition-bands, and stop-bands.</p>
+<h3 id="low-pass-specification">Low-Pass Specification</h3>
+<p>TODO: figure</p>
+<ul>
+<li><p><span class="math inline">\(G_p\)</span> is the pass-band gain
+(usually unity)</p></li>
+<li><p><span class="math inline">\(\delta_p\)</span> is the pass-band
+ripple</p></li>
+<li><p><span class="math inline">\(\omega_p\)</span> is the pass-band
+edge frequency or filter bandwidth</p></li>
+<li><p><span class="math inline">\(\omega_s\)</span> is the stop-band
+edge frequency</p></li>
+<li><p><span class="math inline">\(\delta_p\)</span> is the stop-band
+ripple</p></li>
+<li><p><span class="math inline">\(\omega_s - \omega_p\)</span> is the
+transition bandwidth</p></li>
+</ul>
+<p>Generally, <span class="math inline">\(G_p\)</span>, <span
+class="math inline">\(\delta_p\)</span>, and <span
+class="math inline">\(\delta_s\)</span> are specified in dB and the edge
+frequencies in rad/s or Hz.</p>
+<h3 id="band-pass-specification">Band-Pass Specification</h3>
+<p>The band-pass has two stop-bands, two transition bands, and a
+pass-band defined by a center frequency <span
+class="math inline">\(\omega_0\)</span> and bandwidth or two pass-band
+edge frequencies.</p>
+<p>TODO: figure</p>
+<h2 id="filter-design">Filter Design</h2>
+<p>We can focus on design pf just lowpass filters since we can transform
+a lowpass frequency response, <span
+class="math inline">\(H_{LP}(\omega)\)</span> into the others</p>
+<p><span class="math display">\[H_{HP}(\omega) =
+1-H_{LP}(\omega)\]</span></p>
+<p><span class="math display">\[H_{BP}(\omega) = \frac{1}{2}
+H_{LP}(\omega-\omega_0) + \frac{1}{2}
+H_{LP}(\omega+\omega_0)\]</span></p>
+<p><span class="math display">\[H_{BS}(\omega) = 1 -
+H_{BP}(\omega)\]</span></p>
+<p>The design problem is to find a transfer function <span
+class="math inline">\(H(s)\)</span> that is stable and has a
+corresponding frequency response, <span
+class="math inline">\(H(\omega)\)</span>, approximately that desired.
+The most popular approach is to use particular parametric forms for the
+magnitude of the frequency response. We then find the transfer function
+by imposing symmetry and stability conditions that make the filter
+stable and have a real-valued impulse response.</p>
+<h3 id="butterworth-filters">Butterworth Filters</h3>
+<p>Butterworth filters have a power spectrum of the form</p>
+<p><span class="math display">\[\left|H(\omega)\right|^2 = \frac{1}{1 +
+\left(\frac{\omega}{\omega_c}\right)^{2N}}\]</span></p>
+<p>for an order <span class="math inline">\(N\)</span> system. They are
+maximally flat and are well approximated by a piecewise linear <span
+class="math inline">\(H(s)\)</span> (see lecture 14).</p>
+<p>To find the corresponding transfer function we note</p>
+<p><span class="math display">\[\left|H(\omega)\right|^2 =
+H(\omega)H^*(\omega)\]</span> Since we desired a real-valued impulse
+response we impose conjugate symmetry, i.e. <span
+class="math inline">\(H^*(\omega) = H(-\omega)\)</span>. Thus</p>
+<p><span class="math display">\[\left|H(\omega)\right|^2 =
+H(\omega)H^*(\omega) = H(\omega)H(-\omega) = \left. H(s)H(-s) \right|_{s
+= j\omega}\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[H(s)H(-s) = \frac{1}{1 +
+\left(\frac{-s^2}{\omega_c^2}\right)^{N}}\]</span></p>
+<p>When <span class="math inline">\(N\)</span> is odd</p>
+<p><span class="math display">\[\left(\frac{-s^2}{\omega_c^2}\right)^{N}
+= \frac{-s^{2N}}{\omega_c^{2N}}\]</span> and</p>
+<p><span class="math display">\[H(s)H(-s) = \frac{-\omega_C^{2N}}{s^{2N}
+- \omega_C^{2N}}\]</span></p>
+<p>The poles are the roots of <span class="math inline">\(s^{2N} -
+\omega_C^{2N} = 0\)</span> or</p>
+<p><span class="math display">\[s^{2N} = \omega_C^{2N} = \omega_C^{2N}
+e^{j2\pi k} \quad\text{for} k = 0,1,2,\ldots,2N-1\]</span> Thus we see
+that the poles are at <span class="math inline">\(p_k = \omega_c e^{j\pi
+\frac{k}{N}}\)</span>.</p>
+<p>By a similar argument when <span class="math inline">\(N\)</span> is
+even <span class="math inline">\(p_k = \omega_c e^{j\pi
+\frac{2k+1}{2N}}\)</span> for <span class="math inline">\(k =
+0,1,2,\ldots,2N-1\)</span>. This allows us to write the transfer
+function as</p>
+<p><span class="math display">\[H(s) =
+\frac{\omega_C^N}{\prod\limits_{k} (s-p_k)} \quad\text{for}\quad
+\frac{\pi}{2} &lt; \frac{k\pi}{N} &lt; \frac{3\pi}{2}\]</span></p>
+<p>where the condition on <span class="math inline">\(k\)</span> is to
+ensure the poles are in the left-hand side of the complex plane, and
+thus correspond to a stable system.</p>
+<p>To help visualize this we can plot the poles of both <span
+class="math inline">\(H(s)\)</span> and <span
+class="math inline">\(H(-s)\)</span>.</p>
+<p>TODO: figure</p>
+<p>If <span class="math inline">\(H(s)\)</span> has a pole <span
+class="math inline">\(p_i = \alpha_i + j\omega_i\)</span> then <span
+class="math inline">\(H(-s)\)</span> has a pole at <span
+class="math inline">\(-p_i = -\alpha_i - j\omega_i\)</span>, the mirror
+image.</p>
+<p>This configuration is sometimes called a "wall" of poles at radius
+<span class="math inline">\(\omega_c\)</span>. The order of the system,
+or equivalently the number of poles in the wall, <span
+class="math inline">\(N\)</span>, must be chosen to meet the
+specifications.</p>
+<p>We will skip the derivation but just give an expression in terms of
+the filter specification. Let <span class="math inline">\(A = G_p -
+\delta_p\)</span> and <span class="math inline">\(B=G_s\)</span> be
+specified in dB, then to meet the specifications the filter order must
+be the smallest integer <span class="math inline">\(N\)</span> such
+that</p>
+<p><span class="math display">\[N \geq \frac{\log_{10}\left[
+\frac{10^{-B/10}-1}{10^{-A/10}-1} \right]^{\frac{1}{2}}}{\log_{10}\left(
+\frac{\omega_s}{\omega_p}\right)}\]</span></p>
+<p>For example, suppose <span class="math inline">\(G_p = 0\)</span> dB,
+<span class="math inline">\(\delta_p = 3\)</span> dB, <span
+class="math inline">\(G_s = -40\)</span> dB, and <span
+class="math inline">\(\omega_p = 2\pi\cdot 5000\)</span>, <span
+class="math inline">\(\omega_s = 2\pi\cdot 20 000\)</span>.</p>
+<p><span class="math display">\[\left[ \frac{10^{40/10}-1}{10^{3/10}-1}
+\right]^{\frac{1}{2}} \approx 100.2327\]</span> then</p>
+<p><span class="math display">\[N \geq
+\frac{\log_{10}(100.2327)}{\log_{10}\left( \frac{20000}{5000}\right)} =
+3.323\]</span> thus <span class="math inline">\(N = 4\)</span> is
+required to meet the specification.</p>
+<p>In Matlab/Octave (and Python <code>scipy.signal</code> library) the
+<code>butterd</code> function will give the order required to meet a
+given specifiication while the <code>butter</code> function will give
+the corresponding filter coefficients of the numerator and denominator
+polynomials, or equivalently the gain, zeros, and poles.</p>
+<h3 id="chebyshev-filters">Chebyshev Filters</h3>
+<p>Type I Chebyshev filters have a power spectrum of the form</p>
+<p><span class="math display">\[\left| H(\omega) \right|^2 = \frac{1}{1
++ \epsilon^2C_N^2\left( \frac{\omega}{\omega_p}\right)}\]</span> where
+<span class="math inline">\(\epsilon &gt; 0\)</span> and <span
+class="math inline">\(C_N(v)\)</span> is the Chebyshev polynomial of
+order <span class="math inline">\(N\)</span></p>
+<p><span class="math display">\[C_N(v) =
+\cos\left(N\cos^{-1}(v)\right)\]</span></p>
+<p>This polynomial is defined recursively with</p>
+<p><span class="math display">\[C_{N+1}(v) = 2vC_N(v) -
+C_{N-1}(v)\]</span> where the base case of the recursion is <span
+class="math inline">\(C_0(v) = 1\)</span>, <span
+class="math inline">\(C_1(v) = v\)</span>. Thus</p>
+<p><span class="math display">\[\begin{aligned}
+  C_2(v) &amp;= 2v C_1(v) - C_0(v) = 2v^2 - 1\\
+  C_3(v) &amp;= 2v C_2(v) - C_1(v) = 4v^3 - 3v\\
+  \vdots &amp;= \vdots = \vdots
+\end{aligned}\]</span></p>
+<p>The design procedure is then given <span
+class="math inline">\(\epsilon\)</span>, <span
+class="math inline">\(N\)</span>, <span
+class="math inline">\(\omega_p\)</span></p>
+<ol>
+<li><p>Find <span class="math inline">\(C_N(v)\)</span></p></li>
+<li><p>Substitute <span class="math inline">\(v =
+\frac{\omega}{\omega_p}\)</span></p></li>
+<li><p>Find the poles of <span class="math inline">\(H(s)\)</span>
+equivalent to <span class="math inline">\(|H(\omega)|\)</span>.</p></li>
+</ol>
+<p>Step 3 is similar to the Butterworth example</p>
+<p><span class="math display">\[\left| H(\omega) \right|^2 = \left.
+H(s)H(-s) \right|_{s=j\omega} = \frac{1}{1 + \epsilon^2C_N^2\left(
+\frac{s}{j\omega_p}\right)}\]</span></p>
+<p>The poles of <span class="math inline">\(H(s)H(-s)\)</span> are
+solution to <span class="math inline">\(1 + \epsilon^2C_N^2\left(
+\frac{s}{j\omega_p}\right) = 0\)</span> for <span
+class="math inline">\(k = 0,1,\ldots, 2N-1\)</span>. Skipping the
+derivation</p>
+<p><span class="math display">\[p_k = j\omega_p
+\left[\cos(\alpha_k)\cosh(\beta_k) - j\sin(\alpha_k)\sinh(\beta_k)
+\right]\]</span> where</p>
+<p><span class="math display">\[\alpha_k = \frac{\pi(2k+1)}{2N} \qquad
+\beta_k = \frac{\sinh^{-1}(1/\epsilon)}{N}\]</span></p>
+<p>It remains to find <span class="math inline">\(N\)</span> and <span
+class="math inline">\(\epsilon\)</span> that meet a desired
+specification. Again skipping the derivation, let <span
+class="math inline">\(A = G_p - \delta_p\)</span> and <span
+class="math inline">\(B = G_s\)</span>.</p>
+<p><span class="math display">\[\epsilon = \left[10^{-A/10} -
+1\right]^{\frac{1}{2}} \qquad N \geq
+\frac{\cosh^{-1}(F)}{\cosh^{-1}(\omega_0)}\]</span> where <span
+class="math display">\[F = \left[ \frac{10^{-B/10} - 1}{10^{-A/10} - 1}
+\right]^{\frac{1}{2}} \qquad\text{and}\qquad \omega_0 =
+\frac{\omega_s}{\omega_p}\]</span></p>
+<p>In Matlab/Octave (and Python <code>scipy.signal</code> library) the
+<code>cheb1ord</code> function will give the order required to meet a
+given specifiication while the <code>cheby1</code> function will give
+the corresponding filter coefficients of the numerator and denominator
+polynomials, or equivalently the gain, zeros, and poles.</p>
+<h2 id="filter-transformations">Filter Transformations</h2>
+<p>Let <span class="math inline">\(G(s)\)</span> be the transfer
+function resulting from a lowpass design. Define</p>
+<p><span class="math display">\[H(\lambda) = \left. G(s) \right|_{s =
+f(\lambda)}\]</span> for <span
+class="math inline">\(s,\lambda\in\mathbb{C}\)</span> and filter
+transformation function <span class="math inline">\(f:\mathbb{C}
+\rightarrow \mathbb{C}\)</span>.</p>
+<h3 id="low-pass-to-high-pass">low-pass to high-pass</h3>
+<p>Define</p>
+<ul>
+<li><p><span class="math inline">\(\omega_{LP}\)</span> as low-pass
+pass-band edge</p></li>
+<li><p><span class="math inline">\(\omega_{HP}\)</span> as high-pass
+pass-band edge</p></li>
+</ul>
+<p>then</p>
+<p><span class="math display">\[f(\lambda) = \frac{\omega_{LP}\cdot
+\omega_{HP}}{\lambda}\]</span></p>
+<h3 id="low-pass-to-band-pass">low-pass to band-pass</h3>
+<p>Define</p>
+<ul>
+<li><p><span class="math inline">\(\omega_{LP}\)</span> as low-pass
+pass-band edge</p></li>
+<li><p><span class="math inline">\(\omega_{BR}\)</span> as band-pass
+left pass-band edge</p></li>
+<li><p><span class="math inline">\(\omega_{BL}\)</span> as band-pass
+right pass-band edge</p></li>
+</ul>
+<p>then</p>
+<p><span class="math display">\[f(\lambda) = \frac{\lambda^2 +
+\omega_0^2}{B\lambda}\]</span></p>
+<p>where <span class="math inline">\(\omega_0 = \left[
+\omega_{BR}\cdot\omega_{BL}\right]^{\frac{1}{2}}\)</span> and <span
+class="math inline">\(B=\frac{\omega_{BR}-\omega_{BL}}{\omega_{LP}}\)</span>.</p>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>
