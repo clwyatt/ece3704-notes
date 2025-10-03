@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-10-03" />
+  <title>Appendix Transform Tables</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Appendix<br />
+Transform Tables</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-10-03</p>
+</header>
+<div class="center">
+<p><span><strong>Table of Representative Unilateral Laplace Transform
+Pairs</strong></span><br />
+</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span
+class="math inline">\(x(t)\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(X(s)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\delta(t)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\delta(t -
+t_0)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(e^{-s\,
+t_0}\)</span> for <span class="math inline">\(t_0 &gt; 0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(u(t)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{s}\)</span> for <span
+class="math inline">\(\text{Re}\{s\} &gt; 0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(e^{-at}u(t)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{s+a}\)</span> for <span
+class="math inline">\(\text{Re}\{s\} &gt; -a\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(te^{-at}u(t)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\frac{1}{(s
++ a)^2}\)</span> for <span class="math inline">\(\text{Re}\{s\} &gt;
+-a\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(e^{s_0
+t}u(t)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{s+s_0}\)</span> for <span
+class="math inline">\(\text{Re}\{s\} &gt; \text{Re}\{s_0\}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\cos(\omega_0 t)u(t)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\frac{s}{s^2
++ \omega_0^2}\)</span> for <span class="math inline">\(\text{Re}\{s\}
+&gt; 0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\sin(\omega_0 t)u(t)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{\omega_0}{s^2 + \omega_0^2}\)</span> for
+<span class="math inline">\(\text{Re}\{s\} &gt; 0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(e^{-at}\cos(\omega_0 t)u(t)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\frac{s +
+a}{(s + a)^2 + \omega_0^2}\)</span> for <span
+class="math inline">\(\text{Re}\{s\} &gt; -a\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(e^{-at}\sin(\omega_0 t)u(t)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{\omega_0}{(s+a)^2 + \omega_0^2}\)</span> for
+<span class="math inline">\(\text{Re}\{s\} &gt; -a\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(re^{-at}\cos(\omega_0 t +
+\theta)u(t)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{(r\cos(\theta))s + \left(ar\cos(\theta) -
+\omega_0 r\sin(\theta)\right)}{s^2 + 2as + \left(a^2 +
+\omega_0^2\right)}\)</span> for <span
+class="math inline">\(\text{Re}\{s\} &gt; -a\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(e^{-at}\left[A\cos(\omega_0 t) +
+\frac{B-Aa}{\omega_0}\sin(\omega_0 t)\right]u(t)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\frac{As +
+B}{s^2 + 2as + c}\)</span> for <span
+class="math inline">\(\text{Re}\{s\} &gt; -a\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\omega_0 =
+\sqrt{c-a^2}\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<p><span><strong>Table of Representative Unilateral Z Transform
+Pairs</strong></span><br />
+</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span
+class="math inline">\(x[n]\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(X(z)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\delta[n]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\delta[n -
+m]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(z^{-m}\)</span> for <span class="math inline">\(m
+&gt; 0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(u[n]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{z}{z-1}\)</span> for <span
+class="math inline">\(|z| &gt; 1\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(n\,
+u[n]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{z}{(z-1)^2}\)</span> for <span
+class="math inline">\(|z| &gt; 1\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\left(a\right)^n\, u[n]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{z}{z-a}\)</span> for <span
+class="math inline">\(|z| &gt; a\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\left(a\right)^{n-1}\, u[n-1]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{z-a}\)</span> for <span
+class="math inline">\(|z| &gt; a\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(n\left(a\right)^n\, u[n]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{az}{(z-a)^2}\)</span> for <span
+class="math inline">\(|z| &gt; a\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(|a|^n\,
+\cos(\omega_0\, n)\, u[n]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{z\left(z-|a|\cos(\omega_0)\right)}{z^2 -
+\left(2|a|\cos(\omega_0)\right)\, z + |a|^2}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(|a|^n\,
+\sin(\omega_0\, n)\, u[n]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{z|a|\sin(\omega_0)}{z^2 -
+\left(2|a|\cos(\omega_0)\right)\, z + |a|^2}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(r\left|b\right|^n\, \cos(\omega_0 n + \theta)\,
+u[n]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\frac{z(Az+B)}{z^2 + 2az+|b|^2}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(r =
+\sqrt{\frac{A^2|b|^2 + B^2 -2AaB}{|b|^2 - a^2}}\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\omega_0 =
+\cos^{-1}\left( \frac{-a}{|b|}\right)\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="math inline">\(\theta =
+\tan^{-1}\left( \frac{Aa-B}{A\sqrt{|b|^2 -a^2}}\right)\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>
