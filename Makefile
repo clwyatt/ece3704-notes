@@ -9,6 +9,7 @@ FOOTER=pandoc/footer.html
 OPTIONS= -s -t html --shift-heading-level-by=1 --css=$(CSS) --include-before $(HEADER) --include-after $(FOOTER) -V lang=en --mathjax
 
 SOURCES=$(wildcard lecture*.tex)
+SOURCES+=appendix.tex
 TARGETS= $(SOURCES:%.tex=docs/%.html)
 
 all: dir figures html docs/about.html docs/index.html

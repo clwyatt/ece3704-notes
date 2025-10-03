@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{url}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,svg}
+
+\begin{document}
+\title{Appendix\\Transform Tables}
+\author{C.L. Wyatt}
+\date{\today}
+\maketitle
+
+\begin{center}
+  {\bf Table of Representative Unilateral Laplace Transform Pairs}\\
+  \bgroup
+  \def\arraystretch{2}
+  \setlength\tabcolsep{1em}
+  
+  \begin{tabular}{|c|c|}
+    \hline
+    $x(t)$ & $X(s)$\\
+    \hline
+    \hline
+    $\delta(t)$ & $1$\\
+    $\delta(t - t_0)$  & $e^{-s\, t_0}$ for $t_0 > 0$ \\ 
+    $u(t)$ & $\frac{1}{s}$ for $\text{Re}\{s\} > 0$\\
+    $e^{-at}u(t)$ & $\frac{1}{s+a}$ for $\text{Re}\{s\} > -a$\\
+    $te^{-at}u(t)$ & $\frac{1}{(s + a)^2}$ for $\text{Re}\{s\} > -a$\\
+    $e^{s_0 t}u(t)$ & $\frac{1}{s+s_0}$ for $\text{Re}\{s\} > \text{Re}\{s_0\}$\\
+    $\cos(\omega_0 t)u(t)$ & $\frac{s}{s^2 + \omega_0^2}$ for $\text{Re}\{s\} > 0$\\
+    $\sin(\omega_0 t)u(t)$ & $\frac{\omega_0}{s^2 + \omega_0^2}$ for $\text{Re}\{s\} > 0$\\
+    $e^{-at}\cos(\omega_0 t)u(t)$ & $\frac{s + a}{(s + a)^2 + \omega_0^2}$ for $\text{Re}\{s\} > -a$\\
+    $e^{-at}\sin(\omega_0 t)u(t)$ & $\frac{\omega_0}{(s+a)^2 + \omega_0^2}$ for $\text{Re}\{s\} > -a$\\
+    $re^{-at}\cos(\omega_0 t + \theta)u(t)$ & $\frac{(r\cos(\theta))s + \left(ar\cos(\theta) - \omega_0 r\sin(\theta)\right)}{s^2 + 2as + \left(a^2 + \omega_0^2\right)}$ for $\text{Re}\{s\} > -a$\\\hline
+    $e^{-at}\left[A\cos(\omega_0 t) + \frac{B-Aa}{\omega_0}\sin(\omega_0 t)\right]u(t)$ & $\frac{As + B}{s^2 + 2as + c}$ for $\text{Re}\{s\} > -a$\\
+    $\omega_0 = \sqrt{c-a^2}$ & \\
+    \hline
+  \end{tabular}
+  \egroup
+  \newpage
+      {\bf Table of Representative Unilateral Z Transform Pairs}\\
+  \bgroup
+  \def\arraystretch{2}
+  \setlength\tabcolsep{1em}
+  
+  \begin{tabular}{|c|c|}
+    \hline
+    $x[n]$ & $X(z)$\\
+    \hline
+    \hline
+    $\delta[n]$ & $1$\\
+    $\delta[n - m]$  & $z^{-m}$ for $m > 0$ \\
+    $u[n]$  & $\frac{z}{z-1}$ for $|z| > 1$ \\
+    $n\, u[n]$  & $\frac{z}{(z-1)^2}$ for $|z| > 1$ \\
+    $\left(a\right)^n\, u[n]$  & $\frac{z}{z-a}$ for $|z| > a$ \\
+    $\left(a\right)^{n-1}\, u[n-1]$  & $\frac{1}{z-a}$ for $|z| > a$ \\
+    $n\left(a\right)^n\, u[n]$  & $\frac{az}{(z-a)^2}$ for $|z| > a$ \\
+    $|a|^n\, \cos(\omega_0\, n)\, u[n]$ &  $\frac{z\left(z-|a|\cos(\omega_0)\right)}{z^2 - \left(2|a|\cos(\omega_0)\right)\, z + |a|^2}$\\
+    $|a|^n\, \sin(\omega_0\, n)\, u[n]$ &  $\frac{z|a|\sin(\omega_0)}{z^2 - \left(2|a|\cos(\omega_0)\right)\, z + |a|^2}$\\\hline
+    $r\left|b\right|^n\, \cos(\omega_0 n + \theta)\, u[n]$  & $\frac{z(Az+B)}{z^2 + 2az+|b|^2}$ \\
+    $r = \sqrt{\frac{A^2|b|^2 + B^2 -2AaB}{|b|^2 - a^2}}$ & \\
+    $\omega_0 = \cos^{-1}\left( \frac{-a}{|b|}\right)$ & \\
+    $\theta = \tan^{-1}\left( \frac{Aa-B}{A\sqrt{|b|^2 -a^2}}\right)$&\\
+    \hline
+  \end{tabular}
+  \egroup
+\end{center}
+
+\end{document}

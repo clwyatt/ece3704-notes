@@ -21,3 +21,5 @@ date: Fall 2025
 14. [Bode Plots and Linear System ID](lecture14.html)
 15. Midterm Exam
 16. [Filter Design in CT](lecture16.html)
+
+[Appendix](appendix.html)
