@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-10-21" />
+  <title>Lecture 17 Forward Z Transform</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture 17<br />
+Forward Z Transform</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-10-21</p>
+</header>
+<p>Recall from ECE 2714 the Eigen Function for DT systems is the Signal
+<span class="math inline">\(z^{n}, z \in \mathbb{C}\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+y[n] &amp;= h[n] * x[n]\\
+&amp; =\sum_{m=-\infty}^{\infty} h[m] x[n-m] \\
+&amp; =\sum_{m=-\infty}^{\infty} h[m] z^{n-m} \\
+&amp; =z^{n} \sum_{m=-\infty}^{\infty} h[m] z^{-m} \equiv z^{n} H(z)
+\end{aligned}\]</span></p>
+<ul>
+<li><p><span class="math inline">\(H(z)\)</span> is the bilateral <span
+class="math inline">\(z\)</span> transform of <span
+class="math inline">\(h[n]\)</span>.</p></li>
+<li><p><span class="math inline">\(H(z)\)</span> is the Eigenvalue
+associated with <span class="math inline">\(z^{n}\)</span>, called the
+Transfer Function or System Function.</p></li>
+<li><p>The values of <span class="math inline">\(z\)</span> for which
+the sum converges is the region-of-convergence (ROC).</p></li>
+</ul>
+<p>Notation. We can take the z transform for any DT signal. We write</p>
+<p><span class="math display">\[x[n]
+\stackrel{\mathcal{Z}}{\longrightarrow} X(z) \quad\text{ or
+}\quad  X(z)=\mathcal{Z}\{x[n]\}\]</span></p>
+<p>Example 1: <span class="math inline">\(x[n]=(\gamma)^{n} u[n] \quad
+\gamma \in \mathbb{R}\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+X(z) &amp; =\sum_{n=-\infty}^{\infty} x[n] z^{-n} \\
+&amp; =\sum_{n=0}^{\infty}(\gamma)^{n} z^{-n} \text { since } x[n] \text
+{ is causal} \\
+&amp; =\sum_{n=0}^{\infty}\left(\gamma z^{-1}\right)^{n}=\lim _{N
+\rightarrow \infty} \frac{\left(\gamma z^{-1}\right)^{N+1}-\left(\gamma
+z^{-1}\right)^{0}}{\left(\gamma z^{-1}\right)-1} \text { by powerseries
+} \end{aligned}\]</span></p>
+<p>If <span class="math inline">\(\left|\gamma
+z^{-1}\right|&lt;1\)</span> then <span class="math inline">\(\lim_{N
+\rightarrow \infty}\left(\gamma z^{-1}\right)^{N+1} \rightarrow
+0\)</span> which implies <span class="math inline">\(\left|\gamma
+z^{-1}\right|&lt;1\)</span> and <span
+class="math inline">\(\frac{|\gamma|}{|z|}&lt;1\)</span> or <span
+class="math inline">\(|z|&gt;|\gamma|\)</span>.</p>
+<p>Thus</p>
+<p><span class="math display">\[X(z)=\frac{-1}{\left(\gamma
+z^{-1}\right) - 1}=\frac{1}{1-\gamma z^{-1}}=\frac{z}{z-\gamma}\]</span>
+for <span class="math inline">\(|z|&gt;|\gamma|\)</span>, the ROC.</p>
+<p>Note: It sometimes be convenient to write Z transforms in terms of
+<span class="math inline">\(z\)</span> or <span
+class="math inline">\(z^{-1}\)</span>. They are equivalent.</p>
+<p>Example 2: Note in the previous example if <span
+class="math inline">\(\gamma=1\)</span> then <span
+class="math inline">\(x[n]=u[n]\)</span> and <span
+class="math inline">\(\mathcal{Z}\{u\{n\}\}=\frac{z}{z-1}\)</span>.</p>
+<p>Compare the Example 1 to the DTFT of the same signal:</p>
+<p><span class="math display">\[\begin{aligned}
+X\left(e^{j \omega}\right) &amp;= \sum_{n=-\infty}^{\infty} x[n] e^{-j
+\omega n}=\sum_{n=0}^{\infty}(\gamma)^{n} e^{-j \omega
+n}=\sum_{n=0}^{\infty}\left(\gamma e^{-j \omega}\right)^{n} \\
+&amp; =\lim _{N \rightarrow \infty} \frac{\left(\gamma e^{-j
+\omega}\right)^{N+1}-\left(\gamma e^{j \omega}\right)^{0}}{\gamma e^{-j
+\omega}-1}
+\end{aligned}\]</span></p>
+<p>Again if <span class="math inline">\(\left|\gamma e^{-j
+\omega}\right|&lt;1\)</span> then <span class="math inline">\(\lim _{N
+\rightarrow 00}\left(\gamma e^{-j \omega}\right)^{N+1} \rightarrow
+0\)</span>. This implies <span
+class="math inline">\(\frac{|\gamma|}{\left|e^{j
+\omega}\right|}&lt;1\)</span> or <span
+class="math inline">\(|\gamma|&lt;1\)</span>. Thus the DTFT only exists
+for <span class="math inline">\(|\gamma|&lt;1\)</span>.</p>
+<p>This provides some intuition as to why the Z transform exists for a
+broader class of signals.</p>
+<p>Let <span class="math inline">\(z=r e^{j \omega}\)</span> then <span
+class="math inline">\(z^{-n}=r^{-n} e^{-j \omega n}\)</span> and</p>
+<p><span class="math display">\[\sum_{n=0}^{\infty}(\gamma)^{n}
+z^{-n}=\sum_{n=0}^{\infty}(\gamma)^{n} r^{-n} e^{-j \omega
+n}=\sum_{n=0}^{\infty}\left(\frac{\gamma}{r}\right)^{n} e^{-j \omega n}
+\equiv \text{ DTFT of } \left(\frac{\gamma}{r}\right)^{n}\]</span></p>
+<p>The radius of the complex variable <span
+class="math inline">\(z\)</span> allows us to force the DTFT to
+converge. The values this holds for defines the ROC.</p>
+<p>When the sigmal is causal the sum is always truncated to start at
+zero and we have the unilateral (one-sided) Z transform.</p>
+<p>Here is the notation I will use when the distinction is
+important:</p>
+<p><span class="math display">\[Z_{2}\{x[n]\}=\sum_{n=-\infty}^{\infty}
+x[n] z^{-n} \qquad Z_{1}\{x\{n\}\}=\sum_{n=0}^{\infty} x[n]
+z^{-n}\]</span></p>
+<p>Example 3: <span class="math inline">\(x[n]=(\gamma)^{|n|}\)</span>
+for <span class="math inline">\(\gamma\in\mathbb{R}\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+  z_{2}\{x\{n\}\} &amp;=\sum_{n=-\infty}^{\infty} x[n] z^{-n}\\
+  &amp;= \underbrace{\sum_{n=-\infty}^{-1}\left(\gamma^{-1}\right)^{n}
+z^{-n}}_{\text { anticausal component }} +
+\underbrace{\sum_{n=0}^{\infty} \gamma^{n} z^{-n}}_{\text { causal
+component}}
+\end{aligned}\]</span></p>
+<p>Focusing on anticausal component</p>
+<p><span class="math display">\[\begin{aligned}
+\sum_{n=-\infty}^{-1}\left(\gamma^{-1}\right)^{n} z^{-n} &amp;
+=\sum_{n=+1}^{\infty}\left(\gamma^{-1}\right)^{-n}
+z^{n}=\sum_{n=1}^{\infty}\left(\gamma z\right)^{n} \\
+&amp; =\lim _{N \rightarrow \infty} \frac{(\gamma z)^{N+1}-(\gamma
+z)^{1}}{(\gamma z)-1}
+\end{aligned}\]</span></p>
+<p>If <span class="math inline">\(|\gamma z|&lt;1\)</span> than <span
+class="math inline">\(\lim_{N \rightarrow \infty}(\gamma z)^{N+1}
+\rightarrow 0\)</span>. This implies <span
+class="math inline">\(|\gamma||z|&lt;1\)</span> or <span
+class="math inline">\(|z|&lt;\frac{1}{|\gamma|}\)</span>.</p>
+<p>In that case the Z Transform of the anticausal component is</p>
+<p><span class="math display">\[=\frac{-\gamma z}{\gamma z -
+1}=\frac{\gamma z}{1-\gamma z} \text { for  }
+|z|&lt;\frac{1}{|\gamma|}\]</span></p>
+<p>The causal component is the same as before and</p>
+<p><span class="math display">\[X(z) =\frac{\gamma z}{1-\gamma
+z}+\frac{z}{z-\gamma} \quad \text { for }
+|\gamma|&lt;|z|&lt;\frac{1}{|\gamma|}\]</span> where the ROC is the
+intersection of the anticausal and causal ROC’s and forms a ring in the
+complex plane.</p>
+<p>Note: If all signals are causal we can neglect the ROC, similar to
+Laplace. If not then we have to carry the ROC through to keep track of
+the causal and anticausal components.</p>
+<p>Example 4: <span
+class="math inline">\(x[n]=5\left(\frac{1}{4}\right)^{n} u[n]+6(2)^{n}
+u[n]\)</span>.</p>
+<p>Since signal is causal we use the unilateral transform</p>
+<p><span class="math display">\[\begin{aligned}
+X(z)=\sum_{n=0}^{\infty} x(n) z^{-n} &amp; =5
+\sum_{n=0}^{\infty}\left(\frac{1}{4}\right)^{n} z^{-n}+6
+\sum_{n=0}^{\infty}(z)^{n} z^{-n} \\
+&amp; =\frac{5 z}{z-\frac{1}{4}}+\frac{6 z}{z-2}
+\end{aligned}\]</span></p>
+<p>The corresponfing ROC is <span
+class="math inline">\(\left\{|z|&gt;\frac{1}{4}\right\} \cap
+\left\{|z|&gt; 2\right\} = |z| &gt; 2\)</span>.</p>
+<p>Example 5: <span class="math inline">\(x[n]=\delta[n]\)</span></p>
+<p><span class="math display">\[Z\{x[n]\}=\sum_{n=0}^{\infty} \delta[n]
+z^{-n}=z^{-0}=1 . \quad \text { ROC is entire } \mathbb{C} \text {
+plane. }\]</span></p>
+<p>Example 6: <span class="math inline">\(x[n]=u[n]-u[n-M] \quad\text{
+for } M \in \mathbb{Z}^{+}\)</span></p>
+<p><span class="math display">\[\begin{aligned}
+X(z)=\sum_{n=0}^{M-1} z^{-n} &amp;
+=\frac{\left(z^{-1}\right)^{M}-\left(z^{-1}\right)^{0}}{\left(z^{-1}\right)-1}=\frac{z^{-M}-1}{z^{-1}-1}=\frac{1-z^{-M}}{1-z^{-1}}
+\\
+&amp; =\frac{z^{M}-1}{z^{M}-z^{M-1}}=\frac{z^{M}-1}{z^{M-1}(z-1)} \quad
+\text { ROC is entire complex plane.}
+\end{aligned}\]</span></p>
+<p>Example 7: <span class="math inline">\(x[n]=e^{j \omega_0 n}
+u[n]\)</span></p>
+<p><span class="math display">\[\begin{aligned}
+  X(z) &amp; =\sum_{n=0}^{\infty}\left(e^{j \omega_0}\right)^{n}
+z^{-n}\\
+  &amp;= \sum_{n=0}^{\infty}\left(e^{j \omega_0} z^{-1}\right)^{n} \\
+  &amp; =\lim _{N \rightarrow \infty} \frac{\left(e^{j \omega_0}
+z^{-1}\right)^{N+1}-\left(e^{j \omega_0} z^{-1}\right)^{0}}{e^{j
+\omega_0} z^{-1}-1}
+\end{aligned}\]</span> This will converge if <span
+class="math inline">\(|e^{j\omega_0} z^{-1}| &lt; 1\)</span> or if <span
+class="math inline">\(|z| &gt; 1\)</span>. Then the final transform
+is</p>
+<p><span class="math display">\[X(z) = \frac{z}{z-e^{j\omega_0}} \text{
+for } |z| &gt; 1\]</span></p>
+<p>Example 8: This result allows us to derive <span
+class="math inline">\(\mathcal{Z}\left\{\cos(\omega_0
+n)u[n]\right\}\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+\mathcal{Z}\left\{\cos \left(\omega_0 n\right) u[n]\right\}
+&amp;=z\left\{\frac{1}{2} e^{j \omega_0 n} u[n]+\frac{1}{2} e^{-j
+\omega_0 n} u\{n\}\right\} \\
+&amp; =\frac{1}{2} \sum_{n=0}^{\infty} e^{j \omega_0 n}
+z^{-n}+\frac{1}{2} \sum_{n=0}^{\infty} e^{-j \omega_0 n} z^{-n} \\
+&amp; =\frac{1}{2} \frac{z}{z-e^{j \omega_0}+\frac{1}{2}
+\frac{z}{z-e^{-j \omega_0}}} \\
+&amp; =\frac{1}{2}\left[\frac{z\left(z-e^{-j
+\omega_0}\right)+z\left(z-e^{-j \omega_0}\right)}{\left(z-e^{-j
+\omega_0}\right)\left(z-e^{-j \omega_0}\right)}\right] \\
+&amp; =\frac{1}{2}\left[\frac{z^{2}-z e^{-j \omega_0}+z^{2}-z e^{j
+\omega_0}}{z^{2}-z e^{j \omega_0}-z e^{-j \omega_0}+1}\right] \\
+&amp; =\frac{z\left(z-\cos \left(\omega_0\right)\right)}{z^{2}-2 \cos
+\left(\omega_0\right) z+1} \quad|z|&gt;1
+\end{aligned}\]</span></p>
+<p>The PS for this week asks you to derive <span
+class="math inline">\(\mathcal{Z}\left\{\sin \left(\omega_0 n\right)
+u[n]\right\}\)</span>.</p>
+<p>Example 9: Determine the Z transform of <span
+class="math inline">\(x[n]=\left(\frac{1}{2}\right)^{n} u(n] \ast
+u[n]\)</span> Where <span class="math inline">\(\ast\)</span> denotes
+convolution.</p>
+<ul>
+<li><p>Approach 1: perform convolution and take Z transform.<br />
+</p></li>
+<li><p>Approach 2: lets first derive the convolution proporty of Z
+transform, then apply it.</p></li>
+</ul>
+<p>Convolution property of unilateral Z transform. Given two causal
+signals <span class="math inline">\(x_{1}[n], x_{2}[n]\)</span> their
+convolution <span class="math inline">\(x_3[n] = x_{1}[n] *
+x_{2}[n]\)</span> is a causal signal given by</p>
+<p><span class="math display">\[x_3[n] = \sum_{m=0}^{\infty} x_{1}[m]
+x_{2}[n-m] . \text { for } n \geq 0\]</span></p>
+<p>The Z Transform is <span class="math display">\[\begin{aligned}
+X_3(z) &amp; =\sum_{n=0}^{\infty}\left(x_{1}[n] * x_{2}[n]\right)
+z^{-n}\\
+&amp; =\sum_{n=0}^{\infty} \sum_{m=0}^{\infty} x_{1}[m] x_{2}[n-m]
+z^{-n} \\
+&amp; =\sum_{m=0}^{\infty} x_{1}[m] \sum_{n=0}^{\infty} x_{2}[n-m]
+z^{-n}
+\end{aligned}\]</span> Let <span class="math inline">\(k = n-m\)</span>,
+then <span class="math inline">\(n = k+m\)</span> and</p>
+<p><span class="math display">\[\begin{aligned}
+X_3 (z) &amp;=\sum_{m=0}^{\infty} x_{1}[m] z^{-m} \sum_{k=0}^{\infty}
+x_{2}[k] z^{-k} \\
+&amp; = X_{1}(z) \cdot X_{2}(z)
+\end{aligned}\]</span></p>
+<p>Returning to our example, let <span
+class="math inline">\(x_{1}[n]=\left(\frac{1}{2}\right)^{n} u[n] \quad
+x_{2}[n]=u[n]\)</span>. Then</p>
+<p><span class="math display">\[\begin{aligned}
+\mathcal{Z}\left\{x_{1}[n] * y_{2}[n]\right\} &amp;= X_{1}(z) \cdot
+X_{2}(z)\\
+&amp; =\frac{z}{z-\frac{1}{2}} \cdot \frac{z}{z-1} \text { for }|z|&gt;1
+\\
+&amp;
+=\frac{z^{2}}{\left(z-\frac{1}{2}\right)(z-1)}=\frac{z^{2}}{z^{2}-\frac{3}{2}
+z+\frac{1}{2}}
+\end{aligned}\]</span></p>
+<p>Note: if <span class="math inline">\(x_{1}[n]=h[n]\)</span> the
+impulse response of a causal LTI system and <span
+class="math inline">\(x_{2}[n]=u[n]\)</span> is the input, then</p>
+<p><span class="math display">\[\begin{aligned}
+&amp; \mathcal{Z}\{h\{n]\}=H(z)=\frac{z}{z-\frac{1}{z}} \text { is the
+transfer function } \\
+&amp; \mathcal{X}\{u[n]\}=X_{2}(z)=\frac{z}{z-1} \text { is the step
+input in the z domain}
+\end{aligned}\]</span></p>
+<p>Since the output <span class="math inline">\(y[n]=n[n] *
+x[n]\)</span> then</p>
+<p><span class="math display">\[Y(z)=H(z)
+X_{2}(z)=\frac{z^{2}}{z^{2}-\frac{3}{2}+\frac{1}{2}}\]</span> is the Z
+transform of the step response.</p>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>
