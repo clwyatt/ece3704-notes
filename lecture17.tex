@@ -1,0 +1,242 @@
+\documentclass{article}
+
+\usepackage{url}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,svg}
+
+\begin{document}
+\title{Lecture 17\\Forward Z Transform}
+\author{C.L. Wyatt}
+\date{\today}
+\maketitle
+
+
+Recall from ECE 2714 the Eigen Function for DT systems is the Signal $z^{n}, z \in \mathbb{C}$.
+
+$$
+\begin{aligned}
+y[n] &= h[n] * x[n]\\
+& =\sum_{m=-\infty}^{\infty} h[m] x[n-m] \\
+& =\sum_{m=-\infty}^{\infty} h[m] z^{n-m} \\
+& =z^{n} \sum_{m=-\infty}^{\infty} h[m] z^{-m} \equiv z^{n} H(z)
+\end{aligned}
+$$
+
+\begin{itemize}
+  \item $H(z)$ is the bilateral $z$ transform of $h[n]$.
+  \item $H(z)$ is the Eigenvalue associated with $z^{n}$, called the Transfer Function or System Function.
+  \item The values of $z$ for which the sum converges is the region-of-convergence (ROC). 
+\end{itemize}
+
+
+Notation. We can take the z transform for any DT signal. We write
+
+$$
+x[n] \stackrel{\mathcal{Z}}{\longrightarrow} X(z) \quad\text{ or }\quad  X(z)=\mathcal{Z}\{x[n]\}
+$$
+
+Example 1: $x[n]=(\gamma)^{n} u[n] \quad \gamma \in \mathbb{R}$.
+
+
+$$
+\begin{aligned}
+X(z) & =\sum_{n=-\infty}^{\infty} x[n] z^{-n} \\
+& =\sum_{n=0}^{\infty}(\gamma)^{n} z^{-n} \text { since } x[n] \text { is causal} \\
+& =\sum_{n=0}^{\infty}\left(\gamma z^{-1}\right)^{n}=\lim _{N \rightarrow \infty} \frac{\left(\gamma z^{-1}\right)^{N+1}-\left(\gamma z^{-1}\right)^{0}}{\left(\gamma z^{-1}\right)-1} \text { by powerseries } \end{aligned}
+$$
+
+If $\left|\gamma z^{-1}\right|<1$ then $\lim_{N \rightarrow \infty}\left(\gamma z^{-1}\right)^{N+1} \rightarrow 0$ which implies $\left|\gamma z^{-1}\right|<1$ and $\frac{|\gamma|}{|z|}<1$ or $|z|>|\gamma|$.
+
+Thus
+
+$$
+X(z)=\frac{-1}{\left(\gamma z^{-1}\right) - 1}=\frac{1}{1-\gamma z^{-1}}=\frac{z}{z-\gamma}
+$$
+for $|z|>|\gamma|$, the ROC.
+
+Note: It sometimes be convenient to write Z transforms in terms of $z$ or $z^{-1}$. They are equivalent.
+
+Example 2: Note in the previous example if $\gamma=1$ then $x[n]=u[n]$ and $\mathcal{Z}\{u\{n\}\}=\frac{z}{z-1}$.
+
+Compare the Example 1 to the DTFT of the same signal:
+
+$$
+\begin{aligned}
+X\left(e^{j \omega}\right) &= \sum_{n=-\infty}^{\infty} x[n] e^{-j \omega n}=\sum_{n=0}^{\infty}(\gamma)^{n} e^{-j \omega n}=\sum_{n=0}^{\infty}\left(\gamma e^{-j \omega}\right)^{n} \\
+& =\lim _{N \rightarrow \infty} \frac{\left(\gamma e^{-j \omega}\right)^{N+1}-\left(\gamma e^{j \omega}\right)^{0}}{\gamma e^{-j \omega}-1}
+\end{aligned}
+$$
+
+Again if $\left|\gamma e^{-j \omega}\right|<1$ then $\lim _{N \rightarrow 00}\left(\gamma e^{-j \omega}\right)^{N+1} \rightarrow 0$. This implies
+$\frac{|\gamma|}{\left|e^{j \omega}\right|}<1$ or $|\gamma|<1$. Thus the DTFT only exists for $|\gamma|<1$.
+
+This provides some intuition as to why the Z transform exists for a broader class of signals.
+
+Let $z=r e^{j \omega}$ then $z^{-n}=r^{-n} e^{-j \omega n}$ and
+
+$$
+\sum_{n=0}^{\infty}(\gamma)^{n} z^{-n}=\sum_{n=0}^{\infty}(\gamma)^{n} r^{-n} e^{-j \omega n}=\sum_{n=0}^{\infty}\left(\frac{\gamma}{r}\right)^{n} e^{-j \omega n} \equiv \text{ DTFT of } \left(\frac{\gamma}{r}\right)^{n}
+$$
+
+The radius of the complex variable $z$ allows us to force the DTFT to converge. The values this holds for defines the ROC.
+
+When the sigmal is causal the sum is always truncated to start at zero and we have the unilateral (one-sided) Z transform.
+
+Here is the notation I will use when the distinction is important:
+
+$$
+Z_{2}\{x[n]\}=\sum_{n=-\infty}^{\infty} x[n] z^{-n} \qquad Z_{1}\{x\{n\}\}=\sum_{n=0}^{\infty} x[n] z^{-n}
+$$
+
+Example 3: $x[n]=(\gamma)^{|n|}$ for $\gamma\in\mathbb{R}$.
+
+$$
+\begin{aligned}
+  z_{2}\{x\{n\}\} &=\sum_{n=-\infty}^{\infty} x[n] z^{-n}\\
+  &= \underbrace{\sum_{n=-\infty}^{-1}\left(\gamma^{-1}\right)^{n} z^{-n}}_{\text { anticausal component }} + \underbrace{\sum_{n=0}^{\infty} \gamma^{n} z^{-n}}_{\text { causal component}}
+\end{aligned}
+$$
+
+Focusing on anticausal component
+
+$$
+\begin{aligned}
+\sum_{n=-\infty}^{-1}\left(\gamma^{-1}\right)^{n} z^{-n} & =\sum_{n=+1}^{\infty}\left(\gamma^{-1}\right)^{-n} z^{n}=\sum_{n=1}^{\infty}\left(\gamma z\right)^{n} \\
+& =\lim _{N \rightarrow \infty} \frac{(\gamma z)^{N+1}-(\gamma z)^{1}}{(\gamma z)-1}
+\end{aligned}
+$$
+
+If $|\gamma z|<1$ than $\lim_{N \rightarrow \infty}(\gamma z)^{N+1} \rightarrow 0$. This implies $|\gamma||z|<1$ or $|z|<\frac{1}{|\gamma|}$.
+
+In that case the Z Transform of the anticausal component is
+
+$$
+=\frac{-\gamma z}{\gamma z - 1}=\frac{\gamma z}{1-\gamma z} \text { for  } |z|<\frac{1}{|\gamma|}
+$$
+
+The causal component is the same as before and
+
+$$
+X(z) =\frac{\gamma z}{1-\gamma z}+\frac{z}{z-\gamma} \quad \text { for } |\gamma|<|z|<\frac{1}{|\gamma|} 
+$$
+where the ROC is the intersection of the anticausal and causal ROC's and forms a ring in the complex plane.
+
+Note: If all signals are causal we can neglect the ROC, similar to Laplace. If not then we have to carry the ROC through to keep track of the causal and anticausal components.
+
+Example 4: $x[n]=5\left(\frac{1}{4}\right)^{n} u[n]+6(2)^{n} u[n]$.
+
+Since signal is causal we use the unilateral transform
+
+$$
+\begin{aligned}
+X(z)=\sum_{n=0}^{\infty} x(n) z^{-n} & =5 \sum_{n=0}^{\infty}\left(\frac{1}{4}\right)^{n} z^{-n}+6 \sum_{n=0}^{\infty}(z)^{n} z^{-n} \\
+& =\frac{5 z}{z-\frac{1}{4}}+\frac{6 z}{z-2}
+\end{aligned}
+$$
+
+The corresponfing ROC is $\left\{|z|>\frac{1}{4}\right\} \cap \left\{|z|> 2\right\} = |z| > 2$.
+
+Example 5: $x[n]=\delta[n]$
+
+$$
+Z\{x[n]\}=\sum_{n=0}^{\infty} \delta[n] z^{-n}=z^{-0}=1 . \quad \text { ROC is entire } \mathbb{C} \text { plane. }
+$$
+
+
+Example 6: $x[n]=u[n]-u[n-M] \quad\text{ for } M \in \mathbb{Z}^{+}$
+
+$$
+\begin{aligned}
+X(z)=\sum_{n=0}^{M-1} z^{-n} & =\frac{\left(z^{-1}\right)^{M}-\left(z^{-1}\right)^{0}}{\left(z^{-1}\right)-1}=\frac{z^{-M}-1}{z^{-1}-1}=\frac{1-z^{-M}}{1-z^{-1}} \\
+& =\frac{z^{M}-1}{z^{M}-z^{M-1}}=\frac{z^{M}-1}{z^{M-1}(z-1)} \quad \text { ROC is entire complex plane.}
+\end{aligned}
+$$
+
+Example 7: $x[n]=e^{j \omega_0 n} u[n]$
+
+$$
+\begin{aligned}
+  X(z) & =\sum_{n=0}^{\infty}\left(e^{j \omega_0}\right)^{n} z^{-n}\\
+  &= \sum_{n=0}^{\infty}\left(e^{j \omega_0} z^{-1}\right)^{n} \\
+  & =\lim _{N \rightarrow \infty} \frac{\left(e^{j \omega_0} z^{-1}\right)^{N+1}-\left(e^{j \omega_0} z^{-1}\right)^{0}}{e^{j \omega_0} z^{-1}-1}
+\end{aligned}
+$$
+This will converge if $|e^{j\omega_0} z^{-1}| < 1$ or if $|z| > 1$. Then the final transform is
+
+$$
+X(z) = \frac{z}{z-e^{j\omega_0}} \text{ for } |z| > 1
+$$
+
+Example 8: This result allows us to derive $\mathcal{Z}\left\{\cos(\omega_0 n)u[n]\right\}$.
+
+$$
+\begin{aligned}
+\mathcal{Z}\left\{\cos \left(\omega_0 n\right) u[n]\right\} &=z\left\{\frac{1}{2} e^{j \omega_0 n} u[n]+\frac{1}{2} e^{-j \omega_0 n} u\{n\}\right\} \\
+& =\frac{1}{2} \sum_{n=0}^{\infty} e^{j \omega_0 n} z^{-n}+\frac{1}{2} \sum_{n=0}^{\infty} e^{-j \omega_0 n} z^{-n} \\
+& =\frac{1}{2} \frac{z}{z-e^{j \omega_0}+\frac{1}{2} \frac{z}{z-e^{-j \omega_0}}} \\
+& =\frac{1}{2}\left[\frac{z\left(z-e^{-j \omega_0}\right)+z\left(z-e^{-j \omega_0}\right)}{\left(z-e^{-j \omega_0}\right)\left(z-e^{-j \omega_0}\right)}\right] \\
+& =\frac{1}{2}\left[\frac{z^{2}-z e^{-j \omega_0}+z^{2}-z e^{j \omega_0}}{z^{2}-z e^{j \omega_0}-z e^{-j \omega_0}+1}\right] \\
+& =\frac{z\left(z-\cos \left(\omega_0\right)\right)}{z^{2}-2 \cos \left(\omega_0\right) z+1} \quad|z|>1
+\end{aligned}
+$$
+
+The PS for this week asks you to derive $\mathcal{Z}\left\{\sin \left(\omega_0 n\right) u[n]\right\}$.
+
+Example 9: Determine the Z transform of $x[n]=\left(\frac{1}{2}\right)^{n} u(n] \ast u[n]$ Where $\ast$ denotes convolution.
+
+  \begin{itemize}
+  \item Approach 1: perform convolution and take Z transform.\\
+  \item Approach 2: lets first derive the convolution proporty of Z transform, then apply it.
+  \end{itemize}
+
+Convolution property of unilateral Z transform. Given two causal signals $x_{1}[n], x_{2}[n]$ their convolution $x_3[n] = x_{1}[n] * x_{2}[n]$ is a causal signal given by
+
+$$
+x_3[n] = \sum_{m=0}^{\infty} x_{1}[m] x_{2}[n-m] . \text { for } n \geq 0
+$$
+
+The Z Transform is
+$$
+\begin{aligned}
+X_3(z) & =\sum_{n=0}^{\infty}\left(x_{1}[n] * x_{2}[n]\right) z^{-n}\\
+& =\sum_{n=0}^{\infty} \sum_{m=0}^{\infty} x_{1}[m] x_{2}[n-m] z^{-n} \\
+& =\sum_{m=0}^{\infty} x_{1}[m] \sum_{n=0}^{\infty} x_{2}[n-m] z^{-n}
+\end{aligned}
+$$
+Let $k = n-m$, then $n = k+m$ and
+
+$$
+\begin{aligned}
+X_3 (z) &=\sum_{m=0}^{\infty} x_{1}[m] z^{-m} \sum_{k=0}^{\infty} x_{2}[k] z^{-k} \\
+& = X_{1}(z) \cdot X_{2}(z)
+\end{aligned}
+$$
+
+
+Returning to our example, let $x_{1}[n]=\left(\frac{1}{2}\right)^{n} u[n] \quad x_{2}[n]=u[n]$. Then 
+
+$$
+\begin{aligned}
+\mathcal{Z}\left\{x_{1}[n] * y_{2}[n]\right\} &= X_{1}(z) \cdot X_{2}(z)\\
+& =\frac{z}{z-\frac{1}{2}} \cdot \frac{z}{z-1} \text { for }|z|>1 \\
+& =\frac{z^{2}}{\left(z-\frac{1}{2}\right)(z-1)}=\frac{z^{2}}{z^{2}-\frac{3}{2} z+\frac{1}{2}}
+\end{aligned}
+$$
+
+Note: if $x_{1}[n]=h[n]$ the impulse response of a causal LTI system and $x_{2}[n]=u[n]$ is the input, then
+
+$$
+\begin{aligned}
+& \mathcal{Z}\{h\{n]\}=H(z)=\frac{z}{z-\frac{1}{z}} \text { is the transfer function } \\
+& \mathcal{X}\{u[n]\}=X_{2}(z)=\frac{z}{z-1} \text { is the step input in the z domain}
+\end{aligned}
+$$
+
+Since the output $y[n]=n[n] * x[n]$ then
+
+$$
+Y(z)=H(z) X_{2}(z)=\frac{z^{2}}{z^{2}-\frac{3}{2}+\frac{1}{2}}
+$$
+is the Z transform of the step response.
+
+\end{document}

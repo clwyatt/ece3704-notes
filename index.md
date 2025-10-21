@@ -20,6 +20,8 @@ date: Fall 2025
 13. [CT System Analysis and Design using Laplace](lecture13.html) [[raw scan](raw/ece3704-notes13.pdf)]
 14. [Bode Plots and Linear System ID](lecture14.html) [[raw scan](raw/ece3704-notes14.pdf)]
 15. Midterm Exam
-16. [Filter Design in CT](lecture16.html)
+16. [Filter Design in CT](lecture16.html) [[raw scan](raw/ece3704-notes16.pdf)]
+17. [Forward Z Transform](lecture17.html) [[raw scan](raw/ece3704-notes17.pdf)]
+
 
 [Appendix](appendix.html)
