@@ -1,0 +1,223 @@
+\documentclass{article}
+
+\usepackage{url}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,svg}
+
+\begin{document}
+\title{Lecture 18\\Inverse Z Transform}
+\author{C.L. Wyatt}
+\date{\today}
+\maketitle
+
+Consider a causal signal $f[n]$ that may, or may not be absolutely summable. Let $g[n]=(r)^{n} f[n]$ for some $r>0$ such that
+
+$$
+\sum_{n=0}^{\infty}|g[n]|=\sum_{n=0}^{\infty}\left|r^{n} f[n]\right|<\infty
+$$
+
+Then the DTFT of g[n] exists and is given by
+
+$$
+\begin{aligned}
+& G\left(e^{j \omega}\right)=\sum_{n=-\infty}^{\infty} g[n] e^{-j \omega n}=\sum_{n=0}^{\infty} g[n] e^{-j \omega n} \\
+&=\sum_{n=0}^{\infty} r^{n} f[n] e^{-j \omega n} \\
+&=\sum_{n=0}^{\infty} f[n]\left(r^{-1} e^{j \omega}\right)^{-n} \\
+&=\left.\mathcal{Z}_{1}\{f[n]\}\right|_{z=r^{-1} e^{j \omega}} 
+\end{aligned}
+$$
+for $r$ fixed so that $|z| = |r^{-1} e^{j\omega}| = |r^{-1}| \in$ ROC.
+
+The inverse DTFT is then
+
+$$
+g[n]=r^{n} f[n]=\frac{1}{2 \pi} \int_{-\pi}^{\pi} G\left(e^{j \omega}\right) e^{j \omega n} d \omega
+$$
+
+multiply through by $r^{-n}$
+
+$$
+r^{-n} g[n]=f[n]=\frac{1}{2 \pi} \int_{\pi}^{\pi} G\left(e^{j n}\right)\left(r^{-1} e^{j \omega}\right)^{n} d \omega
+$$
+
+Substitute for $G\left(e^{j \omega}\right)$
+
+$$
+f[n]=\frac{1}{2 \pi} \int_{-\pi}^{\pi} \left[ \sum_{n=0}^{\infty} f[n]\left(r^{-1} e^{j \omega}\right)^{-n} \right] \left(r^{-1} e^{j \omega}\right)^{n} d \omega
+$$
+
+Let $z=r^{-1}e^{j\omega}$. Then
+
+$$
+f[n]=\left. \frac{1}{2 \pi} \int_{-\pi}^{\pi} F(z) \left(r^{-1} e^{j \omega}\right)^{n} d \omega \quad \right|_{z=r^{-1}e^{j\omega}}
+$$
+
+Since $r$ is a constant $dz=jr^{-1}e^{j\omega}\; d\omega$ and $d\omega = \frac{1}{j} re^{-j\omega}\; dz$ and
+
+$$
+f[n]=\frac{1}{2 \pi} \oint_C F(z) \left(r^{-1} e^{j \omega}\right)^{n} \frac{1}{j} re^{-j\omega}\; dz
+$$
+where $C$ is the contour $z=r^{-1}e^{j\omega}$ for $\omega\in[-\pi, \pi]$, i.e. a counter-clockwise circle of radius $r^{-1}$ in the ROC. This circle will necessarily enclose any singularities of $F(z)$ due to causality.
+
+Noting
+
+$$
+z^{n-1} = z^n z^{-1} = \left(r^{-1}e^{j\omega} \right)^n \, \left(r^{-1}e^{j\omega} \right)^{-1} = \left(r^{-1}e^{j\omega} \right)^n \, \left(re^{-j\omega} \right) 
+$$
+
+We can write this as
+
+$$
+f[n]= \frac{1}{2 \pi j} \oint_C F(z) z^{n-1}\; dz
+$$
+
+a complex integral defining the inverse unilateral Z transform. We can solve this integral using the method of residues.
+
+Notice this is straightforward compared to the inverse Laplace transform since we do not need the limit of the Bromwitch contour.
+
+Example 1: Recall that $\mathcal{Z}_1\left\{(\gamma)^n\, u[n]\right\} = \frac{z}{z-\gamma}$ for $|z| > |\gamma|$. Let's look at the inverse. For $n \geq 0$:
+
+$$
+\begin{aligned}
+  x[n] &= \mathcal{Z}_1^{-1}\left\{\frac{z}{z-\gamma}\right\}\\
+  &= \frac{1}{2 \pi j} \oint_C  \frac{z}{z-\gamma}  z^{n-1}\; dz\\
+  &= \frac{1}{2 \pi j} \oint_C  \frac{z^n}{z-\gamma}\; dz\\
+  &= \frac{1}{2 \pi j} 2 \pi j [K_1] 
+\end{aligned}
+$$
+
+where $K_1$ is the residue
+
+$$
+K_1 = \left. (z-\gamma)\frac{z^n}{z-\gamma}\right|_{z = \gamma} = \gamma^n
+$$
+Thus, as expected, the inverse is $x[n] = \gamma^n\, u[n]$ for all $n$ since the ROC corresponds to a causal signal.
+
+What about the bilateral inverse z-transform? We will take an approach similar to that in the Laplace transform, first writing a non-causal signal as an anti-causal plus causal component.
+
+$$
+x[n] = \underbrace{x[n] u[-n-1]}_{\text{anti-causal part } x_a[n]} +  \underbrace{x[n] u[n]}_{\text{causal part } x_c[n]} 
+$$
+
+The bilateral Z transform is
+
+$$
+\begin{aligned}
+  \mathcal{Z}_2\left\{x[n]\right\} &= \sum\limits_{n = -\infty}^{\infty} x[n] z^{-n}\\
+  &= \sum\limits_{n = -\infty}^{-1} x_a[n] z^{-n} + \sum\limits_{n = 0}^{\infty} x_c[n] z^{-n}\\
+  &= \sum\limits_{n = 1}^{\infty} x_a[-n] z^{n} + \mathcal{Z}_1\left\{x_c[n]\right\}\\
+  &= \sum\limits_{n = 0}^{\infty} x_a[-n] z^{n} - x_a[0] z^{0} + \mathcal{Z}_1\left\{x_c[n]\right\}\\
+  &= \left. \mathcal{Z}_1\left\{x_a[-n]\right\}\right|_{z \rightarrow z^{-1}} + \mathcal{Z}_1\left\{x_c[n]\right\}
+\end{aligned}
+$$
+since $x_a[0] z^{0} = x_a[0] = 0$ by definition. The ROC for the anti-causal part is of the form $|z| < \gamma_a$. The ROC for the causal part is of the form $|z| > \gamma_c$. Thus the ROC of the entire transform is $\gamma_c < |z| < \gamma_a$ if it is not the empty set. This forms a ring in the complex plane.
+
+Example 2:
+
+$$
+\begin{aligned}
+  \mathcal{Z}_2\left\{ -\gamma^n\; u[-n-1]\right\} &= \sum\limits_{n = -\infty}^{-1} -\gamma^n\, z^{-n}\\
+  &= \sum\limits_{n = 1}^{\infty} -\gamma^{-n}\, z^{n}\\
+  &= -\sum\limits_{n = 1}^{\infty} \left(\gamma^{-1}\, z\right)^n\\
+  &= - \lim_{N\rightarrow\infty} \frac{\left(\gamma^{-1}\, z\right)^{N+1} - \left(\gamma^{-1}\, z\right)^{1}}{\left(\gamma^{-1}\, z\right) - 1}\\
+  &= - \frac{ - \left(\gamma^{-1}\, z\right)^{1}}{\left(\gamma^{-1}\, z\right) - 1}\\
+\end{aligned}
+$$
+if $|\gamma^{-1} z| < 1$ or $|z| < |\gamma|$. Simplifying a bit we get
+
+$$
+\frac{z}{z-\gamma} \text{ for } |z| < |\gamma|
+$$
+
+Notice this is the same function of z as the Z transform of the causal signal $\gamma^n\, u[n]$, but the ROC is different. Thus like for Laplace the only way to tell causal from anti-causal components is via the singularity locations relative to the ROC.
+
+If the singularity lies outside the ROC ring, then it corresponds to an anti-causal component. If the singularity lies inside the ROC ring, then it corresponds to a causal component. 
+
+Example 3: an example with complex roots.
+
+$$
+X(z) = \frac{z}{z^2 + 1} = \frac{z}{(z+j)(z-j)} \text{ for } |z| > 1
+$$
+
+This is a causal ROC so for $n \geq 0$
+
+$$
+x[n] = \frac{1}{2\pi j} \oint_C X(z) z^{n-1}\; dz
+$$
+
+where $C$ is the circle with radius greater than one.
+
+$$
+\begin{aligned}
+  x[n] &= \frac{1}{2\pi j} \oint_C \frac{z^n}{(z+j)(z-j)}\; dz\\
+  &= \frac{1}{2\pi j} 2\pi j[K_1 + K_2] 
+\end{aligned}
+$$
+
+where the residues are
+
+$$
+K_1 = \left. \frac{z^n}{(z-j)} \right|_{z = -j} = \frac{(-j)^n}{(-j-j)} = -\frac{1}{2j} \left(e^{-j\frac{\pi}{2}}\right)^n 
+$$
+
+$$
+K_2 = \left. \frac{z^n}{(z+j)} \right|_{z = j} = \frac{(j)^n}{(j+j)} = \frac{1}{2j} \left(e^{j\frac{\pi}{2}}\right)^n 
+$$
+
+Substituting we get
+
+$$
+\begin{aligned}
+  x[n] &= \frac{1}{2j} \left(e^{j\frac{\pi}{2}}\right)^n -\frac{1}{2j} \left(e^{-j\frac{\pi}{2}}\right)^n\\
+  &= \sin\left(\frac{\pi}{2}n \right) \text{ for } n \geq 0
+\end{aligned}
+$$
+
+Thus for all $n$, $x[n] = \sin\left(\frac{\pi}{2}n \right) u[n]$.
+
+Example 4: Given the transfer function
+
+$$
+H(z) = \frac{z+a}{z+b} \text{ for } |z| > |b| \text{ and } a,b\in\mathbb{R}
+$$
+
+find the corresponding impulse response of the system, $h[n]$.
+
+\textbf{Solution:} Since the ROC corresponds to a causal signal, for $n \geq 0$
+
+$$
+h[n] = \frac{1}{2\pi j} \oint_C H(z) z^{n-1}\; dz
+$$
+
+where $C$ is the circle with radius greater than $|b|$.
+
+$$
+\begin{aligned}
+  h[n] &= \frac{1}{2\pi j} \oint_C \frac{z+a}{z+b} z^{n-1}\; dz\\
+  &= \frac{1}{2\pi j} \oint_C \frac{(z+a)z^n}{z(z+b)}\; dz\\
+  &= \frac{1}{2\pi j} 2\pi j [K_1 + K_2]
+\end{aligned}
+$$
+
+where
+
+$$
+K_1 = \left. \frac{(z+a)z^n}{z+b} \right|_{z=0} = \frac{a}{b}\delta[n]
+$$
+
+$$
+K_2 = \left. \frac{(z+a)z^n}{z} \right|_{z=-b} = \frac{b-a}{b} \left(-b\right)^n
+$$
+
+Thus for all $n$
+
+$$
+h[n] = \frac{a}{b}\delta[n] + \frac{b-a}{b} \left(-b\right)^n\, u[n] 
+$$
+
+Example 5: Consider the LTI DT system with impulse response $h[n] = \left(\frac{1}{4}\right)^n\, u[n]$ and input $x[n] = \cos\left(\frac{\pi}{4} n\right)\, u[n]$. What is ths Z-transform of the output and the time domain representation $y[n]$?
+
+
+
+
+\end{document}

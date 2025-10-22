@@ -22,6 +22,7 @@ date: Fall 2025
 15. Midterm Exam
 16. [Filter Design in CT](lecture16.html) [[raw scan](raw/ece3704-notes16.pdf)]
 17. [Forward Z Transform](lecture17.html) [[raw scan](raw/ece3704-notes17.pdf)]
+17. [Inverse Z Transform](lecture18.html) [[raw scan](raw/ece3704-notes18.pdf)]
 
 
 [Appendix](appendix.html)
