@@ -1,0 +1,128 @@
+\documentclass{article}
+
+\usepackage{url}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,svg}
+
+\begin{document}
+\title{Lecture 19\\Properties of Z Transform}
+\author{C.L. Wyatt}
+\date{\today}
+\maketitle
+
+\section{Linearity Property}
+
+Given $x_{1}[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_{1}(z)$ with ROC $R_{1}$ and $x_{2}[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_{2}(z)$ with ROC $R_{2}$, then for constants $a, b$
+
+$$
+a x_{1}[n]+b x_{2}[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} a X_{1}(z)  +b X_{2}(z)
+$$
+
+with ROC $R_1 \cap R_2$.
+
+Proof: From definition
+
+$$
+\begin{aligned}
+  \mathcal{Z}\left\{a x_{1}[n]+b x_{2}\{n\}\right\} &= \sum_{n=-\infty}^{\infty}\left(a x_{1}[n]+b x_{2}(n]\right) z^{-n}\\
+    &= a \sum_{n=-\infty}^{\infty} x_{1}[n] z^{-n}+b \sum_{n=-\infty}^{\infty} x_{2}[n] z^{-n} \\
+& =a X_{1}(z)+b X_{2}(z)
+\end{aligned}
+$$
+
+Example: What is the Z Transform of
+
+$$
+x[n] = 3\left(\frac{1}{2} \right)^n\, u[n] + 2\left(\frac{1}{4} \right)^n\, u[n] + u[n] 
+$$
+
+Recall that $\mathcal{Z}_1\left\{(\gamma)^n\, u[n]\right\} = \frac{z}{z-\gamma}$ for $|z| > |\gamma|$. Using the linearity property
+
+$$
+X(z) = 3 \frac{z}{z-\frac{1}{2}} + 2 \frac{z}{z-\frac{1}{4}} + \frac{z}{z-1}
+$$
+The ROC is the intersection of $|z| > \frac{1}{2}$, $|z| > \frac{1}{4}$, and $|z| > 1$, that is $|z| > 1$.
+
+
+Example: What is the inverse Z Transform of
+
+$$
+X(z) = \frac{5z^2 - 11z}{z^2 - 5z + 6} \text{ for } |z| > 3
+$$
+
+We first note the ROC corresponds to a causal signal. Thus we can use the one-sided transform. Also the denominator factors into two real roots so we should perform the partial fraction expansion first. Since the rational function is not strictly proper we would have to expand that as
+
+$$
+X(z) = A + \frac{B}{z-2} + \frac{C}{z-3}
+$$
+
+but then the last two terms would not be in the form $\frac{z}{z-\gamma}$. When using the partial fraction expansion with the Z transform it is often usefull to exapnd $\frac{X(z)}{z}$, then multiply through by $z$ and use the table and properties to get the inverse. This will be true as long as there is not a constant term in the numerator.
+
+In this example then
+
+$$
+\frac{X(z)}{z} = \frac{5z - 11}{z^2 - 5z + 6} =  \frac{A}{z-2} + \frac{B}{z-3}
+$$
+where
+$$
+A = \left. \frac{5z-11}{z-3}\right|_{z = 2} = \frac{10-11}{2-3} = 1 
+$$
+$$
+B = \left. \frac{5z-11}{z-2}\right|_{z = 3} = \frac{15-11}{3-2} = 4 
+$$
+
+Then
+
+$$
+X(z) = \frac{z}{z-2} + 4 \frac{z}{z-3}
+$$
+and by linearity and the table
+
+$$
+x[n] = (2)^n\, u[n] + 4(3)^n\, u[n]
+$$
+
+Note the original approach is correct, just a bit more work
+
+$$
+X(z) = A + \frac{B}{z-2} + \frac{C}{z-3}
+$$
+
+To find $A$ we perform the division
+
+$$
+\frac{5z^2 - 11z}{z^2 - 5z + 6} = 5 + \frac{14z-30}{z^2 - 5z + 6}
+$$
+
+Then
+$$
+B = \left. \frac{14z-30}{z-3}\right|_{z = 2} = \frac{28-30}{2-3} = 2 
+$$
+$$
+C = \left. \frac{14z-30}{z-2}\right|_{z = 3} = \frac{42-30}{3-2} = 12 
+$$
+and by linearity and noting $\mathcal{Z}_1\left\{(\gamma)^{n-1}\, u[n-1]\right\} = \frac{1}{z-\gamma}$ for $|z| > |\gamma|$
+
+$$
+x[n] = 5\delta[n] + 2(2)^{n-1}\, u[n-1] + 12(3)^{n-1}\, u[n-1]
+$$
+
+They are equivalent as can be seen by evaluating at various $n$, e.g.
+
+$$
+x[0] = (2)^0\, u[0] + 4(3)^0\, u[0] = 5
+$$
+$$
+x[0] = 5\delta[0] + 2(2)^{0-1}\, u[0-1] + 12(3)^{0-1}\, u[0-1] = 5
+$$
+$$
+x[1] = (2)^1\, u[1] + 4(3)^1\, u[1] = 14
+$$
+$$
+x[1] = 5\delta[1] + 2(2)^{1-1}\, u[1-1] + 12(3)^{1-1}\, u[1-1] = 14
+$$
+etc.
+
+TODO
+
+\end{document}
