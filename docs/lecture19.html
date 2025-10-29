@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="C.L. Wyatt" />
+  <meta name="dcterms.date" content="2025-10-29" />
+  <title>Lecture 19 Properties of Z Transform</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<nav id="header-nav" role="navigation" title="site navigation">
+<span class="nav-title">ECE 3704 Notes</span> <a href="index.html">Contents</a> | <a href="about.html">About</a> 
+</nav>
+
+<main>
+<header id="title-block-header">
+<h1 class="title">Lecture 19<br />
+Properties of Z Transform</h1>
+<p class="author">C.L. Wyatt</p>
+<p class="date">2025-10-29</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#linearity-property" id="toc-linearity-property">Linearity
+Property</a></li>
+</ul>
+</nav>
+<h2 id="linearity-property">Linearity Property</h2>
+<p>Given <span class="math inline">\(x_{1}[n]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} X_{1}(z)\)</span> with ROC
+<span class="math inline">\(R_{1}\)</span> and <span
+class="math inline">\(x_{2}[n]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} X_{2}(z)\)</span> with ROC
+<span class="math inline">\(R_{2}\)</span>, then for constants <span
+class="math inline">\(a, b\)</span></p>
+<p><span class="math display">\[a x_{1}[n]+b x_{2}[n]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} a X_{1}(z)  +b
+X_{2}(z)\]</span></p>
+<p>with ROC <span class="math inline">\(R_1 \cap R_2\)</span>.</p>
+<p>Proof: From definition</p>
+<p><span class="math display">\[\begin{aligned}
+  \mathcal{Z}\left\{a x_{1}[n]+b x_{2}\{n\}\right\} &amp;=
+\sum_{n=-\infty}^{\infty}\left(a x_{1}[n]+b x_{2}(n]\right) z^{-n}\\
+    &amp;= a \sum_{n=-\infty}^{\infty} x_{1}[n] z^{-n}+b
+\sum_{n=-\infty}^{\infty} x_{2}[n] z^{-n} \\
+&amp; =a X_{1}(z)+b X_{2}(z)
+\end{aligned}\]</span></p>
+<p>Example: What is the Z Transform of</p>
+<p><span class="math display">\[x[n] = 3\left(\frac{1}{2} \right)^n\,
+u[n] + 2\left(\frac{1}{4} \right)^n\, u[n] + u[n]\]</span></p>
+<p>Recall that <span
+class="math inline">\(\mathcal{Z}_1\left\{(\gamma)^n\, u[n]\right\} =
+\frac{z}{z-\gamma}\)</span> for <span class="math inline">\(|z| &gt;
+|\gamma|\)</span>. Using the linearity property</p>
+<p><span class="math display">\[X(z) = 3 \frac{z}{z-\frac{1}{2}} + 2
+\frac{z}{z-\frac{1}{4}} + \frac{z}{z-1}\]</span> The ROC is the
+intersection of <span class="math inline">\(|z| &gt;
+\frac{1}{2}\)</span>, <span class="math inline">\(|z| &gt;
+\frac{1}{4}\)</span>, and <span class="math inline">\(|z| &gt;
+1\)</span>, that is <span class="math inline">\(|z| &gt; 1\)</span>.</p>
+<p>Example: What is the inverse Z Transform of</p>
+<p><span class="math display">\[X(z) = \frac{5z^2 - 11z}{z^2 - 5z + 6}
+\text{ for } |z| &gt; 3\]</span></p>
+<p>We first note the ROC corresponds to a causal signal. Thus we can use
+the one-sided transform. Also the denominator factors into two real
+roots so we should perform the partial fraction expansion first. Since
+the rational function is not strictly proper we would have to expand
+that as</p>
+<p><span class="math display">\[X(z) = A + \frac{B}{z-2} +
+\frac{C}{z-3}\]</span></p>
+<p>but then the last two terms would not be in the form <span
+class="math inline">\(\frac{z}{z-\gamma}\)</span>. When using the
+partial fraction expansion with the Z transform it is often usefull to
+exapnd <span class="math inline">\(\frac{X(z)}{z}\)</span>, then
+multiply through by <span class="math inline">\(z\)</span> and use the
+table and properties to get the inverse. This will be true as long as
+there is not a constant term in the numerator.</p>
+<p>In this example then</p>
+<p><span class="math display">\[\frac{X(z)}{z} = \frac{5z - 11}{z^2 - 5z
++ 6} =  \frac{A}{z-2} + \frac{B}{z-3}\]</span> where <span
+class="math display">\[A = \left. \frac{5z-11}{z-3}\right|_{z = 2} =
+\frac{10-11}{2-3} = 1\]</span> <span class="math display">\[B = \left.
+\frac{5z-11}{z-2}\right|_{z = 3} = \frac{15-11}{3-2} = 4\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[X(z) = \frac{z}{z-2} + 4
+\frac{z}{z-3}\]</span> and by linearity and the table</p>
+<p><span class="math display">\[x[n] = (2)^n\, u[n] + 4(3)^n\,
+u[n]\]</span></p>
+<p>Note the original approach is correct, just a bit more work</p>
+<p><span class="math display">\[X(z) = A + \frac{B}{z-2} +
+\frac{C}{z-3}\]</span></p>
+<p>To find <span class="math inline">\(A\)</span> we perform the
+division</p>
+<p><span class="math display">\[\frac{5z^2 - 11z}{z^2 - 5z + 6} = 5 +
+\frac{14z-30}{z^2 - 5z + 6}\]</span></p>
+<p>Then <span class="math display">\[B = \left.
+\frac{14z-30}{z-3}\right|_{z = 2} = \frac{28-30}{2-3} = 2\]</span> <span
+class="math display">\[C = \left. \frac{14z-30}{z-2}\right|_{z = 3} =
+\frac{42-30}{3-2} = 12\]</span> and by linearity and noting <span
+class="math inline">\(\mathcal{Z}_1\left\{(\gamma)^{n-1}\,
+u[n-1]\right\} = \frac{1}{z-\gamma}\)</span> for <span
+class="math inline">\(|z| &gt; |\gamma|\)</span></p>
+<p><span class="math display">\[x[n] = 5\delta[n] + 2(2)^{n-1}\, u[n-1]
++ 12(3)^{n-1}\, u[n-1]\]</span></p>
+<p>They are equivalent as can be seen by evaluating at various <span
+class="math inline">\(n\)</span>, e.g.</p>
+<p><span class="math display">\[x[0] = (2)^0\, u[0] + 4(3)^0\, u[0] =
+5\]</span> <span class="math display">\[x[0] = 5\delta[0] + 2(2)^{0-1}\,
+u[0-1] + 12(3)^{0-1}\, u[0-1] = 5\]</span> <span
+class="math display">\[x[1] = (2)^1\, u[1] + 4(3)^1\, u[1] = 14\]</span>
+<span class="math display">\[x[1] = 5\delta[1] + 2(2)^{1-1}\, u[1-1] +
+12(3)^{1-1}\, u[1-1] = 14\]</span> etc.</p>
+<p>TODO</p>
+</main>
+
+<footer>
+  <hr>
+Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+</footer>
+</body>
+</html>
