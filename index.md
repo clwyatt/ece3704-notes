@@ -24,6 +24,8 @@ date: Fall 2025
 17. [Forward Z Transform](lecture17.html) [[raw scan](raw/ece3704-notes17.pdf)]
 18. [Inverse Z Transform](lecture18.html) [[raw scan](raw/ece3704-notes18.pdf)]
 19. [Properties of Z Transform](lecture19.html) [[raw scan](raw/ece3704-notes19.pdf)]
+20. [Solving LCCDE Using Z Transform](lecture20.html) [[raw scan](raw/ece3704-notes20.pdf)]
+21. [DT System Analysis using Z-Transform](lecture21.html) [[raw scan](raw/ece3704-notes21.pdf)]
 
 
 [Appendix](appendix.html)
