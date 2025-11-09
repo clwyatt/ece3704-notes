@@ -26,6 +26,9 @@ date: Fall 2025
 19. [Properties of Z Transform](lecture19.html) [[raw scan](raw/ece3704-notes19.pdf)]
 20. [Solving LCCDE Using Z Transform](lecture20.html) [[raw scan](raw/ece3704-notes20.pdf)]
 21. [DT System Analysis using Z-Transform](lecture21.html) [[raw scan](raw/ece3704-notes21.pdf)]
+22. [Filter Design in DT](lecture22.html) [[raw scan](raw/ece3704-notes22.pdf)]
+23. [Implementing DT Filters](lecture23.html) [[raw scan](raw/ece3704-notes23.pdf)]
+23. [State Space Techniques in CT](lecture24.html) [[raw scan](raw/ece3704-notes24.pdf)]
 
 
 [Appendix](appendix.html)
