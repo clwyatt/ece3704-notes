@@ -28,7 +28,9 @@ date: Fall 2025
 21. [DT System Analysis using Z-Transform](lecture21.html) [[raw scan](raw/ece3704-notes21.pdf)]
 22. [Filter Design in DT](lecture22.html) [[raw scan](raw/ece3704-notes22.pdf)]
 23. [Implementing DT Filters](lecture23.html) [[raw scan](raw/ece3704-notes23.pdf)]
-23. [State Space Techniques in CT](lecture24.html) [[raw scan](raw/ece3704-notes24.pdf)]
+24. [State Space Techniques in CT](lecture24.html) [[raw scan](raw/ece3704-notes24.pdf)]
+24. [State Space Techniques in DT](lecture25.html) [[raw scan](raw/ece3704-notes25.pdf)]
+24. [Numerical Integration Methods](lecture26.html) [[raw scan](raw/ece3704-notes26.pdf)]
 
 
 [Appendix](appendix.html)
