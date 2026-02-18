@@ -1,0 +1,35 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
+
+\usepackage{transparent}
+
+\begin{document}
+
+  \begin{circuitikz}[american voltages,scale=1.0, every node/.style={transform shape}]
+    \draw
+    (0,2.3) to[V, l=$x(t)$] (0,0)
+    (3,2) node[spdt,xscale=-1,yscale=-1,anchor=in] (Sw) {}
+    (0,2.3) to[short] (Sw.out 2)
+    (Sw.out 1) to[battery, l=$V$] (1.8,0)
+    (0,0) to[short] (5,0)
+    (3,2) to[R, l=$R$] (5,2)
+    (5,2) to[C, l=$C$, v=$y(t)$] (5,0);	
+  \end{circuitikz}
+
+\end{document}
