@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-02-16" />
+  <meta name="dcterms.date" content="2026-02-25" />
   <title>Lecture 13 CT System Analysis and Design using Laplace</title>
   <style>
     /* Default styles provided by pandoc.
@@ -41,19 +41,50 @@
 <h1 class="title">Lecture 13<br />
 CT System Analysis and Design using Laplace</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-02-16</p>
+<p class="date">2026-02-25</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
+<li><a href="#analyzing-electrical-circuits"
+id="toc-analyzing-electrical-circuits">Analyzing Electrical Circuits</a>
+<ul>
+<li><a href="#capacitor-model" id="toc-capacitor-model">Capacitor
+Model</a></li>
+<li><a href="#inductor-model" id="toc-inductor-model">Inductor
+Model</a></li>
+<li><a href="#example-1" id="toc-example-1">Example 1</a></li>
+<li><a href="#example-2" id="toc-example-2">Example 2</a></li>
+<li><a href="#example-3" id="toc-example-3">Example 3</a></li>
+</ul></li>
 <li><a href="#analyzing-block-diagrams"
-id="toc-analyzing-block-diagrams">Analyzing Block Diagrams</a></li>
+id="toc-analyzing-block-diagrams">Analyzing Block Diagrams</a>
+<ul>
+<li><a href="#example-4-pid-controller"
+id="toc-example-4-pid-controller">Example 4: PID Controller</a></li>
+<li><a href="#example-5-dc-motor-model"
+id="toc-example-5-dc-motor-model">Example 5: DC Motor Model</a></li>
+<li><a href="#example-6-dc-servo" id="toc-example-6-dc-servo">Example 6:
+DC Servo</a></li>
+</ul></li>
 <li><a href="#system-realization" id="toc-system-realization">System
 Realization</a>
 <ul>
-<li><a href="#example" id="toc-example">Example</a></li>
+<li><a href="#direct-forms-for-realization"
+id="toc-direct-forms-for-realization">Direct Forms for
+Realization</a></li>
+<li><a href="#parallel-forms-for-realization"
+id="toc-parallel-forms-for-realization">Parallel Forms for
+Realization</a></li>
+<li><a href="#realization-via-cascade-of-second-order-stages"
+id="toc-realization-via-cascade-of-second-order-stages">Realization via
+Cascade of Second-Order Stages</a></li>
 </ul></li>
 </ul>
 </nav>
+<p>Today we look at three important applications of Laplace for the
+analysis, design, and implementation of CT systems.</p>
+<h2 id="analyzing-electrical-circuits">Analyzing Electrical
+Circuits</h2>
 <p>Recall from ECE 2714 that we can analyze electrical circuits that
 form LTI systems by</p>
 <ul>
@@ -74,17 +105,21 @@ transform to find <span class="math inline">\(y(t)\)</span>.</p></li>
 </ul>
 <p>Now that we have Laplace as a tool we can simplify this process
 further. The idea is to go back to circuits and take the Laplace
-transform of each element’s voltage-current model</p>
+transform of each element’s voltage-current model. Voltages and currents
+become expressed in the Laplace domain. The voltage-current relationship
+then becomes a linear function, with the generalized version of
+resistance, impedance, and the generalized version of inverse
+resistance, admittance.</p>
 <ul>
 <li><p>Resistor <img src="figures/fig13_1.svg"
-alt="&quot;Voltage Current for Resistor&quot;" /> <span
+alt="Voltage Current for Resistor" /> <span
 class="math display">\[\begin{align*}
     v_R(t) &amp;= R\, i_R(t)\\
     V_R(s) &amp;= R\, I_R(s)
 \end{align*}\]</span> Impedance <span class="math inline">\(R\)</span>,
 Admittance <span class="math inline">\(\frac{1}{R}\)</span></p></li>
 <li><p>Capacitor <img src="figures/fig13_2.svg"
-alt="&quot;Voltage Current for Capacitor&quot;" /> <span
+alt="Voltage Current for Capacitor" /> <span
 class="math display">\[\begin{align*}
     i_C(t) &amp;= C\, \frac{dv_c}{dt}(t)\\
     I_C(s) &amp;= C\left[sV_C(s) - v_c(0^-) \right]\\
@@ -94,7 +129,7 @@ class="math display">\[\begin{align*}
 class="math inline">\(\frac{1}{Cs}\)</span>, Admittance <span
 class="math inline">\(Cs\)</span></p></li>
 <li><p>Inductor <img src="figures/fig13_3.svg"
-alt="&quot;Voltage Current for Inductor&quot;" /> <span
+alt="Voltage Current for Inductor" /> <span
 class="math display">\[\begin{align*}
     v_L(t) &amp;= L\, \frac{di_L}{dt}(t)\\
     V_L(s) &amp;= L\left[sI_L(s) - i_L(0^-) \right]\\
@@ -108,22 +143,120 @@ class="math inline">\(\frac{1}{Ls}\)</span></p></li>
 constant voltage or current sources representing the terms containing
 auxiliary conditions at <span class="math inline">\(t=0^-\)</span>.
 Using KVL and KCL with these models gives us a convenient way to go from
-a circuit directly to a transfer function.</p>
-<p>Example: RC with IC</p>
-<p>Example: RLC with no I.C.</p>
-<p>This works with active (op-amp) circuits as well.</p>
-<p>Example: Sallen-key</p>
-<p>Most upper level circuit courses will use these techniques. e.g.
-AC-circuits.</p>
+a circuit directly to a transfer function. Most upper level circuit
+courses will use these techniques. e.g. AC-circuits.</p>
+<h3 id="capacitor-model">Capacitor Model</h3>
+<p>Using the above relationships for capacitor voltage and current after
+using the Laplace transform, we get two equivalent circuit models. Which
+one to use depends on the analysis being employed (KVL or KCL) and
+whether the initial capacitor voltage is zero.</p>
+<figure>
+<p><img src="figures/fig13_11.svg"
+alt="circuit model for a capacitor with possibly non-zero initial conditions. See caption." /></p>
+<figcaption>Equivalent circuit models for a capacitor in the Laplace
+domain. a) is most useful with a KVL analysis, b) is most useful with a
+KCL analysis, c) model when the initial capacitor voltage is
+zero.</figcaption>
+</figure>
+<h3 id="inductor-model">Inductor Model</h3>
+<p>Using the above relationships for inductor voltage and current after
+using the Laplace transform, we get two equivalent circuit models. Which
+one to use depends on the analysis being employed (KVL or KCL) and
+whether the initial inductor current is zero.</p>
+<figure>
+<p><img src="figures/fig13_12.svg"
+alt="circuit model for an inductor with possibly non-zero initial conditions. See caption." /></p>
+<figcaption>Equivalent circuit models for an inductor in the Laplace
+domain. a) is most useful with a KVL analysis, b) is most useful with a
+KCL analysis, c) model when the initial inductor current is
+zero.</figcaption>
+</figure>
+<h3 id="example-1">Example 1</h3>
+<p>Consider the familiar series RC circuit in the figure below where the
+input voltage <span class="math inline">\(x(t)\)</span> and output
+voltage <span class="math inline">\(y(t)\)</span> are indicated. However
+now there is a non-zero initial capacitor voltage, <span
+class="math inline">\(v_C(0^-) = V_0\)</span>. On the left we have the
+original circuit in the time-domain and on the right the transformed
+circuit in the Laplace domain. Since I plan to use a KCL analysis I
+choose the transformation that suits that approach best.</p>
+<figure>
+<p><img src="figures/fig13_13.svg"
+alt="original circuit model for series RC with non-zero initial conditions." /></p>
+<figcaption>Circuit model before and after transformation using
+Laplace.</figcaption>
+</figure>
+<p>Using a KCL:</p>
+<p><span class="math display">\[\frac{X(s) - Y(s)}{R} + C v_C(0^-) =
+\frac{Y(s)}{\frac{1}{Cs}} = Cs\,Y(s)\]</span></p>
+<p>Rearranging and substituting for <span
+class="math inline">\(v_C(0^-)\)</span> we get</p>
+<p><span class="math display">\[(1 + RCs)Y(s) = X(s) +
+RCV_0\]</span></p>
+<p>and</p>
+<p><span class="math display">\[Y(s) = \frac{1}{1+RCs} X(s) +
+\frac{RCV_0}{1+RCS}\]</span></p>
+<p>If <span class="math inline">\(V_0 = 0\)</span> then <span
+class="math inline">\(Y(s) = \frac{1}{1+RCs} X(s)\)</span> and the
+transfer function is <span class="math inline">\(H(s) =
+\frac{Y(s)}{X(s)} = \frac{1}{1+RCS}\)</span>.</p>
+<h3 id="example-2">Example 2</h3>
+<p>Consider the series RLC with zero initial conditions for the inductor
+current and capacitor voltage.</p>
+<figure>
+<p><img src="figures/fig13_14.svg"
+alt="original circuit model for series RLC with zero initial conditions." /></p>
+<figcaption>Circuit model before and after transformation using
+Laplace.</figcaption>
+</figure>
+<p>Using a KVL around the loop gives:</p>
+<p><span class="math display">\[\begin{align*}
+  X(s) &amp;= RI(s) + LS I(s) + \frac{1}{Cs} I(s) \\
+  Cs X(s) &amp;= RCsI(s) + CLs^2I(s) + I(s) \\
+  Cs X(s) &amp;= (RCs + CLs^2 + 1)\cdot I(s)\\
+  I(s) &amp;= \frac{Cs}{CLs^2 + RCs + 1}\cdot X(s)
+\end{align*}\]</span></p>
+<p>The output is then</p>
+<p><span class="math display">\[Y(s) = \frac{1}{Cs} I(s) =
+\frac{1}{CLs^2 + RCs + 1}\cdot X(s)\]</span></p>
+<p>and the transfer function is</p>
+<p><span class="math display">\[H(s) = \frac{Y(s)}{X(s)} =
+\frac{1}{CLs^2 + RCs + 1}\]</span></p>
+<h3 id="example-3">Example 3</h3>
+<p>This works with active (op-amp) circuits as well. Consider a second
+order circuit using the Sallen-Key topology.</p>
+<figure>
+<p><img src="figures/fig13_15.svg"
+alt="original circuit model for second order Sallen-Key circuit with zero initial conditions." /></p>
+<figcaption>Circuit model in time domain.</figcaption>
+</figure>
+<p>If we assume the system is a rest when the input is applied, the
+initial capacitor voltages are zero and we can transform the circuit
+into the Laplace domain.</p>
+<figure>
+<p><img src="figures/fig13_16.svg"
+alt="transformed circuit model for second order Sallen-Key circuit with zero initial conditions." /></p>
+<figcaption>Circuit model in Laplace domain.</figcaption>
+</figure>
+<p>Doing a KCL at node <span class="math inline">\(V\)</span>:</p>
+<p><span class="math display">\[\frac{X(s) - V(s)}{R_1} + \frac{Y(s)
+-V(s)}{\frac{1}{C_1s}} = \frac{V(s) - Y(s)}{R_2}\]</span></p>
+<p>Doing a KCL at the non-inverting input of the op-amp:</p>
+<p><span class="math display">\[\frac{V(s) - Y(s)}{R_2} =
+\frac{Y(s)}{\frac{1}{C_2 s}}\]</span></p>
+<p>Given these two algebraic equations in <span
+class="math inline">\(X\)</span>, <span
+class="math inline">\(Y\)</span>, and <span
+class="math inline">\(V\)</span> one can eleminate the the node voltage
+<span class="math inline">\(V\)</span> and arrive at the transfer
+function. This is left as "an exercise for the reader".</p>
 <h2 id="analyzing-block-diagrams">Analyzing Block Diagrams</h2>
 <p>Recall from ECE 2714 that block diagrams can be used to model systems
 and implement/realize systems.</p>
 <figure>
-<p><img src="figures/fig13_4.svg"
-alt="&quot;simple block in time domain&quot;" /> <span
-class="math inline">\(\Longrightarrow\)</span> <img
-src="figures/fig13_5.svg"
-alt="&quot;simple block in Laplace domain&quot;" /></p>
+<p><img src="figures/fig13_4.svg" alt="simple block in time domain" />
+<span class="math inline">\(\Longrightarrow\)</span> <img
+src="figures/fig13_5.svg" alt="simple block in Laplace domain" /></p>
 <figcaption>Transformation of input and output to Laplace domain
 (transfer function) for a single block.</figcaption>
 </figure>
@@ -132,7 +265,7 @@ alt="&quot;simple block in Laplace domain&quot;" /></p>
 class="math inline">\(H(s) = H_1(s)\cdot H_2(s)\)</span></p>
 <figure>
 <p><img src="figures/fig13_6.svg"
-alt="&quot;series connection in Laplace domain&quot;" /></p>
+alt="series connection in Laplace domain" /></p>
 <figcaption>Transformation of input and output to Laplace domain for a
 series connection.</figcaption>
 </figure></li>
@@ -140,7 +273,7 @@ series connection.</figcaption>
 class="math inline">\(H(s) = H_1(s)+ H_2(s)\)</span></p>
 <figure>
 <p><img src="figures/fig13_7.svg"
-alt="&quot;parallel connection in Laplace domain&quot;" /></p>
+alt="parallel connection in Laplace domain" /></p>
 <figcaption>Transformation of input and output to Laplace domain for a
 parallel connection.</figcaption>
 </figure></li>
@@ -149,44 +282,362 @@ class="math inline">\(H(s) = \frac{H_1(s)}{1+ H_1(s)\cdot
 H_2(s)}\)</span></p>
 <figure>
 <p><img src="figures/fig13_8.svg"
-alt="&quot;feedback connection in Laplace domain&quot;" /></p>
+alt="feedback connection in Laplace domain" /></p>
 <figcaption>Transformation of input and output to Laplace domain for a
 feedback connection.</figcaption>
-</figure></li>
+</figure>
+<p>Note this is much easier than in the time domain.</p></li>
 </ul>
 <p>We can use block diagrams to derive an overall transfer function from
-sub-components.</p>
-<p>Example: PID controller</p>
-<p>Example: DC Motor</p>
+sub-components. To illustrate this consider three examples.</p>
+<h3 id="example-4-pid-controller">Example 4: PID Controller</h3>
+<p>The proportional-integral-derivative (PID) controller is the
+prototypical system in control theory and used extensively in
+applications. It can be described by the following block diagram:</p>
+<figure>
+<p><img src="figures/fig13_17.svg"
+alt="block diagram for the PID controller consisting of five blocks connected in parallel, series, and feedback. See longer description in following paragraphs." /></p>
+<figcaption>Block Diagram of PID controller.</figcaption>
+</figure>
+<p>where</p>
+<ul>
+<li><p><span class="math inline">\(H_1(s) = K_1\)</span> for <span
+class="math inline">\(K_1\in\mathbb{R}\)</span>, is the proportional
+part of the controller;</p></li>
+<li><p><span class="math inline">\(H_2(s) = K_2\cdot s\)</span> for
+<span class="math inline">\(K_2\in\mathbb{R}\)</span> is the derivative
+part of the controller;</p></li>
+<li><p><span class="math inline">\(H_3(s) = \frac{K_3}{s}\)</span> for
+<span class="math inline">\(K_3\in\mathbb{R}\)</span> is the integral
+part of the controller;</p></li>
+<li><p><span class="math inline">\(H_4(s)\)</span> is the transfer
+function that corresponds to the system being controlled, traditionally
+called the <em>plant</em>;</p></li>
+<li><p><span class="math inline">\(H_4(s)\)</span> is the transfer
+function for the <em>measurement</em> part of the system.</p></li>
+</ul>
+<p>The PID controller is made up of the three parallel blocks, <span
+class="math inline">\(H_1\)</span>, <span
+class="math inline">\(H_2\)</span>, and <span
+class="math inline">\(H_3\)</span>. It filters, or processes the
+difference in the input and the output after measurement, called the
+<em>error</em>, <span class="math inline">\(X(s) - H_5(s)\cdot
+Y(s)\)</span>. The output of the controller is input to the system being
+controlled, <span class="math inline">\(H_4\)</span>, calle dthe
+<em>control variable</em>, and its output, <span
+class="math inline">\(Y(s)\)</span>, is the signal we are interested in
+controlling.</p>
+<p>We can derive an overall transfer function for the controlled system
+using the rules for simplifying block diagrams. We might approach this
+as follows.</p>
+<p>1. The controller itself consists of three parallel blocks. This can
+be replaced by a single block whose transfer function is the sum of the
+three:</p>
+<figure>
+<p><img src="figures/fig13_18.svg"
+alt="block diagram for the simplified PID controller. See longer description in the text." /></p>
+<figcaption>First simplification for the PID controller block
+diagram.</figcaption>
+</figure>
+<p>2. The simplified controller and the plant are is series, thus thier
+combination can be replaced by their product:</p>
+<figure>
+<p><img src="figures/fig13_19.svg"
+alt="block diagram for the simplified PID controller and plant. See longer description in the text." /></p>
+<figcaption>Second simplification for the PID controller block
+diagram.</figcaption>
+</figure>
+<p>3. Now we apply the feedback motif to arrive at the overall transfer
+function:</p>
+<p><span class="math display">\[H(s) = \frac{\left(K_1(s) + H_2(s) +
+H_3(s)\right)\cdot H_4(s)}{1 + \left(K_1(s) + H_2(s) +
+H_3(s)\right)\cdot H_4(s) \cdot H_5(s)}\]</span></p>
+<figure>
+<p><img src="figures/fig13_20.svg"
+alt="block diagram for the fully simplified PID controller. See longer description in the text." /></p>
+<figcaption>Final simplification for the PID controller block
+diagram.</figcaption>
+</figure>
+<p>After substituting for the PID block transfer functions and
+simplifying we arrive at:</p>
+<p><span class="math display">\[H(s) = \frac{\left(K_2 s^2 + K_1 s +
+K_3\right)\cdot H_4(s)}{\left(K_2 s^2 + K_1 s + K_3\right)\cdot
+H_4(s)\cdot H_5(s) + s}\]</span></p>
+<p>Choosing the best values for <span
+class="math inline">\(K_1\)</span>, <span
+class="math inline">\(K_2\)</span>, and <span
+class="math inline">\(K_3\)</span> (and defining what best means) is
+called "tuning" the controller. This depends on the plant transfer
+function <span class="math inline">\(H_4(s)\)</span> and the feedback
+transfer function <span class="math inline">\(H_5(s)\)</span>, and is
+part of the control system design process. This process also takes into
+account measures of system stability as well as the rise and settling
+time of the output due to a step input.</p>
+<h3 id="example-5-dc-motor-model">Example 5: DC Motor Model</h3>
+<p>A DC motor converts an input voltage, <span
+class="math inline">\(v_a(t)\)</span>, to a current, <span
+class="math inline">\(i_a(t)\)</span>, through the windings, generating
+a torque on the motor shaft. An external torque and shaft mechanical
+dynamics give rise to rotational motion, i.e. a rotational velocity,
+<span class="math inline">\(\omega\)</span>, and it’s integral,
+rotational position, <span class="math inline">\(\alpha\)</span>. This
+can be approximated by the linear system with block diagram:</p>
+<figure>
+<p><img src="figures/fig13_21.svg"
+alt="block diagram for a DC. See longer description in the text above." /></p>
+<figcaption>A block diagram for a DC motor.</figcaption>
+</figure>
+<p>where</p>
+<ul>
+<li><p><span class="math inline">\(R_a\)</span> and <span
+class="math inline">\(L_a\)</span> are the armature resistance and
+inductance</p></li>
+<li><p><span class="math inline">\(K_i\)</span> is the torque
+gain</p></li>
+<li><p><span class="math inline">\(K_b\)</span> is the back EMF
+gain</p></li>
+<li><p><span class="math inline">\(J_m\)</span> and <span
+class="math inline">\(B_m\)</span> are the rotor inertia and it’s
+viscous friction coefficient</p></li>
+</ul>
+<p>We will assume the load tourque is zero (to make this a single input
+system). Then using the rules for simplifying the block diagram we
+combine the three series blocks modeling the armature,
+current-to-tourque, and mechanical inertia and bearing friction. Then we
+use the feedback motif to combine the forward model and back EMF model.
+This is then combined in series with the rotational velocity to position
+integrator block to define the overall transfer function from input
+armature voltage to output shaft angle.</p>
+<p><span class="math display">\[\begin{align*}
+  H(s) &amp;= \frac{\Theta(s)}{V_a(s)} = \frac{\frac{K_i}{\left(R_a +
+L_a s\right)\cdot \left( B_m + J_m s\right)}}{s \cdot
+\left[1+\frac{K_i\cdot K_b}{\left(R_a + L_a s\right)\cdot \left( B_m +
+J_m s\right)}\right]}\\
+  &amp;= \frac{K_i}{L_a J_m s^3 + (R_aJ_M + L_a B_m)s^2 + (R_aB_m +
+K_iK_b)s}
+\end{align*}\]</span></p>
+<p>Determining the values for model paramters <span
+class="math inline">\(R_a\)</span>, <span
+class="math inline">\(L_a\)</span>, <span
+class="math inline">\(K_i\)</span>, <span
+class="math inline">\(K_b\)</span>, <span
+class="math inline">\(B_m\)</span>, and <span
+class="math inline">\(J_m\)</span> is a system identification problem.
+This is typically accomplished using a calibration step that collects
+data and uses a learning algorithm to adjust the parameters to fit the
+data.</p>
+<h3 id="example-6-dc-servo">Example 6: DC Servo</h3>
+<p>A servo-motor, or just "servo", is a electro-mechanical device whose
+input is a desired angle for a rotary shaft as an electrical signal and
+whose output is actual angle of the rotary shaft. We can build a linear
+system model for a DC servo using the previous two examples in
+combination.</p>
+<p>Let the plant transfer function <span
+class="math inline">\(H_4(s)\)</span> from Example 4 be given by that of
+the DC motor in Example 5. That is the output of the PID block is the
+armature voltage to be applied to the motor, and the output is the
+rotation angle of the motor shaft. For simplicity assume the feedback
+transfer function has no gain or dynamics, so that <span
+class="math inline">\(H_5(s) = 1\)</span> (the angle is measured exactly
+and instantaneously). Essentially the system measures the error between
+the desired and actual angle, filters the error signal through the PID
+block, and applies that output as the armature voltage.</p>
+<p>To arrive at the mathematical model, we can substitute the plant
+transfer function by that of the DC motor and simplify. This gives us
+the overall transfer function for the servo:</p>
+<p><span class="math display">\[H(s) = \frac{X(s)}{\Theta(s)} =
+\frac{K_i K_2 s^2 + K_i K_1 s + K_i K_3}{L_a J_m s^4 + (R_aJ_m + L_a
+B_m) s^3 + \left[(R_a B_m + K_i K_b) + K_i K_2 \right] s^2 + K_i K_1 s +
+K_i K_3}\]</span></p>
+<p>where <span class="math inline">\(X\)</span> is the desired input
+angle and <span class="math inline">\(\Theta\)</span> is the actual
+angle. While this might look complicated, most the terms are constants.
+You should now be able to recognize it as a fourth-order system with two
+zeros and four poles, whose locations depend on both the DC motor
+parameters, which are typically fixed, and the PID parameter settings,
+which can be adjusted to ensure stability and maximize performance.</p>
 <h2 id="system-realization">System Realization</h2>
 <p>We can also use block diagrams in the opposite way, to implement, or
-realize, a given transfer function (for example from a filter design)
-using three basic building blocks: summation, amplifier (gain), and
-integrator.</p>
+<em>realize</em>, a given transfer function (for example from a filter
+design) using three basic building blocks: summation, amplifier (gain),
+and integrator.</p>
 <figure>
 <p><img src="figures/fig13_9.svg"
-alt="&quot;integrator block in time domain&quot;" /> <span
+alt="integrator block in time domain" /> <span
 class="math inline">\(\Longrightarrow\)</span> <img
 src="figures/fig13_10.svg"
-alt="&quot;integrator block in Laplace domain&quot;" /></p>
+alt="integrator block in Laplace domain" /></p>
 <figcaption>Transformation of an integrator to Laplace domain (transfer
 function).</figcaption>
 </figure>
 <p>The realization is not unique, with different canonical forms, each
 with advantages and disadvantages (e.g. reduced number of components and
 reduced sensitivity to component variation).</p>
-<h3 id="example">Example</h3>
+<h3 id="direct-forms-for-realization">Direct Forms for Realization</h3>
+<p>It is best to use an example by way of explaining system realization.
+The extension to the general case is then easier to see.</p>
 <p>Given a transfer function</p>
-<p><span class="math display">\[H(s) = \frac{s+a}{s^2 + bs + c}\]</span>
-for <span class="math inline">\(a,b,c\in\mathbb{R}\)</span>, implement
-the system in terms of summations, amplifiers, and integrators.</p>
-<p>TODO: DFI, DFII, transposed DFII, parallel and cascade of second
-order systems</p>
+<p><span class="math display">\[H(s) = \frac{s+a}{s^2 + bs + c} =
+\frac{Y(s)}{X(s)}\]</span> for constants <span
+class="math inline">\(a,b,c\in\mathbb{R}\)</span>, we wish to implement
+the corresponding system in terms of summations, amplifiers, and
+integrators.</p>
+<p>We first use the definition of the transfer function to write the
+input output relationship in the Laplace domain as</p>
+<p><span class="math display">\[Y(s)\left(s^2  + bs + c\right) =
+\left(s+a\right) X(s)\]</span></p>
+<p>Next, we distribute the input and output sigals over the
+polynomials</p>
+<p><span class="math display">\[s^2 Y(s) + bsY(s) + cY(s) = sX(s) +
+aX(s)\]</span> Then we divide through by <span
+class="math inline">\(s^2\)</span> to put each term in the form of a
+integrator</p>
+<p><span class="math display">\[Y(s) + \frac{b}{s}Y(s) +
+\frac{c}{s^2}Y(s) = \frac{1}{s} X(s) + \frac{a}{s^2} X(s)\]</span></p>
+<p>And solve for <span class="math inline">\(Y(s)\)</span></p>
+<p><span class="math display">\[Y(s) = -\frac{b}{s}Y(s) -
+\frac{c}{s^2}Y(s) + \frac{1}{s} X(s) + \frac{a}{s^2} X(s)\]</span></p>
+<p>We can then translate that directly to a block diagram</p>
+<figure>
+<p><img src="figures/fig13_22.svg"
+alt="block diagram for the direct form I implementation." /></p>
+<figcaption>Direct Form I realization of the example transfer
+function.</figcaption>
+</figure>
+<p>The above is called the <em>Direct Form I</em>
+implementation/realization of the system. The major drawback of this
+form is that it requires four integrators to implement a second order
+system. Out intuition is that we should just need two. To see how to do
+this we note we can split the above block diagram into two stages in
+series by splitting the top summation and labeling the intervening
+signal as <span class="math inline">\(W(s)\)</span>:</p>
+<figure>
+<p><img src="figures/fig13_23.svg"
+alt="block diagram for the split direct form I implementation. See caption." /></p>
+<figcaption>Direct Form I realization of the example transfer function,
+split into two stages.</figcaption>
+</figure>
+<p>The first stage corresponds to the transfer function <span
+class="math inline">\(H_1(s) = \frac{W(s)}{X(s)}\)</span>, while the
+second stage corresponds to the transfer function <span
+class="math inline">\(H_2(s) = \frac{Y(s)}{W(s)}\)</span>, and the
+overall transfer function is <span class="math inline">\(H(s) = H_1(s)
+\cdot H_2(s)\)</span>.</p>
+<p>Recall from 2714 and the commutivity of multiplication that the order
+of two series connections does not affect the overall system. Thus if we
+reverse the two stages, i.e. <span class="math inline">\(H(s) = H_2(s)
+\cdot H_1(s)\)</span>, we get the block diagram</p>
+<figure>
+<p><img src="figures/fig13_24.svg"
+alt="block diagram for the split direct form I implementation after reversal. See caption." /></p>
+<figcaption>Direct Form I realization of the example transfer function,
+split into two stages, with the order reversed.</figcaption>
+</figure>
+<p>Now we note that the signal <span class="math inline">\(W(s)\)</span>
+is duplicated through two identical paths with two integrators in
+series, giving duplicate outputs. This redundancy can be removed if we
+combine the integrators. This gives what is called the <em>Direct Form
+II</em> realization of the system.</p>
+<figure>
+<p><img src="figures/fig13_25.svg"
+alt="block diagram for the direct form II implementation. See caption." /></p>
+<figcaption>Direct Form II realization of the example transfer
+function.</figcaption>
+</figure>
+<p>A result from graph theory says that we can reverse the direction of
+signal flow and interchange the input and output in a block diagram
+without modifying the overall transfer function. This is called the
+<em>Transposed Direct Form II</em> realization and looks like</p>
+<figure>
+<p><img src="figures/fig13_26.svg"
+alt="block diagram for the transposed direct form II implementation. See caption." /></p>
+<figcaption>Transposed Direct Form II realization of the example
+transfer function.</figcaption>
+</figure>
+<p>Note the above block diagram can be mirrored left-right to give the
+normal signal flow of left-to-right. The transposed direct form II
+typically has the fewest blocks and summation nodes.</p>
+<p>There are additional forms, including the <em>Lattice</em>,
+<em>Parallel</em>, and <em>Cascade of Second-Order Stages</em> (SOS).
+The Lattice is outside the course scope but the Parallel and SOS are
+easy to describe.</p>
+<h3 id="parallel-forms-for-realization">Parallel Forms for
+Realization</h3>
+<p>The parallel form requires real poles for first-order blocks. It can
+also use second-order blocks for system order greater than three with
+complex poles. To illustrate, consider a transfer function with real
+poles, e.g.</p>
+<p><span class="math display">\[H(s) = \frac{2}{s^2 + 3s + 2} =
+\frac{2}{(s+1)(s+2)}\]</span></p>
+<p>If we perform the partial fraction expansion then</p>
+<p><span class="math display">\[H(s) = \frac{A}{s+1} + \frac{B}{s+2} =
+\frac{2}{s+1} + \frac{-2}{s+2}\]</span></p>
+<p>We can then draw this as a parallel connection of two first-order
+systems</p>
+<figure>
+<p><img src="figures/fig13_27.svg"
+alt="block diagram for a partial parallel implementation. See caption and text above." /></p>
+<figcaption>Partial parallel realization of the example transfer
+function.</figcaption>
+</figure>
+<p>We can then break down each parallel block into a transposed direct
+form II to arrive at the final parallel realization.</p>
+<figure>
+<p><img src="figures/fig13_28.svg"
+alt="block diagram for the final parallel implementation. See caption and text above." /></p>
+<figcaption>Parallel realization of the example transfer
+function.</figcaption>
+</figure>
+<p><strong>Exercise:</strong> Confirm the block diagram for the final
+parallel realization has an overall transfer function we started
+with.</p>
+<p>Suppose the system was fourth-order with two pairs of complex
+conjugate poles. Then the partial fraction expansion would be into the
+sum of two second order terms, and each parallel branch would be a
+direct-form I/II/transposed form.</p>
+<h3 id="realization-via-cascade-of-second-order-stages">Realization via
+Cascade of Second-Order Stages</h3>
+<p>The last common realization we will consider is the cascade of
+second-order stages. Here the transfer function is factored into
+multiplicative terms of second order (with one first-order stage if the
+system has odd order). These are then placed in series, with each block
+typically implemented as a direct-form II, transposed direct-form II, or
+using a specific circuit toplogy like Sallen-Key.</p>
+<p>For example, consider a transfer function</p>
+<p><span class="math display">\[H(s) = \frac{25}{s^4 + 8s^3 + 26 s^2 +
+40s + 25}\]</span> which has four poles at <span
+class="math inline">\((-1 \pm j)\)</span> and <span
+class="math inline">\((-1 \pm j2)\)</span>. If we group the conjugate
+poles together then the denominator can be factored into two second
+order polynomials with real coefficients</p>
+<p><span class="math display">\[H(s) = \frac{25}{(s^2 + 4s + 5)(s^2 + 2s
++ 5)}\]</span></p>
+<p>We can write this as the product of two second-order systems by
+choosing a factoring of the numerator</p>
+<p><span class="math display">\[H(s) = \frac{5}{s^2 + 4s + 5}\cdot
+\frac{5}{s^2 + 2s + 5} = H_1(s) \cdot H_2(s)\]</span></p>
+<p>This corresponds to a block diagram that is a cascade (series
+connection) of two second-order stages</p>
+<figure>
+<p><img src="figures/fig13_29.svg"
+alt="block diagram for the cascade of second-order stages. See caption and text above." /></p>
+<figcaption>Cascade of Second-Order Stages realization of the example
+fourth-order transfer function.</figcaption>
+</figure>
+<p>As in the parallel case, each block can be implemented as a prallel
+or direct form. For example using the direct form II implementation of
+each block</p>
+<figure>
+<p><img src="figures/fig13_30.svg"
+alt="block diagram for the cascade of second-order stages. See caption and text above." /></p>
+<figcaption>Cascade of Second-Order Stages realization of the example
+fourth-order transfer function.</figcaption>
+</figure>
 </main>
 
 <footer>
   <hr>
-Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+Copyright 2026 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
 </footer>
 </body>
 </html>

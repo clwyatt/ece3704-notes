@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-02-16" />
+  <meta name="dcterms.date" content="2026-02-25" />
   <title>Lecture 12 Solving LCCDE using Laplace</title>
   <style>
     /* Default styles provided by pandoc.
@@ -41,7 +41,7 @@
 <h1 class="title">Lecture 12<br />
 Solving LCCDE using Laplace</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-02-16</p>
+<p class="date">2026-02-25</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -254,7 +254,13 @@ solution to the LCDDE for causal inputs/forcing functions.</p>
 <p>Consider the circuit below, where the switch moves position at <span
 class="math inline">\(t=0\)</span> and the voltage <span
 class="math inline">\(x(t)\)</span> is a causal signal.</p>
-<p>TODO Figure</p>
+<figure>
+<p><img src="figures/fig12_1.svg"
+alt="RC circuit with non-zero initial condition. See caption." /></p>
+<figcaption>Single pole, single throw switch connected to either a DC
+voltage source or an arbitrary voltage signal <span
+class="math inline">\(x(t)\)</span>.</figcaption>
+</figure>
 <p>For <span class="math inline">\(t &lt; 0\)</span> it is a DC circuit
 and <span class="math inline">\(y(t) = V\)</span>. For <span
 class="math inline">\(t \geq 0\)</span> we have the governing
@@ -378,7 +384,7 @@ This implies that we can construct the inverse system as</p>
 
 <footer>
   <hr>
-Copyright 2025 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+Copyright 2026 by <a href="https://clwyatt.github.io">Chris Wyatt</a> and licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
 </footer>
 </body>
 </html>
