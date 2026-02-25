@@ -41,6 +41,9 @@ docs/%.html: %.tex $(CSS) $(HEADER) $(FOOTER)
 docs/%.pdf: %.tex
 	pandoc -s -t latex --default-image-extension=pdf $< --template=template.tex -o $@
 
+preview: all
+	cd docs && python3 -m http.server
+
 clean:
 	make -C figures -f Makefile_tikz clean
 	make -C figures -f Makefile_ipe clean
