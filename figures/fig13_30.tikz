@@ -1,0 +1,55 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+
+  \node[coordinate, name=input] at (0,0) {};
+  \node[coordinate, name=output] at (18,0) {};
+
+  % stage 1
+  \node [sum] at (2,0) (sum1) {$\Sigma$};
+  \node [sum] at (2,-2) (sum2) {$\Sigma$};
+  \node[block] at (4,0) (block1) {$\frac{1}{s}$};
+  \node[block] at (6,0) (block2) {$\frac{1}{s}$};
+  \node[coordinate, name=fb1] at (8,-4) {};
+  \draw [->] (input) -- (sum1);
+  \draw [->] (sum1) -- (block1);
+  \draw [->] (block1) |- node[near end, above] {$-4$} (sum2);
+  \draw [->] (sum2) -- (sum1);
+  \draw [->] (block1) -- (block2);
+  \draw (block2) -| (fb1);
+  \draw [->] (fb1) -| node[near start, above] {$-5$} (sum2);
+
+  % stage 2
+  \node [sum] at (10,0) (sum3) {$\Sigma$};
+  \node [sum] at (10,-2) (sum4) {$\Sigma$};
+  \node[block] at (12,0) (block3) {$\frac{1}{s}$};
+  \node[block] at (14,0) (block4) {$\frac{1}{s}$};
+  \node[coordinate, name=fb2] at (16,-4) {};
+  \draw [->] (block2) -- node[near end, above] {$5$} (sum3);
+  \draw [->] (sum3) -- (block3);
+  \draw [->] (block3) |- node[near end, above] {$-2$} (sum4);
+  \draw [->] (sum4) -- (sum3);
+  \draw [->] (block3) -- (block4);
+  \draw (block4) -| (fb2);
+  \draw [->] (fb2) -| node[near start, above] {$-5$} (sum4);
+  \draw [->] (block4) -- node[near end, above] {$5$} (output);
+  
+  % label input/output
+  \node at (-1,0) {$X(s)$};
+  \node at (19,0) {$Y(s)$};
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,62 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
+
+\usepackage{transparent}
+
+\begin{document}
+
+\begin{tabular}{ccc}
+
+  \begin{circuitikz}[american voltages,scale=1.0, every node/.style={transform shape}]
+    \draw
+    (0,0) to[short, i=$I_C(s)$, o-] (2,0)
+    (2,0) to[C, l=$\frac{1}{Cs}$] (2,-2)
+    (2,-2) to[V, l=$\frac{v_C(0^-)}{s}$] (2,-4)
+    (2,-4) to[short, -o] (0,-4);
+    \draw (0,0) to[open, v=$V_C(s)$] (0,-4);
+  \end{circuitikz}
+
+&
+
+  \begin{circuitikz}[american voltages, american currents, scale=1.0, every node/.style={transform shape}]
+    \draw
+    (0,0) to[short, i=$I_C(s)$, o-] (2,0)
+    (2,0) to[short] (4,0)
+    (2,0) to[C, l=$\frac{1}{Cs}$] (2,-2)
+    (4,-2) to[I, l_=$C\, v_C(0^-)$] (4,0) 
+    (4,-2) to[short, -o] (0,-2);
+    \draw (0,0) to[open, v=$V_C(s)$] (0,-2);
+  \end{circuitikz}
+
+&
+
+  \begin{circuitikz}[american voltages,scale=1.0, every node/.style={transform shape}]
+    \draw
+    (0,0) to[short, i=$I_C(s)$, o-] (2,0)
+    (2,0) to[C, l=$\frac{1}{Cs}$] (2,-2)
+    (2,-2) to[short, -o] (0,-2);
+    \draw (0,0) to[open, v=$V_C(s)$] (0,-2);
+  \end{circuitikz}
+
+\\
+
+a) & b) & c)
+\end{tabular}
+
+\end{document}

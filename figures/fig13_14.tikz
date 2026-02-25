@@ -1,0 +1,48 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
+
+\usepackage{transparent}
+
+\begin{document}
+
+  \begin{circuitikz}[american voltages,scale=1.0, every node/.style={transform shape}]
+    \draw
+    (0,0) to[R, l=$R$] (2,0)
+    (2,0) to[L, l=$L$, i=$i(t)$] (5,0)
+    (5,0) to[C, l=$C$, v=$y(t)$] (5,-2)
+    (5,-2) to[short, -o] (0,-2);
+    \draw (0,0) to[open, v=$x(t)$] (0,-2);
+
+    \draw[->,thick] (6,-1) -- (8,-1);
+
+  \end{circuitikz}
+
+  \begin{circuitikz}[american voltages, american currents, scale=1.0, every node/.style={transform shape}]
+
+    \draw
+    (0,0) to[R, l=$R$] (2,0)
+    (2,0) to[L, l=$Ls$, i=$I(s)$] (5,0)
+    (5,0) to[C, l=$\frac{1}{Cs}$, v=$Y(s)$] (5,-2)
+    (5,-2) to[short, -o] (0,-2);
+    \draw (0,0) to[open, v=$X(s)$] (0,-2);
+    
+  \end{circuitikz}
+
+
+\end{document}

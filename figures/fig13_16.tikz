@@ -1,0 +1,48 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
+
+\usepackage{transparent}
+
+
+\begin{document}
+
+\begin{circuitikz}[american voltages,scale=1.0, every node/.style={transform shape}]
+      \draw
+      (7,3.5) node[op amp] (opamp1) {}
+      (0,4) to[R,l=$R_1$,o-*] (2,4)
+      (2,4) to[short] (2,5)
+      (2,5) to[C,l=$\frac{1}{C_1 s}$] (8.2,5)
+      (8.2,5) to[short] (opamp1.out) 
+      (2,4) to[R, l=$R_2$] (4,4)
+      (4,4) to[C, l=$\frac{1}{C_2 s}$] (4,0)
+      (0,0) to[short,o-o] (12,0)
+      (4,4) to[short] (opamp1.-)
+      (opamp1.+) to[short] (5.8,1.75)
+      (5.8,1.75) to[short] (8.2,1.75)
+      (opamp1.out) to[short] (8.2,1.75)
+      (opamp1.out) to[short, -o] (12,3.5)
+      (0,4) to[open, v=$X(s)$] (0,0)
+      (12,3.5) to[open, v=$Y(s)$] (12,0);
+      \node at (2,3.5) {$V(s)$};
+      
+\end{circuitikz}
+
+
+
+\end{document}

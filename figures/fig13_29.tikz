@@ -1,0 +1,29 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+
+
+  \node[coordinate, name=input] at (0,0) {};
+  \node[coordinate, name=output] at (8,0) {};
+  \node[block] at (3,0) (block1) {$\frac{5}{s^2 + 4s + 5}$};
+  \node[block] at (6,0) (block2) {$\frac{5}{s^2 + 2s + 5}$};
+  \draw [->] (input) -- (block1);
+  \draw [->] (block1) -- (block2);
+  \draw [->] (block2) -- (output);
+  
+  % label input/putput
+  \node at (-1,0) {$X(s)$};
+  \node at (9,0) {$Y(s)$};
+  \end{tikzpicture}
+\end{document}

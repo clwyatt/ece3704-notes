@@ -1,0 +1,56 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+  % place the blocks
+  \node[input, name=input] at (0,0) {};
+  \node[block] at (6,-1) (block1) {$\frac{1}{s}$};
+  \node[block] at (6,-3) (block2) {$\frac{1}{s}$};
+  \node[block] at (3,-1) (block3) {$\frac{1}{s}$};
+  \node[block] at (3,-3) (block4) {$\frac{1}{s}$};
+  \node [sum] at (8,0) (sum1) {$\Sigma$};
+  \node [sum] at (1,0) (sum12) {$\Sigma$};
+  \node [sum] at (8,-2) (sum2) {$\Sigma$};
+  \node [sum] at (1,-2) (sum22) {$\Sigma$};
+  \node [sum] at (8,-4) (sum3) {$\Sigma$};
+  \node [sum] at (1,-4) (sum32) {$\Sigma$};
+  \node[output, name=branch1] at (3,0) {};
+  \node[output, name=branch2] at (8,0) {};
+  \node[output, name=output] at (10,0) {};
+  
+  % make the connections
+  \draw [->] (input) -- (sum12);
+  \draw (sum12) -- (branch1);
+  \draw [->] (branch1) -- (block3);
+  \draw [->] (branch1) -| (block1);
+  \draw [->] (block1) |-  (sum2);
+  \draw [->] (block2) |- node[near end, above] {$a$} (sum3);
+
+  \draw [->] (block3) |- node[near end, above] {$-b$} (sum22);
+  \draw [->] (block3) -- (block4);
+  \draw [->] (block4) |- node[near end, above] {$-c$} (sum32);
+  \draw[->] (block1) -- (block2);
+  \draw[->] (sum3) -- (sum2);
+  \draw[->] (sum2) -- (sum1);
+  \draw[->] (sum32) -- (sum22);
+  \draw[->] (sum22) -- (sum12);
+  \draw[->] (sum1) -- (output);
+
+  % label input/putput
+  \node at (-1,0) {$X(s)$};
+  \node at (11,0) {$Y(s)$};
+  \node at (4.5,0.3) {$W(s)$};
+  \end{tikzpicture}
+\end{document}

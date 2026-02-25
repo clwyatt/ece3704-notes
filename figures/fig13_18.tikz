@@ -1,0 +1,39 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+  % place the blocks
+  \node[input, name=input] at (0,0) {};
+  \node[sum] at (2,0) (sum1) {$\Sigma$};
+  \node[block] at (5,0) (block2) {$K_1(s) + H_2(s) + H_3(s)$};
+  \node[block] at (8,0) (block4) {$H_4(s)$};
+  \node[block] at (6,-1) (block5) {$H_5(s)$};
+  \node[shape=coordinate] at (9,0) (branch2) {};
+  \node[output, name=output] at (10,0) {};
+  
+  % make the connections
+  \draw [->] (input) -- (sum1);
+  \draw (sum1) -- (block2);
+  \draw [->] (block2) -- (block4);
+  \draw (block4) -- (branch2);
+  \draw [->] (branch2) |- (block5);
+  \draw[->] (branch2) -- (output);
+  \draw [->] (block5) -| node[pos=0.95] {$-$} (sum1);
+
+  % label input/putput
+  \node at (-1,0) {$X(s)$};
+  \node at (11,0) {$Y(s)$};
+  \end{tikzpicture}
+\end{document}

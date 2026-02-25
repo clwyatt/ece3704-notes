@@ -1,0 +1,49 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+
+
+\tikzstyle{block} = [draw, fill=gray!20, rectangle, 
+    minimum height=3em, minimum width=3em]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+\begin{tikzpicture}[auto, node distance=2cm,>=latex]
+
+  \node [sum] at (2.5,0) (vsum) {$\Sigma$};
+  \node [block] at (4,0) (arm) {$\frac{1}{R_a + L_a s}$};
+  \node [block] at (6.5,0) (torque) {$K_i$};
+  \node [sum] at (8,0) (tsum) {$\Sigma$};
+  \node [block] at (9.5,0) (motor) {$\frac{1}{B_m + J_m s}$};
+  \node [block] at (12,0) (int) {$\frac{1}{s}$};
+  \node [block] at (6,-2) (backemf) {$K_b$};
+
+  \draw [->] (1.5,0) node [left] {$V_a(s)$} -- node[pos=0.8] {$+$} (vsum);
+  \draw [->] (vsum) -- (arm);
+  \draw [->] (arm) -- (torque) node [midway,above] {$I_a(s)$};
+  \draw [->] (torque) -- node[pos=0.8] {$+$} (tsum) {};	
+  \draw [->] (tsum) -- (motor);
+  \draw [->] (8,1) node[above] {$\tau_L$} -- node[pos=0.8] {$-$} (tsum);
+  \draw [->] (motor) -- (int) node [midway,above] {$\Omega(s)$};
+  \draw [->] (11,0) |- (backemf);
+  \draw [->] (backemf) -| node[midway] {$V_b(s)$} node[pos=0.95] {$-$} (vsum);
+  \draw [->] (int) -- (13,0) node[right] {$\Theta(s)$};
+
+\end{tikzpicture}
+
+\end{document}

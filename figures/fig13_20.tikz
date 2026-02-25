@@ -1,0 +1,30 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+  % place the blocks
+  \node[input, name=input] at (0,0) {};
+  \node[block] at (6,0) (block) {$\frac{\left(K_1(s) + H_2(s) + H_3(s)\right)\cdot H_4(s)}{1 + \left(K_1(s) + H_2(s) + H_3(s)\right)\cdot H_4(s) \cdot H_5(s)}$};
+  \node[output, name=output] at (10,0) {};
+  
+  % make the connections
+  \draw [->] (input) -- (block);
+  \draw[->] (block) -- (output);
+
+  % label input/putput
+  \node at (-1,0) {$X(s)$};
+  \node at (11,0) {$Y(s)$};
+  \end{tikzpicture}
+\end{document}
