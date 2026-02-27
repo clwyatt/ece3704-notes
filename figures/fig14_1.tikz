@@ -14,7 +14,7 @@
 
 \begin{document}
 
-\begin{tikzpicture}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
 
   \node at (-0.5,0) {$X(s)$};
   \node[coordinate] at (0,0) (input) {};

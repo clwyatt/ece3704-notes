@@ -21,16 +21,21 @@ $$
 Thus we have another way of finding the frequency response:
 
 \begin{enumerate}
-\item Find the transfer function
-\item Determine if the system is stable
-\item Evaluate the transfer function on the imaginary axis
+\item Find the transfer function;
+\item Determine if the system is stable;
+\item Evaluate the transfer function on the imaginary axis.
 \end{enumerate}
 
 \subsection{Example 1}
 
-Given the following block diagram, where $K_1$ and $K_2$ are gain parameters, determine the transfer function $H(s)$ and the frequency response $H(j\omega)$ if it exsists.
+Given the following block diagram, where $K_1$ and $K_2$ are gain parameters, determine the transfer function $H(s)$ and the frequency response $H(j\omega)$ if it exists.
 
-\includegraphics[alt="block diagram for example 1"]{figures/fig14_1}
+\begin{figure}
+  \centering
+  \includegraphics[alt={block diagram for example 1}]{figures/fig14_1}
+  \caption{Block diagram for example 1.}
+\end{figure}
+
 
 \textbf{[Step 1]}
 
@@ -92,7 +97,7 @@ Q(s) = a_0s^n + a_1s^{n-1} + \cdots + a_{n-1}s + a_n
 
   etc.
 
-\item All signs of the first column ($a_0, a_1, b_1, c_1,\ldots, e_1, f_1,g_1$) must be positive for the system to be table.
+\item All signs of the first column ($a_0, a_1, b_1, c_1,\ldots, e_1, f_1,g_1$) must be positive for the system to be stable.
 \end{enumerate}
 
 \subsection{Example 1 Revisited}
@@ -200,19 +205,35 @@ Recall the most common way to visualize a stable CT LTI system is via a Bode plo
 \item semilog plot of $\angle H(j\omega)$ or $\angle H(j2\pi f)$ in radians or degrees
 \end{itemize}
 
-This is easy to do given an expression for $H(j\omega)$ using a computer. But what if we are not given an expression? How do we proceed?
+This is easy to do given an expression (with no unknown parameters) for $H(j\omega)$ using a computer. But what if we are not given an expression? How do we proceed?
 
 \subsection{System Identification}
 
-TODO FIGURE
+We may have a model for some parts of a system (blocks) but not others. When we know the inputs and outputs of a system (from experiments), but do not have a model of the system itself, we have a system identification problem. These come in a gradation, from black box (opaque) models to grey box models.
 
-We may have a model for some parts of a system (blocks) but not others.
+In a black box model we know very little about the system. Given the focus of the current course, we will assume at least it is a linear system, stable, and without delays. We can then conjecture it has a generic frequency response.
 
-A full coverage of linear system identification is outside the course scope, however we can easily measure points of $H(j\omega)$ using sinusoidal inputs.
+\[
+H\left(j\omega\right) = \frac{K(j\omega + b_1)(j\omega + b_2)\cdots(j\omega + b_M)}{(j\omega + a_1)(j\omega + a_2)\cdots(j\omega + a_N)}
+\]
 
-TODO FIGURE
+Beyond that we would need to determine the order of the system $N$, the location of the poles $a_i$, and the number and location of any zeros $M, b_i$, as well as the overall gain $K$.
 
-From this, knowledge of manually contructing Bode plots can give information about the order of the system, type if a filter, and a credible transfer function.
+In a grey box model we might assume the order and number of zeros are known and only need determine the locations of any poles and zeros. For example
+
+\[
+H\left(j\omega\right) = \frac{K}{(j\omega + a_1)(j\omega + a_2)}
+\]
+
+A full coverage of linear system identification is outside the course scope, however we can easily measure points of $H(j\omega)$ using sinusoidal inputs. i.e. perform a frequency sweep as illustrated below.
+
+\begin{figure}
+  \centering
+  \includegraphics[alt={illustration of linear system identification via a frequency sweep. See caption.}]{figures/fig14_2}
+  \caption{Illustration of linear system identification via a frequency sweep. An input sinusoid at a given frequency $\omega_0$ is input to the system and the output sinusoid measured. Since the system is linear the input and output frequency are the same. The change in magnitude between input and output determines $|H(j\omega_0)|$. The time shift between input and output determines $\frac{\angle H(j\omega_0)}{\omega_0}$. By changing the frequency and measuring the corresponding gain and phase we can sweep out a discrete set of points on the Bode plot.}
+\end{figure}
+
+Given the frequency sweep data, knowledge of manually constructing Bode plots can give information about the order of the system, type of a filter, and a credible transfer function.
 
 Consider a generic transfer function of a stable system
 
@@ -267,11 +288,19 @@ We see the magnitude plot in dB is a sum of plots for each term, with the non-ga
 \item when $\omega >> |a|$, $20\log\left|1+\frac{j\omega}{a}\right| \approx \left|\omega\right| = 20$ dB per decade slope 
 \end{itemize}
 
-TODO FIGURE
+\begin{figure}
+  \centering
+  \includegraphics[alt={asymptotic plot for first-order zero. See text.}]{figures/fig14_3}
+  \caption{Asymptotic plot for first-order zero.}
+\end{figure}
 
 Since the plots add, if we have a mixture of real zeros and poles the plots add or subtract accordingly with slopes adding or subtracting.
 
-TODO FIGURE
+\begin{figure}
+  \centering
+  \includegraphics[alt={asymptotic plot for first-order zero and pole. See text.}]{figures/fig14_4}
+  \caption{Asymptotic plot for first-order zero (left) and first-order pole (right).}
+\end{figure}
 
 Thus the slope can be used to estimate the system order.
 
@@ -302,11 +331,6 @@ Cases that are not addressed above:
   \]
 \end{itemize}
 
-\begin{figure}
-  \centering
-  \includegraphics[alt={illustration of second order frequency response.}]{images/fig14_6.png}
-  \caption{Frequency response of a second-order system with complex poles.}
-\end{figure}
-
+TODO FIGURE
 
 \end{document}
