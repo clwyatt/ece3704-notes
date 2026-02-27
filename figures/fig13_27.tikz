@@ -14,7 +14,7 @@
 \begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
 
   % establish input, output, and branch locations
-  \node[coordinate, name=input] at 0,0) {};
+  \node[coordinate, name=input] at (0,0) {};
   \node[coordinate, name=branch1] at (2,0) {};
   \node[coordinate, name=output] at (5,0) {};
   \node[block] at (3,1) (block1) {$\frac{2}{s+1}$};
