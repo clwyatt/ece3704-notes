@@ -17,7 +17,7 @@
 \begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
 
 
-  \begin{axis}[ticks=none,mark=none,xshift=-2cm,yshift=-2.5cm,width=4cm,axis x line = middle,axis y line = middle,xlabel=$\omega$, xlabel style={anchor=west},ylabel=$|H(j\omega)|$, ]
+  \begin{axis}[ticks=none,mark=none,xshift=-2cm,yshift=-2.5cm,width=4cm,axis x line = middle,axis y line = middle,xlabel=$\omega$, xlabel style={anchor=west},ylabel=$|H(j\omega)| \mbox{dB}$, ]
 
     \addplot[domain=0:1, blue, thick, samples=50] {0};
     \addplot[domain=1:3, blue, thick, samples=50] {x-1};

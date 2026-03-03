@@ -312,13 +312,17 @@ Cases that are not addressed above:
   \[
   20\log_{10}|j\omega| = 20\log_{10}(\omega)
   \]
+The linear approximation is equivalent to a zero approaching the $\omega = 0$ axis.
+  
 \item pole at the origin
   \[
   20\log_{10}\left|\frac{1}{j\omega}\right| = -20\log_{10}(\omega)
   \]
+The linear approximation is equivalent to a pole approaching the $\omega = 0$ axis.
+    
 \item second order with complex poles $-a, -a^*$
   \[
-  H(s) = \frac{|a|^2}{(s+a)(s+a^*)} = \frac{\omega_0^2}{s^2 + 2\eta\omega_0 s + \omega+0^2}
+  H(s) = \frac{|a|^2}{(s+a)(s+a^*)} = \frac{\omega_0^2}{s^2 + 2\eta\omega_0 s + \omega_0^2}
   \]
   \begin{itemize}
   \item $\omega_0$ is the natural frequency, $\omega_0^2 = |a|^2$
@@ -331,6 +335,12 @@ Cases that are not addressed above:
   \]
 \end{itemize}
 
-TODO FIGURE
+
+\begin{figure}
+  \centering
+  \includegraphics[alt={illustration of a second-order system. See caption.}]{figures/fig14_5}
+  \caption{Illustration of a second-order system with $\omega_0 = 10$ and $\eta = 0.2$. The linear approximation is a constant of zero dB up to $\omega_0$, followed by a linear decrease of 20 dB per decade.}
+\end{figure}
+
 
 \end{document}
