@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-02-25" />
+  <meta name="dcterms.date" content="2026-03-05" />
   <title>Lecture 14 Bode Plots and Linear System ID</title>
   <style>
     /* Default styles provided by pandoc.
@@ -41,7 +41,7 @@
 <h1 class="title">Lecture 14<br />
 Bode Plots and Linear System ID</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-02-25</p>
+<p class="date">2026-03-05</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -82,9 +82,9 @@ class="math inline">\(H(j\omega)\)</span>.</p>
 \omega)\]</span></p>
 <p>Thus we have another way of finding the frequency response:</p>
 <ol>
-<li><p>Find the transfer function</p></li>
-<li><p>Determine if the system is stable</p></li>
-<li><p>Evaluate the transfer function on the imaginary axis</p></li>
+<li><p>Find the transfer function;</p></li>
+<li><p>Determine if the system is stable;</p></li>
+<li><p>Evaluate the transfer function on the imaginary axis.</p></li>
 </ol>
 <h3 id="example-1">Example 1</h3>
 <p>Given the following block diagram, where <span
@@ -92,9 +92,12 @@ class="math inline">\(K_1\)</span> and <span
 class="math inline">\(K_2\)</span> are gain parameters, determine the
 transfer function <span class="math inline">\(H(s)\)</span> and the
 frequency response <span class="math inline">\(H(j\omega)\)</span> if it
-exsists.</p>
+exists.</p>
+<figure>
 <p><img src="figures/fig14_1.svg"
-alt="&quot;block diagram for example 1&quot;" /></p>
+alt="block diagram for example 1" /></p>
+<figcaption>Block diagram for example 1.</figcaption>
+</figure>
 <p><strong>[Step 1]</strong></p>
 <p><span class="math display">\[H(s) = \frac{s+7}{s^2 + (16 + K_1)s + 49
 + 7K_1 + K_2}\]</span></p>
@@ -148,7 +151,7 @@ b_3}{b_1}\]</span></p>
 <p>etc.</p></li>
 <li><p>All signs of the first column (<span class="math inline">\(a_0,
 a_1, b_1, c_1,\ldots, e_1, f_1,g_1\)</span>) must be positive for the
-system to be table.</p></li>
+system to be stable.</p></li>
 </ol>
 <h3 id="example-1-revisited">Example 1 Revisited</h3>
 <p>Applying this procedure to our previous example, the Routh array
@@ -226,20 +229,53 @@ or <span class="math inline">\(|H(j2\pi f)|\)</span> in dB</p></li>
 H(j\omega)\)</span> or <span class="math inline">\(\angle H(j2\pi
 f)\)</span> in radians or degrees</p></li>
 </ul>
-<p>This is easy to do given an expression for <span
-class="math inline">\(H(j\omega)\)</span> using a computer. But what if
-we are not given an expression? How do we proceed?</p>
+<p>This is easy to do given an expression (with no unknown parameters)
+for <span class="math inline">\(H(j\omega)\)</span> using a computer.
+But what if we are not given an expression? How do we proceed?</p>
 <h3 id="system-identification">System Identification</h3>
-<p>TODO FIGURE</p>
 <p>We may have a model for some parts of a system (blocks) but not
-others.</p>
+others. When we know the inputs and outputs of a system (from
+experiments), but do not have a model of the system itself, we have a
+system identification problem. These come in a gradation, from black box
+(opaque) models to grey box models.</p>
+<p>In a black box model we know very little about the system. Given the
+focus of the current course, we will assume at least it is a linear
+system, stable, and without delays. We can then conjecture it has a
+generic frequency response.</p>
+<p><span class="math display">\[H\left(j\omega\right) = \frac{K(j\omega
++ b_1)(j\omega + b_2)\cdots(j\omega + b_M)}{(j\omega + a_1)(j\omega +
+a_2)\cdots(j\omega + a_N)}\]</span></p>
+<p>Beyond that we would need to determine the order of the system <span
+class="math inline">\(N\)</span>, the location of the poles <span
+class="math inline">\(a_i\)</span>, and the number and location of any
+zeros <span class="math inline">\(M, b_i\)</span>, as well as the
+overall gain <span class="math inline">\(K\)</span>.</p>
+<p>In a grey box model we might assume the order and number of zeros are
+known and only need determine the locations of any poles and zeros. For
+example</p>
+<p><span class="math display">\[H\left(j\omega\right) =
+\frac{K}{(j\omega + a_1)(j\omega + a_2)}\]</span></p>
 <p>A full coverage of linear system identification is outside the course
 scope, however we can easily measure points of <span
-class="math inline">\(H(j\omega)\)</span> using sinusoidal inputs.</p>
-<p>TODO FIGURE</p>
-<p>From this, knowledge of manually contructing Bode plots can give
-information about the order of the system, type if a filter, and a
-credible transfer function.</p>
+class="math inline">\(H(j\omega)\)</span> using sinusoidal inputs. i.e.
+perform a frequency sweep as illustrated below.</p>
+<figure>
+<p><img src="figures/fig14_2.svg"
+alt="illustration of linear system identification via a frequency sweep. See caption." /></p>
+<figcaption>Illustration of linear system identification via a frequency
+sweep. An input sinusoid at a given frequency <span
+class="math inline">\(\omega_0\)</span> is input to the system and the
+output sinusoid measured. Since the system is linear the input and
+output frequency are the same. The change in magnitude between input and
+output determines <span class="math inline">\(|H(j\omega_0)|\)</span>.
+The time shift between input and output determines <span
+class="math inline">\(\frac{\angle H(j\omega_0)}{\omega_0}\)</span>. By
+changing the frequency and measuring the corresponding gain and phase we
+can sweep out a discrete set of points on the Bode plot.</figcaption>
+</figure>
+<p>Given the frequency sweep data, knowledge of manually constructing
+Bode plots can give information about the order of the system, type of a
+filter, and a credible transfer function.</p>
 <p>Consider a generic transfer function of a stable system</p>
 <p><span
 class="math display">\[H(s)=\frac{\left(s+b_{1}\right)\left(s+b_{2}\right)
@@ -297,23 +333,36 @@ dB</p>
 <span class="math inline">\(20\log\left|1+\frac{j\omega}{a}\right|
 \approx \left|\omega\right| = 20\)</span> dB per decade slope</p></li>
 </ul>
-<p>TODO FIGURE</p>
+<figure>
+<p><img src="figures/fig14_3.svg"
+alt="asymptotic plot for first-order zero. See text." /></p>
+<figcaption>Asymptotic plot for first-order zero.</figcaption>
+</figure>
 <p>Since the plots add, if we have a mixture of real zeros and poles the
 plots add or subtract accordingly with slopes adding or subtracting.</p>
-<p>TODO FIGURE</p>
+<figure>
+<p><img src="figures/fig14_4.svg"
+alt="asymptotic plot for first-order zero and pole. See text." /></p>
+<figcaption>Asymptotic plot for first-order zero (left) and first-order
+pole (right).</figcaption>
+</figure>
 <p>Thus the slope can be used to estimate the system order.</p>
 <p>Cases that are not addressed above:</p>
 <ul>
 <li><p>zero at the origin <span
 class="math display">\[20\log_{10}|j\omega| =
-20\log_{10}(\omega)\]</span></p></li>
+20\log_{10}(\omega)\]</span> The linear approximation is equivalent to a
+zero approaching the <span class="math inline">\(\omega = 0\)</span>
+axis.</p></li>
 <li><p>pole at the origin <span
 class="math display">\[20\log_{10}\left|\frac{1}{j\omega}\right| =
--20\log_{10}(\omega)\]</span></p></li>
+-20\log_{10}(\omega)\]</span> The linear approximation is equivalent to
+a pole approaching the <span class="math inline">\(\omega = 0\)</span>
+axis.</p></li>
 <li><p>second order with complex poles <span class="math inline">\(-a,
 -a^*\)</span> <span class="math display">\[H(s) =
 \frac{|a|^2}{(s+a)(s+a^*)} = \frac{\omega_0^2}{s^2 + 2\eta\omega_0 s +
-\omega+0^2}\]</span></p>
+\omega_0^2}\]</span></p>
 <ul>
 <li><p><span class="math inline">\(\omega_0\)</span> is the natural
 frequency, <span class="math inline">\(\omega_0^2 =
@@ -332,10 +381,13 @@ class="math inline">\(Q=\frac{1}{2\eta}\)</span></p></li>
 \left(\frac{\omega}{\omega_0}\right)\right]^2\right\}\]</span></p></li>
 </ul>
 <figure>
-<p><img src="images/fig14_6.png"
-alt="illustration of second order frequency response." /></p>
-<figcaption>Frequency response of a second-order system with complex
-poles.</figcaption>
+<p><img src="figures/fig14_5.svg"
+alt="illustration of a second-order system. See caption." /></p>
+<figcaption>Illustration of a second-order system with <span
+class="math inline">\(\omega_0 = 10\)</span> and <span
+class="math inline">\(\eta = 0.2\)</span>. The linear approximation is a
+constant of zero dB up to <span class="math inline">\(\omega_0\)</span>,
+followed by a linear decrease of 20 dB per decade.</figcaption>
 </figure>
 </main>
 
