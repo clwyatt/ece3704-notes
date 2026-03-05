@@ -8,6 +8,11 @@ figures/*.svg
 figures/*.pdf
 figures/*.png
 
+examples/*.svg
+examples/*.pdf
+examples/*.png
+examples/.venv
+
 # Ignore all HTML files recursively
 **/*.html
 

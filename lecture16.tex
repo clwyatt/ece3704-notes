@@ -21,7 +21,7 @@ Recall from ECE 2714 the four basic frequency selective filters:
 \item band-stop / band-reject / notch
 \end{itemize}
 
-Recall also that the ideal versions of these are non-realizable because the are non-causal and violate the Paley-Wiener conditions. These state that a causal filter:
+Recall also that the ideal versions of these are non-realizable because they are non-causal and violate the Paley-Wiener conditions. These conditions state that a causal filter:
 
 \begin{itemize}
 \item can have $H(\omega) = 0$ at only a finite number of frequencies
@@ -30,7 +30,7 @@ Recall also that the ideal versions of these are non-realizable because the are 
 \item cannot specify $\|H(\omega)\|$ and $\angle H(\omega)$ independently
 \end{itemize}
 
-For example, the ideal low-pass filter has a frewuency response
+For example, the ideal low-pass filter has a frequency response
 
 \[
 H(\omega) = \left\{ \begin{array}{cc}
@@ -39,6 +39,8 @@ H(\omega) = \left\{ \begin{array}{cc}
 \end{array}
 \right.
 \]
+
+and clearly violates the first three conditions.
 
 The inverse Fourier transform of the frequency response is the impulse response, in this case the sinc function
 
@@ -54,42 +56,59 @@ Realizable filters must relax the strict conditions imposed by ideal filters. Pr
 
 \subsection{Low-Pass Specification}
 
-TODO: figure
+Consider a generic low-pass frequency response magnitude,
+
+\begin{figure}
+  \centering
+  \includegraphics[alt={magnitude of frequency response showing low-pass filter parameters}]{figures/fig16_1}
+  \caption{Illustration of low-pass filter design parameters.}
+\end{figure}
+
+where:
 
 \begin{itemize}
-\item $G_p$ is the pass-band gain (usually unity)
-\item $\delta_p$ is the pass-band ripple
-\item $\omega_p$ is the pass-band edge frequency or filter bandwidth
-\item $\omega_s$ is the stop-band edge frequency
-\item $\delta_p$ is the stop-band ripple
-\item $\omega_s - \omega_p$ is the transition bandwidth
+\item $G_p$ is the pass-band gain (often unity);
+\item $\delta_p$ is the pass-band ripple;
+\item $\omega_p$ is the pass-band edge frequency, also known as the filter bandwidth or cut-off frequency $\omega_c$;
+\item $G_s$ is the stop-band gain;
+\item $\delta_s$ is the stop-band ripple;
+\item $\omega_s$ is the stop-band edge frequency;
+\item and $\omega_s - \omega_p$ is the transition bandwidth.
 \end{itemize}
 
-Generally, $G_p$, $\delta_p$, and $\delta_s$ are specified in dB and the edge frequencies in rad/s or Hz.
+Generally, $G_p$, $\delta_p$, $G_s$, and $\delta_s$ are specified in dB or V/V, and the edge frequencies, $\omega_p$ and $\omega_s$, in rad/s or Hz.
 
 \subsection{Band-Pass Specification}
 
-The band-pass has two stop-bands, two transition bands, and a pass-band defined by a center frequency $\omega_0$ and bandwidth or two pass-band edge frequencies.
+The band-pass has two stop-bands (lower and upper), two transition bands (lower and upper); and a pass-band defined by a center frequency $\omega_0$ and bandwidth, or two pass-band edge frequencies (lower and upper). Consider a generic band-pass frequency response magnitude,
 
-TODO: figure
+\begin{figure}
+  \centering
+  \includegraphics[alt={magnitude of frequency response showing band-pass filter parameters}]{figures/fig16_2}
+  \caption{Illustration of band-pass filter design parameters.}
+\end{figure}
+
+where:
+
+\begin{itemize}
+\item $G_p$ is the pass-band gain (often unity);
+\item $\delta_p$ is the pass-band ripple;
+\item $\omega_p^l, \omega_p^u$ are the lower and upper pass-band edge frequencies;
+\item $G_l, G_u$ are the lower and upper stop-band gains, often the same;
+\item $\delta_l,\delta_u$ are the lower and upper stop-band ripple;
+\item $\omega_s^l, \omega_s^u$ are the lower and upper stop-band edge frequencies;
+\item $\omega_s^u - \omega_p^u$ and $\omega_p^l - \omega_s^l$ are the upper and lower transition bandwidths;
+\item $\omega_p^u- \omega_p^l$ is the filter bandwidth;
+\item and $\omega_0$ is the center frequency.
+\end{itemize}
+
+As with the low-pass filter specification, the gains and ripples are specified in dB or V/V, and the edge frequencies in rad/s or Hz.
 
 \section{Filter Design}
 
-We can focus on design pf just lowpass filters since we can transform a lowpass frequency response, $H_{LP}(\omega)$ into the others
+We can focus on design of just low-pass filters since we can transform a low-pass frequency response into the others as described below. The design problem then is to find a transfer function $H(s)$ that is stable and has a corresponding frequency response, $H(\omega)$, approximately that desired. The most popular approach is to use particular parametric forms for the magnitude of the frequency response. We then find the transfer function by imposing symmetry and stability conditions that make the filter stable and have a real-valued impulse response.
 
-\[
-H_{HP}(\omega) = 1-H_{LP}(\omega)
-\]
-
-\[
-H_{BP}(\omega) = \frac{1}{2} H_{LP}(\omega-\omega_0) + \frac{1}{2} H_{LP}(\omega+\omega_0) 
-\]
-
-\[
-H_{BS}(\omega) = 1 - H_{BP}(\omega) 
-\]
-
-The design problem is to find a transfer function $H(s)$ that is stable and has a corresponding frequency response, $H(\omega)$, approximately that desired. The most popular approach is to use particular parametric forms for the magnitude of the frequency response. We then find the transfer function by imposing symmetry and stability conditions that make the filter stable and have a real-valued impulse response.
+Most filter design procedures allow for meeting a particular constraint on a filter parameter, while giving a best-effort on others. In general the tighter the parameters (e.g smaller transition bandwidths) the higher the order of the system required to implement that filter.
 
 \subsection{Butterworth Filters}
 
@@ -99,7 +118,7 @@ Butterworth filters have a power spectrum of the form
 \left|H(\omega)\right|^2 = \frac{1}{1 + \left(\frac{\omega}{\omega_c}\right)^{2N}}
 \]
 
-for an order $N$ system. They are maximally flat and are well approximated by a piecewise linear $H(s)$ (see lecture 14).
+for an order $N$ system. They are maximally flat and are well approximated by a piece-wise linear $H(s)$ (see lecture 14).
 
 To find the corresponding transfer function we note
 
@@ -146,7 +165,11 @@ where the condition on $k$ is to ensure the poles are in the left-hand side of t
 
 To help visualize this we can plot the poles of both $H(s)$ and $H(-s)$.
 
-TODO: figure
+\begin{figure}
+  \centering
+  \includegraphics[alt={pole locations for a Butterworth filter. See caption and text below.}]{figures/fig16_3}
+  \caption{Illustration of pole locations for the Butterworth filter.}
+\end{figure}
 
 If $H(s)$ has a pole $p_i = \alpha_i + j\omega_i$ then $H(-s)$ has a pole at $-p_i = -\alpha_i - j\omega_i$, the mirror image.
 
@@ -170,7 +193,7 @@ N \geq \frac{\log_{10}(100.2327)}{\log_{10}\left( \frac{20000}{5000}\right)} = 3
 \]
 thus $N = 4$ is required to meet the specification.
 
-In Matlab/Octave (and Python \texttt{scipy.signal} library) the \texttt{butterd} function will give the order required to meet a given specifiication while the \texttt{butter} function will give the corresponding filter coefficients of the numerator and denominator polynomials, or equivalently the gain, zeros, and poles.
+In Matlab/Octave (and Python \texttt{spy.signal} library) the \texttt{butterd} function will give the order required to meet a given specification while the \texttt{butter} function will give the corresponding filter coefficients of the numerator and denominator polynomials, or equivalently the gain, zeros, and poles.
 
 \subsection{Chebyshev Filters}
 
@@ -233,11 +256,11 @@ where
 F = \left[ \frac{10^{-B/10} - 1}{10^{-A/10} - 1} \right]^{\frac{1}{2}} \qquad\text{and}\qquad \omega_0 = \frac{\omega_s}{\omega_p}
 \]
 
-In Matlab/Octave (and Python \texttt{scipy.signal} library) the \texttt{cheb1ord} function will give the order required to meet a given specifiication while the \texttt{cheby1} function will give the corresponding filter coefficients of the numerator and denominator polynomials, or equivalently the gain, zeros, and poles.
+In Matlab/Octave (and Python \texttt{scipy.signal} library) the \texttt{cheb1ord} function will give the order required to meet a given specification while the \texttt{cheby1} function will give the corresponding filter coefficients of the numerator and denominator polynomials, or equivalently the gain, zeros, and poles.
 
 \section{Filter Transformations}
 
-Let $G(s)$ be the transfer function resulting from a lowpass design. Define
+Let $G(s)$ be the transfer function resulting from a low-pass design. Define
 
 \[
 H(\lambda) = \left. G(s) \right|_{s = f(\lambda)}
@@ -273,5 +296,81 @@ f(\lambda) = \frac{\lambda^2 + \omega_0^2}{B\lambda}
 
 where $\omega_0 = \left[ \omega_{BR}\cdot\omega_{BL}\right]^{\frac{1}{2}}$ and $B=\frac{\omega_{BR}-\omega_{BL}}{\omega_{LP}}$.
 
+\section{Software Filter Design Examples}
+
+Below are some examples that demonstrate how to use software tools to design CT filters. These examples use the python \texttt{scipy.signal} library but this can also be done essentially the same way using Matlab.
+
+\subsection{Low-Pass Butterworth}
+
+Suppose the goal is to design the same low-pass filter with specifications:
+
+\begin{itemize}
+\item The pass-band gain is $G_p = 0$ dB.
+\item The pass-band ripple is $\delta_p = 3$ dB.
+\item The pass-band edge is 8 kHz.
+\item The stop-band gain is -20 dB.
+\item The stop-band edge is 10 kHz.
+\end{itemize}
+
+We start by importing the required Python libraries
+
+\begin{verbatim}
+import scipy.signal as signal
+import matplotlib.pyplot as plt
+import numpy as np
+\end{verbatim}
+
+We then create variables holding the filter specification:
+
+\begin{verbatim}
+# --- Filter Specifications ---
+rp = 3             # pass-band ripple (dB)
+gpass = rp         # pass-band gain + ripple (dB)
+wp = 2*np.pi*8000  # cut-off frequency (pass-band edge)
+gstop = 20         # negative of stop-band gain (dB)
+ws = 2*np.pi*10000 # stop-band edge
+\end{verbatim}
+
+Then we call the functions to determine the required filter order and the corresponding numerator and denominator coefficients of the transfer function:
+
+\begin{verbatim}
+# --- Design the Filter ---
+# Filter order required and corresponding pass-band edge
+N, wn = signal.buttord(wp, ws, gpass, gstop, analog=True)
+# Numerator and denominator coefficients
+b, a = signal.butter(N, wn, btype='low', analog=True, output='ba')
+\end{verbatim}
+
+The result is an 11th order filter with magnitude frequency response:
+
+\begin{figure}
+  \centering
+  \includegraphics[alt={frequency response magnitude for Butterworth filter low-pass example. See design in text above.}]{examples/ctbutterex1}
+  \caption{Magnitude of the Butterworth low-pass filter example.}
+\end{figure}
+
+Note the pass-band is flat and the response meets the specifications, but the system order of 11 is pretty large and impractical for a CT filter, requiring six filter stages. 
+
+\subsection{Low-Pass Chebyshev}
+
+Suppose the goal is to design the same low-pass filter as in the Butterworth example above. Given the same setup as before, we call the functions to determine the required filter order and the corresponding numerator and denominator coefficients of the transfer function:
+
+\begin{verbatim}
+# --- Design the Filter ---
+# Filter order required and corresponding pass-band edge
+N, wn = signal.cheb1ord(wp, ws, gpass, gstop, analog=True)
+# Numerator and denominator coefficients
+b, a = signal.cheby1(N, rp, wn, btype='low', analog=True, output='ba') 
+\end{verbatim}
+
+The result is a 5th order filter with magnitude frequency response:
+
+\begin{figure}
+  \centering
+  \includegraphics[alt={frequency response magnitude for Chebyshev filter low-pass example. See design in text above.}]{examples/ctcheby1ex1}
+  \caption{Magnitude of the Chebyshev low-pass filter example.}
+\end{figure}
+
+Note the required filter order is much smaller (5 vs 11) but the cost is more gain variation in the pass-band, although it meets the specifications given. This filter would be much more practical to implement requiring just three stages.
 
 \end{document}

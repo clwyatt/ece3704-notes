@@ -1,0 +1,53 @@
+\documentclass[margin=3mm]{standalone}
+\usepackage{pgfplots}
+
+
+\begin{document}
+
+\begin{tikzpicture}
+  
+  \begin{axis}[ticks=none,
+      mark=none,
+      %width=4cm,
+      axis x line = middle,
+      axis y line = middle,
+      xlabel=$\omega$,
+      xlabel style={anchor=west},
+      ylabel=$|H(j\omega)|$,
+      ylabel style={anchor=east},
+      ymin = 0,
+      ymax = 1.4,
+      clip = false, % fix pdf bounding box
+    ]
+    
+    \addplot[domain=0:6*3.14159/2, thick, samples=50] {1+0.2*sin(deg(x))};
+    \addplot[domain=6*3.14159/2: 4*3.14159, thick, samples=50] {-0.2*x + 0.2*6*3.14159/2 + 1};
+    \addplot[domain=4*3.14159:20, thick, samples=50] {-3.14159/5+1 - 0.2*sin(deg(x))};    
+
+    \draw[red, dashed] (axis cs:0,1) -- (axis cs:20, 1);
+    \draw[red, dashed] (axis cs:0,1.2) -- (axis cs:20, 1.2);
+    \draw[red, dashed] (axis cs:0,0.8) -- (axis cs:20, 0.8);
+
+    \draw[blue, dashed] (axis cs:0,0.37168) -- (axis cs:20, 0.37168);
+    \draw[blue, dashed] (axis cs:0,0.57168) -- (axis cs:20, 0.57168);
+    \draw[blue, dashed] (axis cs:0,0.17168) -- (axis cs:20, 0.17168);
+
+    \node at (axis cs:-1,1) {$G_p$};
+    \node at (axis cs:-2,1.2) {$G_p+\delta_p$};
+    \node at (axis cs:-2,0.8) {$G_p-\delta_p$};
+
+    \node at (axis cs:-1,0.37168) {$G_s$};
+    \node at (axis cs:-2,0.57168) {$G_s+\delta_s$};
+    \node at (axis cs:-2,0.17168) {$G_s-\delta_s$};
+
+    \draw[red, dashed] (axis cs:10.3,0.8) -- (axis cs:10.3, 0);
+    \draw[blue, dashed] (axis cs:11.7,0.57168) -- (axis cs:11.7, 0);
+
+    \node at (axis cs:10.3,-0.1) {$\omega_p$};
+    \node at (axis cs:11.7,-0.1) {$\omega_s$};
+    
+  \end{axis}
+  
+\end{tikzpicture}
+
+\end{document}

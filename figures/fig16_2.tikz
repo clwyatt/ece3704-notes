@@ -1,0 +1,81 @@
+\documentclass[margin=3mm]{standalone}
+\usepackage{pgfplots}
+
+
+\begin{document}
+
+\begin{tikzpicture}
+  
+  \begin{axis}[ticks=none,
+      mark=none,
+      %width=4cm,
+      axis x line = middle,
+      axis y line = middle,
+      xlabel=$\omega$,
+      xlabel style={anchor=west},
+      xmin = 0,
+      xmax = 42,
+      ylabel=$|H(j\omega)|$,
+      ylabel style={anchor=east},
+      ymin = 0,
+      ymax = 1.4,
+      clip = false, % fix pdf bounding box
+    ]
+
+    % lower side
+    \addplot[domain=(20-3*3.14159):20, thick, samples=100] {1-0.2*sin(deg(x-20))};
+    \addplot[domain=(20-4*3.14159):(20-3*3.14159), thick, samples=100] {0.2*(x-20) + 12*3.14159/20 + 1};
+    \addplot[domain=(20-20):(20-4*3.14159), thick, samples=100] {1 - 3.14159/5 + 0.2*sin(deg(x-20))};
+
+    % upper side
+    \addplot[domain=20:(20+3*3.14159), thick, samples=100] {1+0.2*sin(deg(x-20))};
+    \addplot[domain=(20+3*3.14159):(20+4*3.14159), thick, samples=100] {-0.2*(x-20) + 12*3.14159/20 + 1};
+    \addplot[domain=(20+4*3.14159):(20+20), thick, samples=100] {1 - 3.14159/5 - 0.2*sin(deg(x-20))};    
+
+    % pass-band labels
+    \draw[red, dashed] (axis cs:0,1) -- (axis cs:40, 1);
+    \draw[red, dashed] (axis cs:0,1.2) -- (axis cs:40, 1.2);
+    \draw[red, dashed] (axis cs:0,0.8) -- (axis cs:40, 0.8);
+
+    \node at (axis cs:-2,1) {$G_p$};
+    \node at (axis cs:-4,1.2) {$G_p+\delta_p$};
+    \node at (axis cs:-4,0.8) {$G_p-\delta_p$};
+
+    \draw[red, dashed] (axis cs:20,1.2) -- (axis cs:20, 0);
+    \node at (axis cs:20,-0.1) {$\omega_0$};
+
+    % lower stop-band labels
+    \draw[blue, dashed] (axis cs:0,0.37168) -- (axis cs:10, 0.37168);
+    \draw[blue, dashed] (axis cs:0,0.57168) -- (axis cs:10, 0.57168);
+    \draw[blue, dashed] (axis cs:0,0.17168) -- (axis cs:10, 0.17168);
+
+    \node at (axis cs:-2,0.37168) {$G_{l}$};
+    \node at (axis cs:-4,0.57168) {$G_{l}+\delta_{l}$};
+    \node at (axis cs:-4,0.17168) {$G_{l}-\delta_{l}$};
+
+    \node at (axis cs:11,-0.1) {$\omega_p^l$};
+    \node at (axis cs:7,-0.1) {$\omega_s^l$};
+
+    \draw[red, dashed] (axis cs:10,0.8) -- (axis cs:10,0);
+    \draw[blue, dashed] (axis cs:8,0.57168) -- (axis cs:8,0);
+
+    % upper stop-band labels
+    \draw[blue, dashed] (axis cs:30,0.37168) -- (axis cs:40, 0.37168);
+    \draw[blue, dashed] (axis cs:30,0.57168) -- (axis cs:40, 0.57168);
+    \draw[blue, dashed] (axis cs:30,0.17168) -- (axis cs:40, 0.17168);
+
+    \node at (axis cs:42,0.37168) {$G_{u}$};
+    \node at (axis cs:44,0.57168) {$G_{u}+\delta_{u}$};
+    \node at (axis cs:44,0.17168) {$G_{u}-\delta_{u}$};
+
+    \node at (axis cs:30,-0.1) {$\omega_p^u$};
+    \node at (axis cs:34,-0.1) {$\omega_s^u$};
+
+    \draw[red, dashed] (axis cs:30,0.8) -- (axis cs:30,0);
+    \draw[blue, dashed] (axis cs:32,0.57168) -- (axis cs:32,0);
+       
+  \end{axis}
+  
+\end{tikzpicture}
+
+\end{document}
