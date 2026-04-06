@@ -10,6 +10,8 @@
 \date{\today}
 \maketitle
 
+\section{Inverse Z-Transform}
+
 Consider a causal signal $f[n]$ that may, or may not be absolutely summable. Let $g[n]=(r)^{n} f[n]$ for some $r>0$ such that
 
 $$
@@ -74,6 +76,8 @@ $$
 a complex integral defining the inverse unilateral Z transform. We can solve this integral using the method of residues.
 
 Notice this is straightforward compared to the inverse Laplace transform since we do not need the limit of the Bromwitch contour.
+
+\section{Examples}
 
 Example 1: Recall that $\mathcal{Z}_1\left\{(\gamma)^n\, u[n]\right\} = \frac{z}{z-\gamma}$ for $|z| > |\gamma|$. Let's look at the inverse. For $n \geq 0$:
 

@@ -10,50 +10,57 @@
 \date{\today}
 \maketitle
 
+In this lecture we focus on some important properties of the Z-transform. They are usefull because:
+
+\begin{itemize}
+	\item the properties plus a table of transforms is often a convenient way to perform forward and inverse transforms without invoking the definition;
+	\item the techniques used, like partial fractions, are often employed when solving problems;
+	\item the properties and thier proofs provide some intuition about the transform and the Z-domain representation of signal and systems.
+\end{itemize}
+
 \section{Linearity Property}
 
 Given $x_{1}[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_{1}(z)$ with ROC $R_{1}$ and $x_{2}[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_{2}(z)$ with ROC $R_{2}$, then for constants $a, b$
 
 $$
-a x_{1}[n]+b x_{2}[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} a X_{1}(z)  +b X_{2}(z)
+	a x_{1}[n]+b x_{2}[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} a X_{1}(z)  +b X_{2}(z)
 $$
 
 with ROC $R_1 \cap R_2$.
-
-Proof: From definition
-
-$$
-\begin{aligned}
-  \mathcal{Z}\left\{a x_{1}[n]+b x_{2}\{n\}\right\} &= \sum_{n=-\infty}^{\infty}\left(a x_{1}[n]+b x_{2}(n]\right) z^{-n}\\
-    &= a \sum_{n=-\infty}^{\infty} x_{1}[n] z^{-n}+b \sum_{n=-\infty}^{\infty} x_{2}[n] z^{-n} \\
-& =a X_{1}(z)+b X_{2}(z)
-\end{aligned}
-$$
-
-Example: What is the Z Transform of
+\textbf{Proof:} From definition
 
 $$
-x[n] = 3\left(\frac{1}{2} \right)^n\, u[n] + 2\left(\frac{1}{4} \right)^n\, u[n] + u[n] 
+	\begin{aligned}
+		\mathcal{Z}\left\{a x_{1}[n]+b x_{2}\{n\}\right\} & = \sum_{n=-\infty}^{\infty}\left(a x_{1}[n]+b x_{2}(n]\right) z^{-n}                      \\
+		                                                  & = a \sum_{n=-\infty}^{\infty} x_{1}[n] z^{-n}+b \sum_{n=-\infty}^{\infty} x_{2}[n] z^{-n} \\
+		                                                  & =a X_{1}(z)+b X_{2}(z)
+	\end{aligned}
+$$
+
+\text{Example:} What is the Z Transform of
+
+$$
+	x[n] = 3\left(\frac{1}{2} \right)^n\, u[n] + 2\left(\frac{1}{4} \right)^n\, u[n] + u[n]
 $$
 
 Recall that $\mathcal{Z}_1\left\{(\gamma)^n\, u[n]\right\} = \frac{z}{z-\gamma}$ for $|z| > |\gamma|$. Using the linearity property
 
 $$
-X(z) = 3 \frac{z}{z-\frac{1}{2}} + 2 \frac{z}{z-\frac{1}{4}} + \frac{z}{z-1}
+	X(z) = 3 \frac{z}{z-\frac{1}{2}} + 2 \frac{z}{z-\frac{1}{4}} + \frac{z}{z-1}
 $$
 The ROC is the intersection of $|z| > \frac{1}{2}$, $|z| > \frac{1}{4}$, and $|z| > 1$, that is $|z| > 1$.
 
 
-Example: What is the inverse Z Transform of
+\textbf{Example:} What is the inverse Z Transform of
 
 $$
-X(z) = \frac{5z^2 - 11z}{z^2 - 5z + 6} \text{ for } |z| > 3
+	X(z) = \frac{5z^2 - 11z}{z^2 - 5z + 6} \text{ for } |z| > 3
 $$
 
 We first note the ROC corresponds to a causal signal. Thus we can use the one-sided transform. Also the denominator factors into two real roots so we should perform the partial fraction expansion first. Since the rational function is not strictly proper we would have to expand that as
 
 $$
-X(z) = A + \frac{B}{z-2} + \frac{C}{z-3}
+	X(z) = A + \frac{B}{z-2} + \frac{C}{z-3}
 $$
 
 but then the last two terms would not be in the form $\frac{z}{z-\gamma}$. When using the partial fraction expansion with the Z transform it is often usefull to exapnd $\frac{X(z)}{z}$, then multiply through by $z$ and use the table and properties to get the inverse. This will be true as long as there is not a constant term in the numerator.
@@ -61,68 +68,312 @@ but then the last two terms would not be in the form $\frac{z}{z-\gamma}$. When 
 In this example then
 
 $$
-\frac{X(z)}{z} = \frac{5z - 11}{z^2 - 5z + 6} =  \frac{A}{z-2} + \frac{B}{z-3}
+	\frac{X(z)}{z} = \frac{5z - 11}{z^2 - 5z + 6} =  \frac{A}{z-2} + \frac{B}{z-3}
 $$
 where
 $$
-A = \left. \frac{5z-11}{z-3}\right|_{z = 2} = \frac{10-11}{2-3} = 1 
+	A = \left. \frac{5z-11}{z-3}\right|_{z = 2} = \frac{10-11}{2-3} = 1
 $$
 $$
-B = \left. \frac{5z-11}{z-2}\right|_{z = 3} = \frac{15-11}{3-2} = 4 
+	B = \left. \frac{5z-11}{z-2}\right|_{z = 3} = \frac{15-11}{3-2} = 4
 $$
 
 Then
 
 $$
-X(z) = \frac{z}{z-2} + 4 \frac{z}{z-3}
+	X(z) = \frac{z}{z-2} + 4 \frac{z}{z-3}
 $$
 and by linearity and the table
 
 $$
-x[n] = (2)^n\, u[n] + 4(3)^n\, u[n]
+	x[n] = (2)^n\, u[n] + 4(3)^n\, u[n]
 $$
 
 Note the original approach is correct, just a bit more work
 
 $$
-X(z) = A + \frac{B}{z-2} + \frac{C}{z-3}
+	X(z) = A + \frac{B}{z-2} + \frac{C}{z-3}
 $$
 
 To find $A$ we perform the division
 
 $$
-\frac{5z^2 - 11z}{z^2 - 5z + 6} = 5 + \frac{14z-30}{z^2 - 5z + 6}
+	\frac{5z^2 - 11z}{z^2 - 5z + 6} = 5 + \frac{14z-30}{z^2 - 5z + 6}
 $$
 
 Then
 $$
-B = \left. \frac{14z-30}{z-3}\right|_{z = 2} = \frac{28-30}{2-3} = 2 
+	B = \left. \frac{14z-30}{z-3}\right|_{z = 2} = \frac{28-30}{2-3} = 2
 $$
 $$
-C = \left. \frac{14z-30}{z-2}\right|_{z = 3} = \frac{42-30}{3-2} = 12 
+	C = \left. \frac{14z-30}{z-2}\right|_{z = 3} = \frac{42-30}{3-2} = 12
 $$
 and by linearity and noting $\mathcal{Z}_1\left\{(\gamma)^{n-1}\, u[n-1]\right\} = \frac{1}{z-\gamma}$ for $|z| > |\gamma|$
 
 $$
-x[n] = 5\delta[n] + 2(2)^{n-1}\, u[n-1] + 12(3)^{n-1}\, u[n-1]
+	x[n] = 5\delta[n] + 2(2)^{n-1}\, u[n-1] + 12(3)^{n-1}\, u[n-1]
 $$
 
 They are equivalent as can be seen by evaluating at various $n$, e.g.
 
 $$
-x[0] = (2)^0\, u[0] + 4(3)^0\, u[0] = 5
+	x[0] = (2)^0\, u[0] + 4(3)^0\, u[0] = 5
 $$
 $$
-x[0] = 5\delta[0] + 2(2)^{0-1}\, u[0-1] + 12(3)^{0-1}\, u[0-1] = 5
+	x[0] = 5\delta[0] + 2(2)^{0-1}\, u[0-1] + 12(3)^{0-1}\, u[0-1] = 5
 $$
 $$
-x[1] = (2)^1\, u[1] + 4(3)^1\, u[1] = 14
+	x[1] = (2)^1\, u[1] + 4(3)^1\, u[1] = 14
 $$
 $$
-x[1] = 5\delta[1] + 2(2)^{1-1}\, u[1-1] + 12(3)^{1-1}\, u[1-1] = 14
+	x[1] = 5\delta[1] + 2(2)^{1-1}\, u[1-1] + 12(3)^{1-1}\, u[1-1] = 14
 $$
-etc.
+etc. But the second approach is a bit more work.
 
-TODO
+\section{Time Shift}
+
+Let $x[n] \stackrel{Z}{\longrightarrow} X(z)$ with ROC $R$, then $x[n-k] \stackrel{Z}{\longrightarrow} z^{-k} X(z)$.
+
+\begin{itemize}
+	\item if an advance ($k < 0$) then if $x[n] \neq 0$ for $n = 0, 1, \ldots, k-1$, then the new ROC is $R - \{\infty\}$, i.e. remove the point at infinity;
+	\item if a delay ($k > 0$) then if $x[n] \neq 0$ for $n = (k-1), (k-2), \dots, -1$ ($x[n]$ is not causal) then the new ROC is $R - \{0\}$, i,e, remove origin from ROC.
+\end{itemize}
+
+Note, we will use this property extensively when we discuss solving LCCDEs, so I will save examples for then.
+
+\section{Time Reversal}
+
+Let $x[n] \stackrel{Z}{\longrightarrow} X(z)$ with ROC $R: r_1 < |z| < r_2$, then $x[-n] \stackrel{Z}{\longrightarrow} X\left(z^{-1}\right)$ with ROC $R: \frac{1}{r_2} < |z| < \frac{1}{r_1}$.
+
+\textbf{Proof:} The definition of the bilateral Z-transform is
+
+\[
+	X(z) = \sum_{n=-\infty}^{\infty} x[n] z^{-n}
+\]
+
+Let $v[n] = x[-n]$ then
+
+\begin{align*}
+	V(z) & = \sum_{n=-\infty}^{\infty} v[n] z^{-n}                    \\
+	     & = \sum_{n=-\infty}^{\infty} x[-n] z^{-n}                   \\
+	     & = \sum_{m=+\infty}^{-\infty} x[m] z^{m}                    \\
+	     & = \sum_{m=-\infty}^{+\infty} x[m] \left(z^{-1}\right)^{-m} \\
+	     & = X\left(z^{-1}\right)
+\end{align*}
+
+\textbf{Example:} What is $Z\left\{ \gamma^{-n} u[-n] \right\}$?
+
+Recall
+
+\[
+	Z\left\{ \gamma^{n} u[n] \right\} = \frac{z}{z-\gamma} \mbox{ for } |z| > |\gamma|
+\]
+
+Then
+
+\[
+	Z\left\{ \gamma^{-n} u[-n] \right\} = \frac{z^{-1}}{z^{-1}-\gamma} = \frac{1}{1-\gamma z} \mbox{ for } |z| < \frac{1}{|\gamma|}
+\]
+
+\section{Scaling in Z domain}
+
+Multiplication by an exponential in the discrete-time domain is equivalent to scaling in the Z-domain. Let $x[n] \stackrel{Z}{\longrightarrow} X(z)$ with ROC $R: r_1 < |z| < r_2$, then $\gamma^n x[n] \stackrel{Z}{\longrightarrow} X\left(\frac{z}{\gamma}\right)$ with ROC $R: |\gamma|r_1 < |z| < |\gamma\|r_2$.
+
+\textbf{Example:} we previously derived
+
+\[
+	Z\left\{ \cos(\omega_0 n) u[n]\right\} = \frac{z\left(z-cos(\omega_0)\right)}{z^2 - 2\cos(\omega_0)z + 1}
+\]
+
+Then
+
+\begin{align*}
+	Z\left\{ \gamma^n \cos(\omega_0 n) u[n]\right\} & = \left. \frac{z\left(z-cos(\omega_0)\right)}{z^2 - 2\cos(\omega_0)z + 1} \right|_{z\rightarrow \frac{z}{\gamma}}                           \\
+	                                                & = \frac{\frac{z}{\gamma}\left(\frac{z}{\gamma}-cos(\omega_0)\right)}{\left(\frac{z}{\gamma}\right)^2 - 2\cos(\omega_0)\frac{z}{\gamma} + 1} \\
+	                                                & = \frac{z\left(z-\gamma\cos(\omega_0)\right)}{z^2 - 2\gamma\cos(\omega_0)z + \gamma^2} \mbox{ for } |z| > |\gamma|
+\end{align*}
+
+\section{Differentiation in Z-domain}
+
+Let $x[n] \stackrel{\mathcal{Z}}{\longrightarrow} X(z)$ with ROC $R$, then $nx[n] \stackrel{Z}{\longrightarrow} -z \frac{dX}{dz}$ with same ROC.
+
+\textbf{Example:} $\mathcal{Z}\left\{nu[n]\right\} = -z \frac{dX}{dz}$
+where $X(z) = \frac{z}{z-1}$ for $|z| >1$.
+
+\[
+	\frac{dX}{dz} = \frac{(z-1)(1) - z(1)}{(z-1)^2} = \frac{-1}{(z-1)^2}
+\]
+
+Thus $\mathcal{Z}\left\{nu[n]\right\} = -z \cdot \frac{-1}{(z-1)^2} = \frac{z}{(z-1)^2}$ for $|z| > 1$.
+
+\section{Convolution Property}
+
+Let $x_1[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_1(z)$ with ROC $R_1$, and $x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_2(z)$ with ROC $R_2$, then
+
+\[
+	(x_1 * x_2)[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_1(z) \cdot X_2(z) \mbox{ with ROC } R_1 \cap R_2
+\]
+(a pole-zero cancellation can modify the ROC).
+
+\textbf{Example:} Consider a DT system with impulse response $h[n] = \left(\frac{1}{2}\right)^n u[n]$ and input $x[n] = \cos\left(\frac{\pi}{4}n\right)u[n]$. Determine the output $y[n] = h[n]*x[n]$.
+
+From the convolution property $Y(z) = H(z) \cdot X(z)$, and $y[n] = \mathcal{Z}^{-1}\left\{ Y(z)\right\}$, the inverse Z-transform. From the table of transforms
+
+\[
+	H(z) = \frac{z}{z-\frac{1}{2}} \mbox{ and } X(z) = \frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{z^2 -2\cos\left(\frac{\pi}{4}\right)z + 1}
+\]
+
+Then
+
+\[
+	Y(z) = \frac{z}{z-\frac{1}{2}} \cdot \frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{z^2 -2\cos\left(\frac{\pi}{4}\right)z + 1}
+\]
+
+and we need to find $\mathcal{Z}^{-1}\left\{ Y(z)\right\}$. Using the partial fraction expansion, write
+
+\[
+	\frac{Y(z)}{z} = \frac{A}{z-\frac{1}{2}} + \frac{Bz + C}{z^2 -2\cos\left(\frac{\pi}{4}\right)z + 1} = \frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{\left(z-\frac{1}{2}\right)\left(z^2 -2\cos\left(\frac{\pi}{4}\right)z + 1\right)} \equiv U(z)
+\]
+
+To find $A$ we can use the Heaviside method
+
+\[
+	A = \left. \frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{z^2 -2\cos\left(\frac{\pi}{4}\right)z + 1} \right|_{z = \frac{1}{2}} =  \frac{\frac{1}{2}\left(\frac{1}{2}-\cos\left(\frac{\pi}{4}\right)\right)}{\frac{1}{4} -\cos\left(\frac{\pi}{4}\right) + 1} = \frac{1-\sqrt{2}}{5-2\sqrt{2}}
+\]
+
+To find $C$ let $z=0$ then
+
+\[
+	\frac{A}{-\frac{1}{2}} + \frac{C}{1} = 0
+\]
+implying $C = 2A = \frac{2-2\sqrt{2}}{5-2\sqrt{2}}$.
+
+To find $B$ take limit as $z$ approaches infinity of $z U(z) = Y(z)$
+
+\begin{align*}
+\lim _{z \rightarrow \infty} & \frac{A z}{z-\frac{1}{z}}+\frac{B z^{2}+C z}{z^{2}-2 \cos \frac{\pi}{4} z+1}=\frac{z^{2}\left(z-\cos \frac{\pi}{4}\right)}{\left(z-\frac{1}{2}\right)\left(z^2 -2\cos\left(\frac{\pi}{4}\right)z + 1\right)}                     \\
+\lim _{z \rightarrow \infty}	 & \frac{A}{1-\frac{1}{2z}}+\frac{B+\frac{C}{z}}{1-2 \cos \frac{\pi}{4}\frac{1}{z}+\frac{1}{z^2}}=\frac{1-\cos \left(\frac{\pi}{4}\right)\frac{1}{z}}{\left(1-\frac{1}{2z}\right)\left(1 -2\cos\left(\frac{\pi}{4}\right)\frac{1}{z} + \frac{1}{z^2}\right)}
+\end{align*}
+which gives,
+\[
+A+B=1 \Rightarrow B=1-A = \frac{4-\sqrt{2}}{5-2\sqrt{2}}
+\]
+
+Then $Y(z)=\frac{A z}{z-\frac{1}{2}}+\frac{z(B z+c)}{z^{2}-2 \cos \left(\frac{\pi}{4}\right) z+1}$
+
+From the table of transforms:
+
+\[
+	y[n]=A\left(\frac{1}{2}\right)^{n} u[n]+D \cos \left(\frac{\pi}{4} n\right) u(n]+E \sin \left(\frac{\pi}{4} n\right) u[n]
+\]
+
+since
+\[
+	\mathcal{Z}\left\{D \cdot \cos \left(\frac{\pi}{4} n\right)\right\}=D \frac{z\left(z-\cos \left(\frac{\pi}{4}\right)\right)}{z^{2}-2 \cos \left(\frac{\pi}{4}\right) z+1}
+\]
+and
+\[
+	\mathcal{Z}\left\{E \sin \left(\frac{\pi}{4} n\right)\right\}=E \cdot \frac{\sin \left(\frac{\pi}{4}\right) z}{z^{2}-2 \cos \left(\frac{\pi}{4}\right)+1}
+\]
+
+To find the constants $D$ and $E$ we can just equate terms:
+
+\begin{align*}
+	 & D z\left(z-\cos \left(\frac{\pi}{4}\right)\right)+E \sin \left(\frac{\pi}{4}\right) z=z(B z+C)         \\
+	 & D z^{2}-D z \cos \left(\frac{\pi}{4}\right)+E \sin \left(\frac{\pi}{4}\right) z=B z^{2}+C z            \\
+  & D z^{2}+\left(E \sin \left(\frac{\pi}{4}\right)-D \cos \left(\frac{\pi}{4}\right)\right) z=B z^{2}+C z
+\end{align*}
+This gives $D=B$ and
+
+\[
+E \sin \left(\frac{\pi}{4}\right)-D \cos \left(\frac{\pi}{4}\right)=C
+\]
+or
+\[
+E = \frac{C+B \cos \left(\frac{\pi}{4}\right)}{\sin \left(\frac{\pi}{4}\right)}
+\]
+
+Substituting all terms and numerically evaluating $\sqrt{2}$ to two decimal places, we obtain the final form for the inverse:
+
+\[
+y[n]\approx -0.19\left(\frac{1}{2}\right)^{n} u[n] + 1.19 \cos \left(\frac{\pi}{4} n\right) u[n] + 0.65 \sin \left(\frac{\pi}{4} n\right) u[n]
+\]
+
+\section{Initial Value Property}
+
+If $x[n]$ is causal then the initial value at $n=0$ of the signal can be determined by:
+
+\[
+x[0] = \lim_{z\rightarrow \infty} X(z)
+\]
+
+This can be used to easily check/verify the value of the inverse Z-transform at the initial time index. It also gives the rationale for the ROC of causal signals to include $|z| \rightarrow\infty$.
+
+\textbf{Example:} In the previous example we sought the inverse transform of
+
+\[
+Y(z) = \frac{z}{z-\frac{1}{2}} \cdot \frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{z^2 -2\cos\left(\frac{\pi}{4}\right)z + 1}
+\]
+
+We can quickly determine the value of $y[0]$ using the initial value property
+
+\[
+y[0] = \lim_{z\rightarrow \infty} \frac{z}{z-\frac{1}{2}} \cdot \frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{z^2 -2\cos\left(\frac{\pi}{4}\right)z + 1} = \frac{1}{1-\frac{1}{2z}} \cdot \frac{1-\frac{\cos\left(\frac{\pi}{4}\right)}{z}}{1 -2\cos\left(\frac{\pi}{4}\right)\frac{1}{z} + \frac{1}{z^2}} = 1
+\]
+
+This agrees with evaluating the result of the inverse Z-transform at $n=0$
+
+\[
+y[0]=A\left(\frac{1}{2}\right)^{0} u[0]|D \cos \left(\frac{\pi}{4} 0\right) u(0]+E \sin \left(\frac{\pi}{4} 0\right) u[0] = A + D
+\]
+
+\[
+A + D = A + B = A + \left(1-A\right) = 1
+\]
+If we had made a mistake in the inverse transform there is a good chance we could have caught the error buy checking this value (although it is not foolproof).
+
+\section{Summation Property}
+
+Given $x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)$, then
+
+\[
+\sum\limits_{m = -\infty}^{n} x[m] \stackrel{\mathcal{Z}}{\longleftrightarrow} \frac{z}{z-1} X(z) 
+\]
+
+\textbf{Example:} Let $x[n] = u[n]$, then
+
+\[
+\sum\limits_{m = -\infty}^{n} u[m] = n\, u[n] 
+\]
+the ramp signal. Using the property we get
+
+\[
+\mathcal{Z}\left\{ \sum\limits_{m = -\infty}^{n} u[m] \right\} = \frac{z}{z-1} X(z)
+\]
+where $X(z) = \frac{1}{z-1}$ is the transform of the step. Thus,
+
+\[
+\mathcal{Z}\left\{ n\, u[n] \right\} = \frac{z}{(z-1)^2}
+\]
+as we found in the example for differentiation in the z-domain.
+
+\section{Final Value Property}
+
+Given $x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)$, then the final value, if it exists, is
+
+\[
+\lim_{n\rightarrow \infty} x[n] = \lim_{z\rightarrow 1} (z-1)\, X(z) 
+\]
+
+\textbf{Example:} Let $x[n] = \left(\frac{1}{4}\right)^n\, u[n] - 2u[n]$, then
+\begin{align*}
+  \lim_{n\rightarrow \infty} x[n] &= \lim_{z\rightarrow 1} (z-1)\, X(z)\\
+  \lim_{n\rightarrow \infty} \left(\frac{1}{4}\right)^n\, u[n] - 2u[n] &= \lim_{z\rightarrow 1} (z-1)\left(\frac{z}{z-\frac{1}{4}} - 2 \frac{z}{z-1} \right)\\
+  -2 &= \lim_{z\rightarrow 1} \frac{z(z-1)}{z-\frac{1}{4}} - 2\, z\\
+  -2 &= \frac{1(1-1)}{1-\frac{1}{4}} - 2\\
+  -2 &= -2
+\end{align*}
+
+Similar to the initial value property, this can be usefull as a check on inverse transforms.
 
 \end{document}
