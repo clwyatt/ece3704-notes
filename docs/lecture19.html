@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-03-05" />
+  <meta name="dcterms.date" content="2026-04-06" />
   <title>Lecture 19 Properties of Z Transform</title>
   <style>
     /* Default styles provided by pandoc.
@@ -41,14 +41,42 @@
 <h1 class="title">Lecture 19<br />
 Properties of Z Transform</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-03-05</p>
+<p class="date">2026-04-06</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#linearity-property" id="toc-linearity-property">Linearity
 Property</a></li>
+<li><a href="#time-shift" id="toc-time-shift">Time Shift</a></li>
+<li><a href="#time-reversal" id="toc-time-reversal">Time
+Reversal</a></li>
+<li><a href="#scaling-in-z-domain" id="toc-scaling-in-z-domain">Scaling
+in Z domain</a></li>
+<li><a href="#differentiation-in-z-domain"
+id="toc-differentiation-in-z-domain">Differentiation in
+Z-domain</a></li>
+<li><a href="#convolution-property"
+id="toc-convolution-property">Convolution Property</a></li>
+<li><a href="#initial-value-property"
+id="toc-initial-value-property">Initial Value Property</a></li>
+<li><a href="#summation-property" id="toc-summation-property">Summation
+Property</a></li>
+<li><a href="#final-value-property" id="toc-final-value-property">Final
+Value Property</a></li>
 </ul>
 </nav>
+<p>In this lecture we focus on some important properties of the
+Z-transform. They are usefull because:</p>
+<ul>
+<li><p>the properties plus a table of transforms is often a convenient
+way to perform forward and inverse transforms without invoking the
+definition;</p></li>
+<li><p>the techniques used, like partial fractions, are often employed
+when solving problems;</p></li>
+<li><p>the properties and thier proofs provide some intuition about the
+transform and the Z-domain representation of signal and
+systems.</p></li>
+</ul>
 <h2 id="linearity-property">Linearity Property</h2>
 <p>Given <span class="math inline">\(x_{1}[n]
 \stackrel{\mathcal{Z}}{\longleftrightarrow} X_{1}(z)\)</span> with ROC
@@ -60,16 +88,19 @@ class="math inline">\(a, b\)</span></p>
 <p><span class="math display">\[a x_{1}[n]+b x_{2}[n]
 \stackrel{\mathcal{Z}}{\longleftrightarrow} a X_{1}(z)  +b
 X_{2}(z)\]</span></p>
-<p>with ROC <span class="math inline">\(R_1 \cap R_2\)</span>.</p>
-<p>Proof: From definition</p>
+<p>with ROC <span class="math inline">\(R_1 \cap R_2\)</span>.
+<strong>Proof:</strong> From definition</p>
 <p><span class="math display">\[\begin{aligned}
-  \mathcal{Z}\left\{a x_{1}[n]+b x_{2}\{n\}\right\} &amp;=
-\sum_{n=-\infty}^{\infty}\left(a x_{1}[n]+b x_{2}(n]\right) z^{-n}\\
-    &amp;= a \sum_{n=-\infty}^{\infty} x_{1}[n] z^{-n}+b
-\sum_{n=-\infty}^{\infty} x_{2}[n] z^{-n} \\
-&amp; =a X_{1}(z)+b X_{2}(z)
-\end{aligned}\]</span></p>
-<p>Example: What is the Z Transform of</p>
+        \mathcal{Z}\left\{a x_{1}[n]+b x_{2}\{n\}\right\} &amp; =
+\sum_{n=-\infty}^{\infty}\left(a x_{1}[n]+b x_{2}(n]\right)
+z^{-n}                      \\
+                                                          &amp; = a
+\sum_{n=-\infty}^{\infty} x_{1}[n] z^{-n}+b \sum_{n=-\infty}^{\infty}
+x_{2}[n] z^{-n} \\
+                                                          &amp; =a
+X_{1}(z)+b X_{2}(z)
+    \end{aligned}\]</span></p>
+<p>What is the Z Transform of</p>
 <p><span class="math display">\[x[n] = 3\left(\frac{1}{2} \right)^n\,
 u[n] + 2\left(\frac{1}{4} \right)^n\, u[n] + u[n]\]</span></p>
 <p>Recall that <span
@@ -82,7 +113,7 @@ intersection of <span class="math inline">\(|z| &gt;
 \frac{1}{2}\)</span>, <span class="math inline">\(|z| &gt;
 \frac{1}{4}\)</span>, and <span class="math inline">\(|z| &gt;
 1\)</span>, that is <span class="math inline">\(|z| &gt; 1\)</span>.</p>
-<p>Example: What is the inverse Z Transform of</p>
+<p><strong>Example:</strong> What is the inverse Z Transform of</p>
 <p><span class="math display">\[X(z) = \frac{5z^2 - 11z}{z^2 - 5z + 6}
 \text{ for } |z| &gt; 3\]</span></p>
 <p>We first note the ROC corresponds to a causal signal. Thus we can use
@@ -133,8 +164,268 @@ class="math inline">\(n\)</span>, e.g.</p>
 u[0-1] + 12(3)^{0-1}\, u[0-1] = 5\]</span> <span
 class="math display">\[x[1] = (2)^1\, u[1] + 4(3)^1\, u[1] = 14\]</span>
 <span class="math display">\[x[1] = 5\delta[1] + 2(2)^{1-1}\, u[1-1] +
-12(3)^{1-1}\, u[1-1] = 14\]</span> etc.</p>
-<p>TODO</p>
+12(3)^{1-1}\, u[1-1] = 14\]</span> etc. But the second approach is a bit
+more work.</p>
+<h2 id="time-shift">Time Shift</h2>
+<p>Let <span class="math inline">\(x[n] \stackrel{Z}{\longrightarrow}
+X(z)\)</span> with ROC <span class="math inline">\(R\)</span>, then
+<span class="math inline">\(x[n-k] \stackrel{Z}{\longrightarrow} z^{-k}
+X(z)\)</span>.</p>
+<ul>
+<li><p>if an advance (<span class="math inline">\(k &lt; 0\)</span>)
+then if <span class="math inline">\(x[n] \neq 0\)</span> for <span
+class="math inline">\(n = 0, 1, \ldots, k-1\)</span>, then the new ROC
+is <span class="math inline">\(R - \{\infty\}\)</span>, i.e. remove the
+point at infinity;</p></li>
+<li><p>if a delay (<span class="math inline">\(k &gt; 0\)</span>) then
+if <span class="math inline">\(x[n] \neq 0\)</span> for <span
+class="math inline">\(n = (k-1), (k-2), \dots, -1\)</span> (<span
+class="math inline">\(x[n]\)</span> is not causal) then the new ROC is
+<span class="math inline">\(R - \{0\}\)</span>, i,e, remove origin from
+ROC.</p></li>
+</ul>
+<p>Note, we will use this property extensively when we discuss solving
+LCCDEs, so I will save examples for then.</p>
+<h2 id="time-reversal">Time Reversal</h2>
+<p>Let <span class="math inline">\(x[n] \stackrel{Z}{\longrightarrow}
+X(z)\)</span> with ROC <span class="math inline">\(R: r_1 &lt; |z| &lt;
+r_2\)</span>, then <span class="math inline">\(x[-n]
+\stackrel{Z}{\longrightarrow} X\left(z^{-1}\right)\)</span> with ROC
+<span class="math inline">\(R: \frac{1}{r_2} &lt; |z| &lt;
+\frac{1}{r_1}\)</span>.</p>
+<p><strong>Proof:</strong> The definition of the bilateral Z-transform
+is</p>
+<p><span class="math display">\[X(z) = \sum_{n=-\infty}^{\infty} x[n]
+z^{-n}\]</span></p>
+<p>Let <span class="math inline">\(v[n] = x[-n]\)</span> then</p>
+<p><span class="math display">\[\begin{align*}
+    V(z) &amp; = \sum_{n=-\infty}^{\infty} v[n]
+z^{-n}                    \\
+         &amp; = \sum_{n=-\infty}^{\infty} x[-n]
+z^{-n}                   \\
+         &amp; = \sum_{m=+\infty}^{-\infty} x[m]
+z^{m}                    \\
+         &amp; = \sum_{m=-\infty}^{+\infty} x[m]
+\left(z^{-1}\right)^{-m} \\
+         &amp; = X\left(z^{-1}\right)
+\end{align*}\]</span></p>
+<p><strong>Example:</strong> What is <span
+class="math inline">\(Z\left\{ \gamma^{-n} u[-n] \right\}\)</span>?</p>
+<p>Recall</p>
+<p><span class="math display">\[Z\left\{ \gamma^{n} u[n] \right\} =
+\frac{z}{z-\gamma} \mbox{ for } |z| &gt; |\gamma|\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[Z\left\{ \gamma^{-n} u[-n] \right\} =
+\frac{z^{-1}}{z^{-1}-\gamma} = \frac{1}{1-\gamma z} \mbox{ for } |z|
+&lt; \frac{1}{|\gamma|}\]</span></p>
+<h2 id="scaling-in-z-domain">Scaling in Z domain</h2>
+<p>Multiplication by an exponential in the discrete-time domain is
+equivalent to scaling in the Z-domain. Let <span
+class="math inline">\(x[n] \stackrel{Z}{\longrightarrow} X(z)\)</span>
+with ROC <span class="math inline">\(R: r_1 &lt; |z| &lt; r_2\)</span>,
+then <span class="math inline">\(\gamma^n x[n]
+\stackrel{Z}{\longrightarrow} X\left(\frac{z}{\gamma}\right)\)</span>
+with ROC <span class="math inline">\(R: |\gamma|r_1 &lt; |z| &lt;
+|\gamma\|r_2\)</span>.</p>
+<p><strong>Example:</strong> we previously derived</p>
+<p><span class="math display">\[Z\left\{ \cos(\omega_0 n) u[n]\right\} =
+\frac{z\left(z-cos(\omega_0)\right)}{z^2 - 2\cos(\omega_0)z +
+1}\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[\begin{align*}
+    Z\left\{ \gamma^n \cos(\omega_0 n) u[n]\right\} &amp; = \left.
+\frac{z\left(z-cos(\omega_0)\right)}{z^2 - 2\cos(\omega_0)z + 1}
+\right|_{z\rightarrow \frac{z}{\gamma}}                           \\
+                                                    &amp; =
+\frac{\frac{z}{\gamma}\left(\frac{z}{\gamma}-cos(\omega_0)\right)}{\left(\frac{z}{\gamma}\right)^2
+- 2\cos(\omega_0)\frac{z}{\gamma} + 1} \\
+                                                    &amp; =
+\frac{z\left(z-\gamma\cos(\omega_0)\right)}{z^2 - 2\gamma\cos(\omega_0)z
++ \gamma^2} \mbox{ for } |z| &gt; |\gamma|
+\end{align*}\]</span></p>
+<h2 id="differentiation-in-z-domain">Differentiation in Z-domain</h2>
+<p>Let <span class="math inline">\(x[n]
+\stackrel{\mathcal{Z}}{\longrightarrow} X(z)\)</span> with ROC <span
+class="math inline">\(R\)</span>, then <span class="math inline">\(nx[n]
+\stackrel{Z}{\longrightarrow} -z \frac{dX}{dz}\)</span> with same
+ROC.</p>
+<p><strong>Example:</strong> <span
+class="math inline">\(\mathcal{Z}\left\{nu[n]\right\} = -z
+\frac{dX}{dz}\)</span> where <span class="math inline">\(X(z) =
+\frac{z}{z-1}\)</span> for <span class="math inline">\(|z|
+&gt;1\)</span>.</p>
+<p><span class="math display">\[\frac{dX}{dz} = \frac{(z-1)(1) -
+z(1)}{(z-1)^2} = \frac{-1}{(z-1)^2}\]</span></p>
+<p>Thus <span class="math inline">\(\mathcal{Z}\left\{nu[n]\right\} = -z
+\cdot \frac{-1}{(z-1)^2} = \frac{z}{(z-1)^2}\)</span> for <span
+class="math inline">\(|z| &gt; 1\)</span>.</p>
+<h2 id="convolution-property">Convolution Property</h2>
+<p>Let <span class="math inline">\(x_1[n]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} X_1(z)\)</span> with ROC
+<span class="math inline">\(R_1\)</span>, and <span
+class="math inline">\(x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow}
+X_2(z)\)</span> with ROC <span class="math inline">\(R_2\)</span>,
+then</p>
+<p><span class="math display">\[(x_1 * x_2)[n]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} X_1(z) \cdot X_2(z) \mbox{
+with ROC } R_1 \cap R_2\]</span> (a pole-zero cancellation can modify
+the ROC).</p>
+<p><strong>Example:</strong> Consider a DT system with impulse response
+<span class="math inline">\(h[n] = \left(\frac{1}{2}\right)^n
+u[n]\)</span> and input <span class="math inline">\(x[n] =
+\cos\left(\frac{\pi}{4}n\right)u[n]\)</span>. Determine the output <span
+class="math inline">\(y[n] = h[n]*x[n]\)</span>.</p>
+<p>From the convolution property <span class="math inline">\(Y(z) = H(z)
+\cdot X(z)\)</span>, and <span class="math inline">\(y[n] =
+\mathcal{Z}^{-1}\left\{ Y(z)\right\}\)</span>, the inverse Z-transform.
+From the table of transforms</p>
+<p><span class="math display">\[H(z) = \frac{z}{z-\frac{1}{2}} \mbox{
+and } X(z) = \frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{z^2
+-2\cos\left(\frac{\pi}{4}\right)z + 1}\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[Y(z) = \frac{z}{z-\frac{1}{2}} \cdot
+\frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{z^2
+-2\cos\left(\frac{\pi}{4}\right)z + 1}\]</span></p>
+<p>and we need to find <span
+class="math inline">\(\mathcal{Z}^{-1}\left\{ Y(z)\right\}\)</span>.
+Using the partial fraction expansion, write</p>
+<p><span class="math display">\[\frac{Y(z)}{z} = \frac{A}{z-\frac{1}{2}}
++ \frac{Bz + C}{z^2 -2\cos\left(\frac{\pi}{4}\right)z + 1} =
+\frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{\left(z-\frac{1}{2}\right)\left(z^2
+-2\cos\left(\frac{\pi}{4}\right)z + 1\right)} \equiv U(z)\]</span></p>
+<p>To find <span class="math inline">\(A\)</span> we can use the
+Heaviside method</p>
+<p><span class="math display">\[A = \left.
+\frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{z^2
+-2\cos\left(\frac{\pi}{4}\right)z + 1} \right|_{z = \frac{1}{2}}
+=  \frac{\frac{1}{2}\left(\frac{1}{2}-\cos\left(\frac{\pi}{4}\right)\right)}{\frac{1}{4}
+-\cos\left(\frac{\pi}{4}\right) + 1} =
+\frac{1-\sqrt{2}}{5-2\sqrt{2}}\]</span></p>
+<p>To find <span class="math inline">\(C\)</span> let <span
+class="math inline">\(z=0\)</span> then</p>
+<p><span class="math display">\[\frac{A}{-\frac{1}{2}} + \frac{C}{1} =
+0\]</span> implying <span class="math inline">\(C = 2A =
+\frac{2-2\sqrt{2}}{5-2\sqrt{2}}\)</span>.</p>
+<p>To find <span class="math inline">\(B\)</span> take limit as <span
+class="math inline">\(z\)</span> approaches infinity of <span
+class="math inline">\(z U(z) = Y(z)\)</span></p>
+<p><span class="math display">\[\begin{align*}
+\lim _{z \rightarrow \infty} &amp; \frac{A z}{z-\frac{1}{z}}+\frac{B
+z^{2}+C z}{z^{2}-2 \cos \frac{\pi}{4} z+1}=\frac{z^{2}\left(z-\cos
+\frac{\pi}{4}\right)}{\left(z-\frac{1}{2}\right)\left(z^2
+-2\cos\left(\frac{\pi}{4}\right)z + 1\right)}                     \\
+\lim _{z \rightarrow \infty}     &amp;
+\frac{A}{1-\frac{1}{2z}}+\frac{B+\frac{C}{z}}{1-2 \cos
+\frac{\pi}{4}\frac{1}{z}+\frac{1}{z^2}}=\frac{1-\cos
+\left(\frac{\pi}{4}\right)\frac{1}{z}}{\left(1-\frac{1}{2z}\right)\left(1
+-2\cos\left(\frac{\pi}{4}\right)\frac{1}{z} + \frac{1}{z^2}\right)}
+\end{align*}\]</span> which gives, <span class="math display">\[A+B=1
+\Rightarrow B=1-A = \frac{4-\sqrt{2}}{5-2\sqrt{2}}\]</span></p>
+<p>Then <span class="math inline">\(Y(z)=\frac{A
+z}{z-\frac{1}{2}}+\frac{z(B z+c)}{z^{2}-2 \cos
+\left(\frac{\pi}{4}\right) z+1}\)</span></p>
+<p>From the table of transforms:</p>
+<p><span class="math display">\[y[n]=A\left(\frac{1}{2}\right)^{n}
+u[n]+D \cos \left(\frac{\pi}{4} n\right) u(n]+E \sin \left(\frac{\pi}{4}
+n\right) u[n]\]</span></p>
+<p>since <span class="math display">\[\mathcal{Z}\left\{D \cdot \cos
+\left(\frac{\pi}{4} n\right)\right\}=D \frac{z\left(z-\cos
+\left(\frac{\pi}{4}\right)\right)}{z^{2}-2 \cos
+\left(\frac{\pi}{4}\right) z+1}\]</span> and <span
+class="math display">\[\mathcal{Z}\left\{E \sin \left(\frac{\pi}{4}
+n\right)\right\}=E \cdot \frac{\sin \left(\frac{\pi}{4}\right)
+z}{z^{2}-2 \cos \left(\frac{\pi}{4}\right)+1}\]</span></p>
+<p>To find the constants <span class="math inline">\(D\)</span> and
+<span class="math inline">\(E\)</span> we can just equate terms:</p>
+<p><span class="math display">\[\begin{align*}
+     &amp; D z\left(z-\cos \left(\frac{\pi}{4}\right)\right)+E \sin
+\left(\frac{\pi}{4}\right) z=z(B z+C)         \\
+     &amp; D z^{2}-D z \cos \left(\frac{\pi}{4}\right)+E \sin
+\left(\frac{\pi}{4}\right) z=B z^{2}+C z            \\
+  &amp; D z^{2}+\left(E \sin \left(\frac{\pi}{4}\right)-D \cos
+\left(\frac{\pi}{4}\right)\right) z=B z^{2}+C z
+\end{align*}\]</span> This gives <span
+class="math inline">\(D=B\)</span> and</p>
+<p><span class="math display">\[E \sin \left(\frac{\pi}{4}\right)-D \cos
+\left(\frac{\pi}{4}\right)=C\]</span> or <span class="math display">\[E
+= \frac{C+B \cos \left(\frac{\pi}{4}\right)}{\sin
+\left(\frac{\pi}{4}\right)}\]</span></p>
+<p>Substituting all terms and numerically evaluating <span
+class="math inline">\(\sqrt{2}\)</span> to two decimal places, we obtain
+the final form for the inverse:</p>
+<p><span class="math display">\[y[n]\approx
+-0.19\left(\frac{1}{2}\right)^{n} u[n] + 1.19 \cos \left(\frac{\pi}{4}
+n\right) u[n] + 0.65 \sin \left(\frac{\pi}{4} n\right) u[n]\]</span></p>
+<h2 id="initial-value-property">Initial Value Property</h2>
+<p>If <span class="math inline">\(x[n]\)</span> is causal then the
+initial value at <span class="math inline">\(n=0\)</span> of the signal
+can be determined by:</p>
+<p><span class="math display">\[x[0] = \lim_{z\rightarrow \infty}
+X(z)\]</span></p>
+<p>This can be used to easily check/verify the value of the inverse
+Z-transform at the initial time index. It also gives the rationale for
+the ROC of causal signals to include <span class="math inline">\(|z|
+\rightarrow\infty\)</span>.</p>
+<p><strong>Example:</strong> In the previous example we sought the
+inverse transform of</p>
+<p><span class="math display">\[Y(z) = \frac{z}{z-\frac{1}{2}} \cdot
+\frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{z^2
+-2\cos\left(\frac{\pi}{4}\right)z + 1}\]</span></p>
+<p>We can quickly determine the value of <span
+class="math inline">\(y[0]\)</span> using the initial value property</p>
+<p><span class="math display">\[y[0] = \lim_{z\rightarrow \infty}
+\frac{z}{z-\frac{1}{2}} \cdot
+\frac{z\left(z-\cos\left(\frac{\pi}{4}\right)\right)}{z^2
+-2\cos\left(\frac{\pi}{4}\right)z + 1} = \frac{1}{1-\frac{1}{2z}} \cdot
+\frac{1-\frac{\cos\left(\frac{\pi}{4}\right)}{z}}{1
+-2\cos\left(\frac{\pi}{4}\right)\frac{1}{z} + \frac{1}{z^2}} =
+1\]</span></p>
+<p>This agrees with evaluating the result of the inverse Z-transform at
+<span class="math inline">\(n=0\)</span></p>
+<p><span class="math display">\[y[0]=A\left(\frac{1}{2}\right)^{0}
+u[0]|D \cos \left(\frac{\pi}{4} 0\right) u(0]+E \sin \left(\frac{\pi}{4}
+0\right) u[0] = A + D\]</span></p>
+<p><span class="math display">\[A + D = A + B = A + \left(1-A\right) =
+1\]</span> If we had made a mistake in the inverse transform there is a
+good chance we could have caught the error buy checking this value
+(although it is not foolproof).</p>
+<h2 id="summation-property">Summation Property</h2>
+<p>Given <span class="math inline">\(x[n]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)\)</span>, then</p>
+<p><span class="math display">\[\sum\limits_{m = -\infty}^{n} x[m]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} \frac{z}{z-1}
+X(z)\]</span></p>
+<p><strong>Example:</strong> Let <span class="math inline">\(x[n] =
+u[n]\)</span>, then</p>
+<p><span class="math display">\[\sum\limits_{m = -\infty}^{n} u[m] = n\,
+u[n]\]</span> the ramp signal. Using the property we get</p>
+<p><span class="math display">\[\mathcal{Z}\left\{ \sum\limits_{m =
+-\infty}^{n} u[m] \right\} = \frac{z}{z-1} X(z)\]</span> where <span
+class="math inline">\(X(z) = \frac{1}{z-1}\)</span> is the transform of
+the step. Thus,</p>
+<p><span class="math display">\[\mathcal{Z}\left\{ n\, u[n] \right\} =
+\frac{z}{(z-1)^2}\]</span> as we found in the example for
+differentiation in the z-domain.</p>
+<h2 id="final-value-property">Final Value Property</h2>
+<p>Given <span class="math inline">\(x[n]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)\)</span>, then the
+final value, if it exists, is</p>
+<p><span class="math display">\[\lim_{n\rightarrow \infty} x[n] =
+\lim_{z\rightarrow 1} (z-1)\, X(z)\]</span></p>
+<p><strong>Example:</strong> Let <span class="math inline">\(x[n] =
+\left(\frac{1}{4}\right)^n\, u[n] - 2u[n]\)</span>, then <span
+class="math display">\[\begin{align*}
+  \lim_{n\rightarrow \infty} x[n] &amp;= \lim_{z\rightarrow 1} (z-1)\,
+X(z)\\
+  \lim_{n\rightarrow \infty} \left(\frac{1}{4}\right)^n\, u[n] - 2u[n]
+&amp;= \lim_{z\rightarrow 1} (z-1)\left(\frac{z}{z-\frac{1}{4}} - 2
+\frac{z}{z-1} \right)\\
+  -2 &amp;= \lim_{z\rightarrow 1} \frac{z(z-1)}{z-\frac{1}{4}} - 2\, z\\
+  -2 &amp;= \frac{1(1-1)}{1-\frac{1}{4}} - 2\\
+  -2 &amp;= -2
+\end{align*}\]</span></p>
+<p>Similar to the initial value property, this can be usefull as a check
+on inverse transforms.</p>
 </main>
 
 <footer>

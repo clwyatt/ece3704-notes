@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-03-05" />
+  <meta name="dcterms.date" content="2026-03-06" />
   <title>Lecture 18 Inverse Z Transform</title>
   <style>
     /* Default styles provided by pandoc.
@@ -41,8 +41,16 @@
 <h1 class="title">Lecture 18<br />
 Inverse Z Transform</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-03-05</p>
+<p class="date">2026-03-06</p>
 </header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#inverse-z-transform" id="toc-inverse-z-transform">Inverse
+Z-Transform</a></li>
+<li><a href="#examples" id="toc-examples">Examples</a></li>
+</ul>
+</nav>
+<h2 id="inverse-z-transform">Inverse Z-Transform</h2>
 <p>Consider a causal signal <span class="math inline">\(f[n]\)</span>
 that may, or may not be absolutely summable. Let <span
 class="math inline">\(g[n]=(r)^{n} f[n]\)</span> for some <span
@@ -103,6 +111,7 @@ z^{n-1}\; dz\]</span></p>
 can solve this integral using the method of residues.</p>
 <p>Notice this is straightforward compared to the inverse Laplace
 transform since we do not need the limit of the Bromwitch contour.</p>
+<h2 id="examples">Examples</h2>
 <p>Example 1: Recall that <span
 class="math inline">\(\mathcal{Z}_1\left\{(\gamma)^n\, u[n]\right\} =
 \frac{z}{z-\gamma}\)</span> for <span class="math inline">\(|z| &gt;
