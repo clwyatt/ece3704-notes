@@ -5,11 +5,426 @@
 \usepackage{graphicx,svg}
 
 \begin{document}
-\title{Lecture 20\\Solving LCCDE Using Z Transform}
+\title{Lecture 20\\Analyzing LCCDE Systems Using Z Transform}
 \author{C.L. Wyatt}
 \date{\today}
 \maketitle
 
-TODO
+\section{Introduction}
+
+Recall from ECE 2714 that a linear, constant-coefficient difference equation is a relationship between shifted versions of the input and output.
+
+\begin{description}
+\item[Advance Form]
+  \[    
+  \sum\limits_{k = 0}^N a_k y[n+N-k] = \sum\limits_{k = 0}^M b_k x[n+N-k]
+  \]
+\item[Delay Form]
+  \[    
+  \sum\limits_{k = 0}^N a_k y[n-k] = \sum\limits_{k = 0}^M b_k x[n-k]
+  \]
+\item[Recursive Form]
+  \[    
+  y[n] = - \sum\limits_{k = 1}^N \frac{a_k}{a_0} y[n-k] + \sum\limits_{k = 0}^M \frac{b_k}{a_0} x[n-k]
+  \]
+\end{description}
+
+Given $x[n]$ and $N+M$ auxillary/initial conditions, we wish to solve the difference equation, i.e. find an expression for $y[n]$. The solution can be divided into two parts:
+
+\begin{itemize}
+\item zero-input response, $y_{\mbox{zi}}$, due to auxillary/initial conditions only (input is zero),
+\item zero-state response, $y_{\mbox{zs}}$, due to input only (zero auxillary/initial conditions).
+\end{itemize}
+
+with the total response being the sum of the two
+
+\[
+y[n] = y_{\mbox{zi}}[n] + y_{\mbox{zs}}[n]\; .
+\]
+
+When the auxillary/initial conditions are zero, $y[n] = y_{\mbox{zs}}[n]$, and the system is LTI.
+
+\section{Solving LCCDE using z-Transform}
+
+The time/index shift property gives us a straightforward approach to solving LCCDEs. Recall from the previous lecture, given $x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)$ and shift variable $k \geq 0$, the index shift property is
+
+\begin{description}
+\item[Delay]  
+  \[
+  x[n-k]u[n-k] \stackrel{\mathcal{Z}}{\longleftrightarrow} z^{-k} X(z)
+  \]
+  or
+  \[
+  x[n-k]u[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} z^{-k} X(z) + z^{-k}\, \sum\limits_{n=1}^{k} x[-n] z^n
+  \]
+  depending on whether a causal signal or non-causal signal is shifted. The second form requires the $k-1$ values before $n = 0$ (which are in general non-zero for a non-causal signal and zero for a causal signal).
+\item[Advance]
+  \[
+  x[n+k]u[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} z^{k} X(z) - z^{k}\, \sum\limits_{n=0}^{k-1} x[n] z^{-n}
+  \]
+  The advance form requires the $k-1$ values after $n = -1$, i.e. the ones that get shifted into the advanced causal signal.
+\end{description}
+
+Which form we use depends on the auxillary conditions given. We can convert the LCCDE from the delay to/from the advance form as needed. An alternative is to manually solve the LCCDE for enough steps forward or backward to find the conditions needed. This is in general more work, but may be needed if the aucillary conditions do not match those needed to apply the shofting property.
+
+Once the z-transform of the LCCDE is takem it is a simple matter to algebraically rearange the equation to solve for $Y(z)$ at which point we can take the inverse transform to arrive at the solution.
+
+\textbf{Example:} Let $a,b \in\mathbb{R}$ be constants. Given the LCCDE
+
+\[
+y[n+1] + ay[n] = x[n+1] \mbox{ where } y[-1] = b\; ,
+\]
+find $y[n]$ when $x[n] = \left(\frac{1}{2}\right)^n\, u[n]$.
+
+\textbf{Solution:}
+
+\begin{enumerate}
+\item Since the auxillary conditions correspond to the delay form, lets convert the LCCDE
+  \[
+  y[n] + ay[n-1] = x[n]
+  \]
+\item Take the z-transform, applying the shifting property, and rearrange to see what signal component each term corresponds to: 
+  \begin{align*}
+    Y(z) + a\left( z^{-1} Y(z) + y[-1]\right) &= X(z) \\
+    Y(z)\left(1+az^{-1}\right) &= -a\, b + X(z)\\
+    Y(z) &= \frac{-a\, b}{1+az^{-1}} + \frac{1}{1+az^{-1}} X(z)\\
+    &= \frac{-a\, bz}{z+a} + \frac{z}{z+a} X(z)\\
+    &= Y_{\mbox{zi}}(z) + Y_{\mbox{zs}}(z)\\
+    &= Y_{\mbox{zi}}(z) + H(z)\, Y(z)
+  \end{align*}
+\item Now, substitute for the input transform
+  \[
+  Y(z) = \frac{-a\, bz}{z+a} + \frac{z}{z+a}\cdot \frac{z}{z+\frac{1}{2}}
+  \]
+\item and take the inverse transform
+  \[
+  y_{\mbox{zi}}[n] = \mathcal{Z}^{-1}\left\{ \frac{-a\, bz}{z+a}\right\} = -ab(-a)^n\, u[n] 
+  \]
+  \[
+  y_{\mbox{zs}}[n] = \mathcal{Z}^{-1}\left\{ \frac{z}{z+a}\cdot \frac{z}{z+\frac{1}{2}} \right\}  
+  \]
+\end{enumerate}
+
+The zero-state portion of the solution depends on the value of $a$. There are two cases:
+
+\begin{description}
+\item[if $a\neq -\frac{1}{2}$] Then performing the partial fraction expansion
+  \[
+  \frac{Y_{\mbox{zs}}(z)}{z} = \frac{A}{z+a} + \frac{B}{z-\frac{1}{2}} 
+  \]
+  where
+  \[
+  A = \left. \frac{z}{z - \frac{1}{2}}\right|_{z = -a} = \frac{-a}{-a - \frac{1}{2}} = \frac{2a}{2a+1} 
+  \]
+  \[
+  B = \left. \frac{z}{z + a}\right|_{z = \frac{1}{2}} = \frac{\frac{1}{2}}{\frac{1}{2} + a} = \frac{1}{2a+1} 
+  \]
+  and
+  \[
+  y_{\mbox{zs}}[n] = \frac{2a}{2a+1} (-a)^n\, u[n] + \frac{1}{2a+1}\left(\frac{1}{2}\right)^n\, u[n]
+  \]
+\item[if $a = -\frac{1}{2}$] Then there is a repeated singularity and the partial fraction expansion is
+  \[
+  \frac{Y_{\mbox{zs}}(z)}{z} = \frac{z}{\left(z-\frac{1}{2}\right)^2} = \frac{A}{\left(z-\frac{1}{2}\right)^2} + \frac{B}{z-\frac{1}{2}}
+  \]
+  where
+  \[
+  A = \left. z \right|_{z = \frac{1}{2}} = \frac{1}{2} 
+  \]
+  \[
+  B = \left. \frac{d}{dz} z \right|_{z = \frac{1}{2}} = 1 
+  \]
+  and
+  \[
+  y_{\mbox{zs}}[n] = n\left(\frac{1}{2}\right)^n\, u[n] + \left(\frac{1}{2}\right)^n\, u[n] = (n+1) \left(\frac{1}{2}\right)^n\, u[n] 
+  \]
+\end{description}
+
+\section{Transfer Function to and from LCCDE}
+When the auxillary conditions are zero then $y_{\mbox{zi}}[n] = 0$ and $y[n] = y_{\mbox{zs}}[n]$. In the z-domain $Y(z) = Y_{\mbox{zs}}(z) = H(z)\cdot X(z)$, which we can rearrange to obtain the transfer function $h(z)$. This gives us a shortcut to determine the transfer function from a LCCDE and vice-versa, without going through the intermediate step of finding the impulse response.
+
+\textbf{Example:} A second-order system is given by
+
+\[
+y[n] = \frac{1}{4}\,y[n-2] - \frac{1}{8}\, y[n-1] + x[n] - x[n-1]
+\]
+with zero auxillary conditions. What is the corresponding transfer function of the system?
+
+While we could use the procedure from ECE 2714 to find the impulse response $h[n]$ and then take the z-transform to find the transfer function, we can more easily just take the Z-transform of the LCCDE
+
+\[
+Y(z) = \frac{1}{4}\,z^{-2} Y(z) - \frac{1}{8}\, z^{-1} Y(z) + X(z) - z^{-1}X(z)
+\]
+which we can rearrange to the transfer function
+\[
+\left(1 + \frac{1}{8}\, z^{-1} - \frac{1}{4}\,z^{-2}  \right) Y(z) = \left( 1- z^{-1} \right) X(z) 
+\]
+\[
+H(z) = \frac{Y(z)}{X(z)} = \frac{1- z^{-1}}{1 + \frac{1}{8}\, z^{-1} - \frac{1}{4}\,z^{-2} } =  \frac{z(z-1)}{z^2 + \frac{1}{8}\, z - \frac{1}{4}}
+\]
+
+\section{Auxillary Conditions in System Transfer Functions}
+
+When deriving the transfer function we ignored the auxiliary conditions. Why is the case and where should they come from if non-zero?
+
+Suppose the previous example represents a filter. To compute $y[n]$ we need the previous two values of the output ($y[n-1]$ and $y[n-2]$) in addition to the current and previous input values ($x[n]$ and $x[n-1]$). These are aften stored in finite-length buffers. When we initialize the filter we have to choose values for the inital output and input buffers. These values correspond to the auxilliary conditions. Thus in the absence of any other factors, it makes sense for us to set them to zero (zero initialize the buffers memory contents).
+
+\section{Stability of a DT System}
+
+Recall from ECE 2714 that we can determine the stability of a system that corresponds to an LCCDE by looking at the locations of the characteristic equation roots. When converted to a transfer function using the previous procedure these roots correspond to the roots of the denominator of the rational complex function representing the transfer function, and are called the system \textit{poles}.
+
+\[
+H(z) = \frac{P(z)}{Q(z)} = \frac{\sum\limits_{m=0}^{M-1} (z-\beta_k)}{\sum\limits_{n=1}^{N} (z-\alpha_k)}
+\]
+where the $M$ $\beta_k$ values are the \textit{zeros} and the $N$ $\alpha_k$ values are the \textit{poles}, i.e. the singularities of the complex rational function. The location of zeros are usually plotted by small circles in the complex plane. The location of poles are usually plotted by small crosses in the complex plane. 
+
+\begin{itemize}
+\item A system is stable if \textbf{for all} $k$, $|\alpha_k| < 1$ (all poles inside unit circle).
+\item A system is marginally stable if \textbf{any non-repeated} poles $|\alpha_k| = 1$ (any non-repeated pole on unit circle).
+\item A system is unstable if \textbf{for any} $k$, $|\alpha_k| > 1$ (outside unit circle) or there are one or more repeated poles on the unit circle.
+\end{itemize}
+
+As in CT systems we have to take care when a pole-zero cancellation occurs, although the underlying issue is now quantization effects in the filter coefficients relative to external parameters.
+
+\textbf{Examples:}
+\begin{enumerate}
+\item 
+\[
+H(z) = \frac{K(z+1)^2}{\left(z-\frac{1}{2} \right)\left(z-\frac{3}{4} \right)}
+\]
+has a repeated zero at $-1$ and two poles at $\frac{1}{2},\frac{3}{4}$. The pole-zero sketch is as follows
+
+\begin{figure}
+\centering
+\includegraphics[alt={pole-zero sketch for example 1. See caption and text.}]{figures/fig20_2}
+\caption{Pole-Zero sketch for Example 1. Poles are crosses, Zeros are circles. Duplicity is indicated by the number of repetitions in parenthesis. The unit circle is shown for reference.}
+\end{figure}
+
+Since the poles are inside the unit circle, the system is stable.
+
+\item 
+\[
+H(z) = \frac{K(z+1)\left(z-\frac{1}{2} \right)}{z\, (z^2 + 2z + 1)}
+\]
+has two zeros at $-1$ and $\frac{1}{2}$, and three poles, one at the origin and a repeated pole at $+1$. The pole-zero sketch is as follows
+
+\begin{figure}
+\centering
+\includegraphics[alt={pole-zero sketch for example 2. See caption and text.}]{figures/fig20_3}
+\caption{Pole-Zero sketch for Example 2. Poles are crosses, Zeros are circles. Duplicity is indicated by the number of repetitions in parenthesis. The unit circle is shown for reference.}
+\end{figure}
+
+Since there is a repeated pole on the unit circle, the system is unstable.
+
+\item 
+\[
+H(z) = \frac{K(z^2 + \frac{1}{2}z - 4)}{z^2\, (z - 1)(z+1)}
+\]
+has two zeros at $-\frac{\sqrt{65}+1}{4}\approx -2.2656$ and $\frac{\sqrt{65}-1}{4}\approx 1.7656$, and four poles, a repeated pole at the origin and poles at $\pm 1$. The pole-zero sketch is as follows
+
+\begin{figure}
+\centering
+\includegraphics[alt={pole-zero sketch for example 3. See caption and text.}]{figures/fig20_4}
+\caption{Pole-Zero sketch for Example 3. Poles are crosses, Zeros are circles. Duplicity is indicated by the number of repetitions in parenthesis. The unit circle is shown for reference.}
+\end{figure}
+
+Since there are non-repeated poles on the unit circle and a repeated root at the origin, the system is marginally stable. Note the fact the zeros are outside the unit circle does not affect the stability.
+
+\item 
+\[
+H(z) = \frac{K}{2z^2 + \frac{1}{2}z + 1}
+\]
+has no zeros, and two poles at $\frac{-1 \pm j\sqrt{31}}{8} \approx 0.1250 \pm 0.6960j$, which lie on a circle of radius $\approx 0.7071 < 1$. The pole-zero sketch is as follows
+
+\begin{figure}
+\centering
+\includegraphics[alt={pole-zero sketch for example 4. See caption and text.}]{figures/fig20_5}
+\caption{Pole-Zero sketch for Example 4. Poles are crosses, Zeros are circles. Duplicity is indicated by the number of repetitions in parenthesis. The unit circle is shown for reference.}
+\end{figure}
+
+Since all the poles are inside the unit circle, the system is stable.
+
+\end{enumerate}
+
+\subsection{Jury Stability Criteria}
+
+There is a similar shortcut to determining the stability of DT systems, similar to the Routh-Horwitz criteria for CT systems. Again, this is only really necessary when there are unkown coefficients in the denominator polynomial. If you have numerical values for all the coefficients it is easier to just compute the pole locations, e.g. using \texttt{roots} in Matlab/Octave.
+
+Let $H(z) = \frac{P(z)}{Q(z)}$ where
+
+\[
+Q(z) = a_N z^B + a_{N-1} z^{N-1} + \cdots + a_1 z + a_0
+\]
+
+\begin{description}
+\item[Jury Test 1] $Q(1) > 0$. Evaluate $Q(z)$ at $z=1$. If this is negative, the system is unstable.
+
+\item[Jury Test 2] $(-1)^N\, Q(-1) > 0$. Evaluate $Q(z)$ at $z=-1$ and negate if $N$ is odd. If this is negative, the system is unstable.
+
+\item[Jury Test 3] $|a_o| < |a_N|$. The last coefficient must be less than the first when ordered from highest power, else the system is unstable.
+\end{description}
+
+If all of the above tests pass, the final test uses the Jury array
+
+\begin{center}
+  \begin{tabular}{l|cccc}
+    \mbox{row} & & & & \\
+    \hline
+    1 & $a_0$ & $a_1$ & $\cdots$ & $a_N$\\
+    2 & $a_N$ & $a_{N-1}$ & $\cdots$ & $a_0$\\
+    3 & $b_0$ & $b_1$ $\cdots$ & $b_{N-1}$ &\\
+    4 & $b_{N-1}$ & $b_{N-2}$ $\cdots$ & $b_0$ &\\
+    5 & $c_0$ $\cdots$ & $c_{N-2}$ & & &\\
+    6 & $c_{N-2}$ $\cdots$ & $c_0$ & & &\\
+    $\vdots$ & & & & &\\
+    $2N-3$ & $v_0$ & $v_1$ & $v_3$ & &
+\end{tabular}
+\end{center}
+
+In this array each even row is the reversed version of the odd row above it. and each pair of rows decreases in length by one each time.
+
+If the first and last colum of all odd rows satisfies
+
+\[
+|b_0| > |b_{N-1}|, \; |c_0| > |c_{N-2}|, \; \ldots\; |v_0| > |v_{3}| 
+\]
+then the system is stable. Note, as with Routh-Hortwitz, you can stop checking rows as soon as any test fails.
+
+To find the values for rows greater than two
+
+\[
+b_k = \left\lVert \begin{array}{cc}
+  a_0 & a_{N-k}\\
+  a_N & a_k
+\end{array}\right\rVert = a_0\cdot a_k - a_N\cdot a_{N-k} \quad\mbox{ for } k = 0,1,\ldots, N-1  
+\]
+
+\[
+c_k = \left\lVert \begin{array}{cc}
+  b_0 & b_{N-k-1}\\
+  b_{N=1} & b_k
+\end{array}\right\rVert = b_0\cdot b_k - b_{N-1}\cdot b_{N-k-1} \quad\mbox{ for } k = 0,1,\ldots, N-2
+\]
+
+continuing the pattern for every other row.
+
+\textbf{Examples:}
+
+\begin{enumerate}
+\item
+  \[
+  H(z) = \frac{z^2 -z + 1}{4z^2 - 1}
+  \]
+  \[
+  Q(z) = 4z^2 - 1 = 4z^2 + 0\cdot z - 1 = a_2 z^2 + a_1 z + a_0
+  \]
+  Test 1:
+  \[
+  Q(1) = 4 - 1 = 3 > 0  
+  \]
+  Test 2:
+  \[
+  (-1)^2 Q(-1) = 4 - 1 = 3 > 0  
+  \]
+  Test 3:
+  \[
+  |-1| < |4|  
+  \]
+  Since it is only a quadratic there is just one row in the Jury array (last one with three entries) and the first-last column test is equivalent to Test 3. Since all the tests pass it is stable.
+
+\item
+  \[
+  H(z) = \frac{1}{4z^2 +\frac{17}{2}z + 1}
+  \]
+  \[
+  Q(z) = 4z^2 +\frac{17}{2}z + 1 = a_2 z^2 + a_1 z + a_0
+  \]
+  Test 1:
+  \[
+  Q(1) = 4 + \frac{17}{2} + 1 = \frac{27}{2} > 0  
+  \]
+  Test 2:
+  \[
+  (-1)^2 Q(-1) = 4 - \frac{17}{2} + 1 = -\frac{7}{2} < 0  
+  \]
+  Since Test 2 fails, the system is unstable.
+
+  \item
+  \[
+  H(z) = \frac{3z^2 + z - \frac{1}{4}}{24z^3 + 26z^2 + 9z + 1}
+  \]
+  \[
+  Q(z) = 24z^3 + 26z^2 + 9z + 1 = a_3 z^3 + a_2 z^2 + a_1 z + a_0
+  \]
+  Test 1:
+  \[
+  Q(1) = 24z^3 + 26z^2 + 9z + 1 = 60 > 0  
+  \]
+  Test 2:
+  \[
+  (-1)^3 Q(-1) = -1 \cdot (-24 + 26 - 9 + 1) = 6 > 0  
+  \]
+  Test 3:
+  \[
+  |1| < |24|  
+  \]
+  All the above tests pass, so we need to construct the Jury array:
+
+  \begin{center}
+  \begin{tabular}{|cccc}
+    \hline
+    1 & 9 & 26 & 24\\
+    24 & 26 & 9 & 1\\
+    b_0 & b_1 & b_2 &
+  \end{tabular}
+  \end{center}
+
+  where
+  \[
+  b_0 = \left\lVert \begin{array}{cc}
+  1 & 24\\
+  24 & 1
+  \end{array}\right\rVert = 1\cdot 1 - 24\cdot 24 = -575
+  \]
+  \[
+  b_1 = \left\lVert \begin{array}{cc}
+  1 & 26\\
+  24 & 9
+  \end{array}\right\rVert = 1\cdot 9 - 24\cdot 26 = -615
+  \]
+  \[
+  b_3 = \left\lVert \begin{array}{cc}
+  1 & 9\\
+  24 & 26
+  \end{array}\right\rVert = 1\cdot 26 - 24\cdot 9 = -190
+  \]
+  Since $|b_0| > |b_{2}|$ ($|-575| > |-190|$) the system is stable.
+\end{enumerate}
+
+\section{Relationship of z-Transform to DTFT}
+
+Recall for a causal system the trasfer function is $H(z)$ for ROC $|z| > r$. If the system is also stable then $r < 1$ and the ROC includes the unit circle $x=e^{j\omega}$ for $\omega \in \mathbb{R}$. Evaluating the transfer function on the unit circle then give the DT Fourier Transform of the impulse response, i.e. the \textit{Frequency Response}.
+
+\[
+H\left(e^{j\omega}\right) = \left. H(z) \right|_{z=e^{j\omega}} 
+\]
+
+\section{Inverse Systems}
+
+As with Laplace, the Z-transform gives us a simple, pricipled approach to find and inverse system.
+
+\begin{figure}
+\centering
+\includegraphics[alt={block diagram for inverse systems}]{figures/fig20_1}
+\caption{Block Diagram for a given system $H_1$ and it's inverse $H_2$.}
+\end{figure}
+
+Suppose $H_1(z) = \frac{P(z)}{Q(z)}$, then the inverse relationship above implies
+
+\[
+H_2(z) = H_1^{-1}(z) = \frac{Q(z)}{P(z)}
+\]
+
+The zeros of $H_1$ become the poles of $H_2$ (and poles of $H_1$ become the zeros of $H_2$). Thus the inverse is stable only if the original system has zeros inside the unit circle.
 
 \end{document}

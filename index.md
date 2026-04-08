@@ -25,7 +25,7 @@ date: Fall 2025
 17. [Forward Z Transform](lecture17.html) [[pdf](lecture17.pdf)]
 18. [Inverse Z Transform](lecture18.html) [[pdf](lecture18.pdf)]
 19. [Properties of Z Transform](lecture19.html) [[pdf](lecture19.pdf)]
-20. [Solving LCCDE Using Z Transform](lecture20.html) [[pdf](lecture20.pdf)]
+20. [Analyzing LCCDE Systems Using Z Transform](lecture20.html) [[pdf](lecture20.pdf)]
 21. [DT System Analysis using Z-Transform](lecture21.html) [[pdf](lecture21.pdf)]
 22. [Filter Design in DT](lecture22.html) [[pdf](lecture22.pdf)]
 23. [Implementing DT Filters](lecture23.html) [[pdf](lecture23.pdf)]
