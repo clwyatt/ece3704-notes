@@ -5,8 +5,8 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-03-05" />
-  <title>Lecture 20 Solving LCCDE Using Z Transform</title>
+  <meta name="dcterms.date" content="2026-04-08" />
+  <title>Lecture 20 Analyzing LCCDE Systems Using Z Transform</title>
   <style>
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -27,6 +27,9 @@
     }
   </style>
   <link rel="stylesheet" href="style.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
 </head>
 <body>
 <nav id="header-nav" role="navigation" title="site navigation">
@@ -36,11 +39,570 @@
 <main>
 <header id="title-block-header">
 <h1 class="title">Lecture 20<br />
-Solving LCCDE Using Z Transform</h1>
+Analyzing LCCDE Systems Using Z Transform</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-03-05</p>
+<p class="date">2026-04-08</p>
 </header>
-<p>TODO</p>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+<li><a href="#solving-lccde-using-z-transform"
+id="toc-solving-lccde-using-z-transform">Solving LCCDE using
+z-Transform</a></li>
+<li><a href="#transfer-function-to-and-from-lccde"
+id="toc-transfer-function-to-and-from-lccde">Transfer Function to and
+from LCCDE</a></li>
+<li><a href="#auxillary-conditions-in-system-transfer-functions"
+id="toc-auxillary-conditions-in-system-transfer-functions">Auxillary
+Conditions in System Transfer Functions</a></li>
+<li><a href="#stability-of-a-dt-system"
+id="toc-stability-of-a-dt-system">Stability of a DT System</a>
+<ul>
+<li><a href="#jury-stability-criteria"
+id="toc-jury-stability-criteria">Jury Stability Criteria</a></li>
+</ul></li>
+<li><a href="#relationship-of-z-transform-to-dtft"
+id="toc-relationship-of-z-transform-to-dtft">Relationship of z-Transform
+to DTFT</a></li>
+<li><a href="#inverse-systems" id="toc-inverse-systems">Inverse
+Systems</a></li>
+</ul>
+</nav>
+<h2 id="introduction">Introduction</h2>
+<p>Recall from ECE 2714 that a linear, constant-coefficient difference
+equation is a relationship between shifted versions of the input and
+output.</p>
+<dl>
+<dt>Advance Form</dt>
+<dd>
+<p><span class="math display">\[\sum\limits_{k = 0}^N a_k y[n+N-k] =
+\sum\limits_{k = 0}^M b_k x[n+N-k]\]</span></p>
+</dd>
+<dt>Delay Form</dt>
+<dd>
+<p><span class="math display">\[\sum\limits_{k = 0}^N a_k y[n-k] =
+\sum\limits_{k = 0}^M b_k x[n-k]\]</span></p>
+</dd>
+<dt>Recursive Form</dt>
+<dd>
+<p><span class="math display">\[y[n] = - \sum\limits_{k = 1}^N
+\frac{a_k}{a_0} y[n-k] + \sum\limits_{k = 0}^M \frac{b_k}{a_0}
+x[n-k]\]</span></p>
+</dd>
+</dl>
+<p>Given <span class="math inline">\(x[n]\)</span> and <span
+class="math inline">\(N+M\)</span> auxillary/initial conditions, we wish
+to solve the difference equation, i.e. find an expression for <span
+class="math inline">\(y[n]\)</span>. The solution can be divided into
+two parts:</p>
+<ul>
+<li><p>zero-input response, <span
+class="math inline">\(y_{\mbox{zi}}\)</span>, due to auxillary/initial
+conditions only (input is zero),</p></li>
+<li><p>zero-state response, <span
+class="math inline">\(y_{\mbox{zs}}\)</span>, due to input only (zero
+auxillary/initial conditions).</p></li>
+</ul>
+<p>with the total response being the sum of the two</p>
+<p><span class="math display">\[y[n] = y_{\mbox{zi}}[n] +
+y_{\mbox{zs}}[n]\; .\]</span></p>
+<p>When the auxillary/initial conditions are zero, <span
+class="math inline">\(y[n] = y_{\mbox{zs}}[n]\)</span>, and the system
+is LTI.</p>
+<h2 id="solving-lccde-using-z-transform">Solving LCCDE using
+z-Transform</h2>
+<p>The time/index shift property gives us a straightforward approach to
+solving LCCDEs. Recall from the previous lecture, given <span
+class="math inline">\(x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow}
+X(z)\)</span> and shift variable <span class="math inline">\(k \geq
+0\)</span>, the index shift property is</p>
+<dl>
+<dt>Delay</dt>
+<dd>
+<p><span class="math display">\[x[n-k]u[n-k]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} z^{-k} X(z)\]</span> or
+<span class="math display">\[x[n-k]u[n]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} z^{-k} X(z) + z^{-k}\,
+\sum\limits_{n=1}^{k} x[-n] z^n\]</span> depending on whether a causal
+signal or non-causal signal is shifted. The second form requires the
+<span class="math inline">\(k-1\)</span> values before <span
+class="math inline">\(n = 0\)</span> (which are in general non-zero for
+a non-causal signal and zero for a causal signal).</p>
+</dd>
+<dt>Advance</dt>
+<dd>
+<p><span class="math display">\[x[n+k]u[n]
+\stackrel{\mathcal{Z}}{\longleftrightarrow} z^{k} X(z) - z^{k}\,
+\sum\limits_{n=0}^{k-1} x[n] z^{-n}\]</span> The advance form requires
+the <span class="math inline">\(k-1\)</span> values after <span
+class="math inline">\(n = -1\)</span>, i.e. the ones that get shifted
+into the advanced causal signal.</p>
+</dd>
+</dl>
+<p>Which form we use depends on the auxillary conditions given. We can
+convert the LCCDE from the delay to/from the advance form as needed. An
+alternative is to manually solve the LCCDE for enough steps forward or
+backward to find the conditions needed. This is in general more work,
+but may be needed if the aucillary conditions do not match those needed
+to apply the shofting property.</p>
+<p>Once the z-transform of the LCCDE is takem it is a simple matter to
+algebraically rearange the equation to solve for <span
+class="math inline">\(Y(z)\)</span> at which point we can take the
+inverse transform to arrive at the solution.</p>
+<p><strong>Example:</strong> Let <span class="math inline">\(a,b
+\in\mathbb{R}\)</span> be constants. Given the LCCDE</p>
+<p><span class="math display">\[y[n+1] + ay[n] = x[n+1] \mbox{ where }
+y[-1] = b\; ,\]</span> find <span class="math inline">\(y[n]\)</span>
+when <span class="math inline">\(x[n] = \left(\frac{1}{2}\right)^n\,
+u[n]\)</span>.</p>
+<p><strong>Solution:</strong></p>
+<ol>
+<li><p>Since the auxillary conditions correspond to the delay form, lets
+convert the LCCDE <span class="math display">\[y[n] + ay[n-1] =
+x[n]\]</span></p></li>
+<li><p>Take the z-transform, applying the shifting property, and
+rearrange to see what signal component each term corresponds to: <span
+class="math display">\[\begin{align*}
+    Y(z) + a\left( z^{-1} Y(z) + y[-1]\right) &amp;= X(z) \\
+    Y(z)\left(1+az^{-1}\right) &amp;= -a\, b + X(z)\\
+    Y(z) &amp;= \frac{-a\, b}{1+az^{-1}} + \frac{1}{1+az^{-1}} X(z)\\
+    &amp;= \frac{-a\, bz}{z+a} + \frac{z}{z+a} X(z)\\
+    &amp;= Y_{\mbox{zi}}(z) + Y_{\mbox{zs}}(z)\\
+    &amp;= Y_{\mbox{zi}}(z) + H(z)\, Y(z)
+\end{align*}\]</span></p></li>
+<li><p>Now, substitute for the input transform <span
+class="math display">\[Y(z) = \frac{-a\, bz}{z+a} + \frac{z}{z+a}\cdot
+\frac{z}{z+\frac{1}{2}}\]</span></p></li>
+<li><p>and take the inverse transform <span
+class="math display">\[y_{\mbox{zi}}[n] = \mathcal{Z}^{-1}\left\{
+\frac{-a\, bz}{z+a}\right\} = -ab(-a)^n\, u[n]\]</span> <span
+class="math display">\[y_{\mbox{zs}}[n] = \mathcal{Z}^{-1}\left\{
+\frac{z}{z+a}\cdot \frac{z}{z+\frac{1}{2}} \right\}\]</span></p></li>
+</ol>
+<p>The zero-state portion of the solution depends on the value of <span
+class="math inline">\(a\)</span>. There are two cases:</p>
+<dl>
+<dt>if <span class="math inline">\(a\neq -\frac{1}{2}\)</span></dt>
+<dd>
+<p>Then performing the partial fraction expansion <span
+class="math display">\[\frac{Y_{\mbox{zs}}(z)}{z} = \frac{A}{z+a} +
+\frac{B}{z-\frac{1}{2}}\]</span> where <span class="math display">\[A =
+\left. \frac{z}{z - \frac{1}{2}}\right|_{z = -a} = \frac{-a}{-a -
+\frac{1}{2}} = \frac{2a}{2a+1}\]</span> <span class="math display">\[B =
+\left. \frac{z}{z + a}\right|_{z = \frac{1}{2}} =
+\frac{\frac{1}{2}}{\frac{1}{2} + a} = \frac{1}{2a+1}\]</span> and <span
+class="math display">\[y_{\mbox{zs}}[n] = \frac{2a}{2a+1} (-a)^n\, u[n]
++ \frac{1}{2a+1}\left(\frac{1}{2}\right)^n\, u[n]\]</span></p>
+</dd>
+<dt>if <span class="math inline">\(a = -\frac{1}{2}\)</span></dt>
+<dd>
+<p>Then there is a repeated singularity and the partial fraction
+expansion is <span class="math display">\[\frac{Y_{\mbox{zs}}(z)}{z} =
+\frac{z}{\left(z-\frac{1}{2}\right)^2} =
+\frac{A}{\left(z-\frac{1}{2}\right)^2} +
+\frac{B}{z-\frac{1}{2}}\]</span> where <span class="math display">\[A =
+\left. z \right|_{z = \frac{1}{2}} = \frac{1}{2}\]</span> <span
+class="math display">\[B = \left. \frac{d}{dz} z \right|_{z =
+\frac{1}{2}} = 1\]</span> and <span
+class="math display">\[y_{\mbox{zs}}[n] = n\left(\frac{1}{2}\right)^n\,
+u[n] + \left(\frac{1}{2}\right)^n\, u[n] = (n+1)
+\left(\frac{1}{2}\right)^n\, u[n]\]</span></p>
+</dd>
+</dl>
+<h2 id="transfer-function-to-and-from-lccde">Transfer Function to and
+from LCCDE</h2>
+<p>When the auxillary conditions are zero then <span
+class="math inline">\(y_{\mbox{zi}}[n] = 0\)</span> and <span
+class="math inline">\(y[n] = y_{\mbox{zs}}[n]\)</span>. In the z-domain
+<span class="math inline">\(Y(z) = Y_{\mbox{zs}}(z) = H(z)\cdot
+X(z)\)</span>, which we can rearrange to obtain the transfer function
+<span class="math inline">\(h(z)\)</span>. This gives us a shortcut to
+determine the transfer function from a LCCDE and vice-versa, without
+going through the intermediate step of finding the impulse response.</p>
+<p><strong>Example:</strong> A second-order system is given by</p>
+<p><span class="math display">\[y[n] = \frac{1}{4}\,y[n-2] -
+\frac{1}{8}\, y[n-1] + x[n] - x[n-1]\]</span> with zero auxillary
+conditions. What is the corresponding transfer function of the
+system?</p>
+<p>While we could use the procedure from ECE 2714 to find the impulse
+response <span class="math inline">\(h[n]\)</span> and then take the
+z-transform to find the transfer function, we can more easily just take
+the Z-transform of the LCCDE</p>
+<p><span class="math display">\[Y(z) = \frac{1}{4}\,z^{-2} Y(z) -
+\frac{1}{8}\, z^{-1} Y(z) + X(z) - z^{-1}X(z)\]</span> which we can
+rearrange to the transfer function <span class="math display">\[\left(1
++ \frac{1}{8}\, z^{-1} - \frac{1}{4}\,z^{-2}  \right) Y(z) = \left( 1-
+z^{-1} \right) X(z)\]</span> <span class="math display">\[H(z) =
+\frac{Y(z)}{X(z)} = \frac{1- z^{-1}}{1 + \frac{1}{8}\, z^{-1} -
+\frac{1}{4}\,z^{-2} } =  \frac{z(z-1)}{z^2 + \frac{1}{8}\, z -
+\frac{1}{4}}\]</span></p>
+<h2 id="auxillary-conditions-in-system-transfer-functions">Auxillary
+Conditions in System Transfer Functions</h2>
+<p>When deriving the transfer function we ignored the auxiliary
+conditions. Why is the case and where should they come from if
+non-zero?</p>
+<p>Suppose the previous example represents a filter. To compute <span
+class="math inline">\(y[n]\)</span> we need the previous two values of
+the output (<span class="math inline">\(y[n-1]\)</span> and <span
+class="math inline">\(y[n-2]\)</span>) in addition to the current and
+previous input values (<span class="math inline">\(x[n]\)</span> and
+<span class="math inline">\(x[n-1]\)</span>). These are aften stored in
+finite-length buffers. When we initialize the filter we have to choose
+values for the inital output and input buffers. These values correspond
+to the auxilliary conditions. Thus in the absence of any other factors,
+it makes sense for us to set them to zero (zero initialize the buffers
+memory contents).</p>
+<h2 id="stability-of-a-dt-system">Stability of a DT System</h2>
+<p>Recall from ECE 2714 that we can determine the stability of a system
+that corresponds to an LCCDE by looking at the locations of the
+characteristic equation roots. When converted to a transfer function
+using the previous procedure these roots correspond to the roots of the
+denominator of the rational complex function representing the transfer
+function, and are called the system <em>poles</em>.</p>
+<p><span class="math display">\[H(z) = \frac{P(z)}{Q(z)} =
+\frac{\sum\limits_{m=0}^{M-1} (z-\beta_k)}{\sum\limits_{n=1}^{N}
+(z-\alpha_k)}\]</span> where the <span class="math inline">\(M\)</span>
+<span class="math inline">\(\beta_k\)</span> values are the
+<em>zeros</em> and the <span class="math inline">\(N\)</span> <span
+class="math inline">\(\alpha_k\)</span> values are the <em>poles</em>,
+i.e. the singularities of the complex rational function. The location of
+zeros are usually plotted by small circles in the complex plane. The
+location of poles are usually plotted by small crosses in the complex
+plane.</p>
+<ul>
+<li><p>A system is stable if <strong>for all</strong> <span
+class="math inline">\(k\)</span>, <span class="math inline">\(|\alpha_k|
+&lt; 1\)</span> (all poles inside unit circle).</p></li>
+<li><p>A system is marginally stable if <strong>any
+non-repeated</strong> poles <span class="math inline">\(|\alpha_k| =
+1\)</span> (any non-repeated pole on unit circle).</p></li>
+<li><p>A system is unstable if <strong>for any</strong> <span
+class="math inline">\(k\)</span>, <span class="math inline">\(|\alpha_k|
+&gt; 1\)</span> (outside unit circle) or there are one or more repeated
+poles on the unit circle.</p></li>
+</ul>
+<p>As in CT systems we have to take care when a pole-zero cancellation
+occurs, although the underlying issue is now quantization effects in the
+filter coefficients relative to external parameters.</p>
+<p><strong>Examples:</strong></p>
+<ol>
+<li><p><span class="math display">\[H(z) =
+\frac{K(z+1)^2}{\left(z-\frac{1}{2} \right)\left(z-\frac{3}{4}
+\right)}\]</span> has a repeated zero at <span
+class="math inline">\(-1\)</span> and two poles at <span
+class="math inline">\(\frac{1}{2},\frac{3}{4}\)</span>. The pole-zero
+sketch is as follows</p>
+<figure>
+<p><img src="figures/fig20_2.svg"
+alt="pole-zero sketch for example 1. See caption and text." /></p>
+<figcaption>Pole-Zero sketch for Example 1. Poles are crosses, Zeros are
+circles. Duplicity is indicated by the number of repetitions in
+parenthesis. The unit circle is shown for reference.</figcaption>
+</figure>
+<p>Since the poles are inside the unit circle, the system is
+stable.</p></li>
+<li><p><span class="math display">\[H(z) =
+\frac{K(z+1)\left(z-\frac{1}{2} \right)}{z\, (z^2 + 2z + 1)}\]</span>
+has two zeros at <span class="math inline">\(-1\)</span> and <span
+class="math inline">\(\frac{1}{2}\)</span>, and three poles, one at the
+origin and a repeated pole at <span class="math inline">\(+1\)</span>.
+The pole-zero sketch is as follows</p>
+<figure>
+<p><img src="figures/fig20_3.svg"
+alt="pole-zero sketch for example 2. See caption and text." /></p>
+<figcaption>Pole-Zero sketch for Example 2. Poles are crosses, Zeros are
+circles. Duplicity is indicated by the number of repetitions in
+parenthesis. The unit circle is shown for reference.</figcaption>
+</figure>
+<p>Since there is a repeated pole on the unit circle, the system is
+unstable.</p></li>
+<li><p><span class="math display">\[H(z) = \frac{K(z^2 + \frac{1}{2}z -
+4)}{z^2\, (z - 1)(z+1)}\]</span> has two zeros at <span
+class="math inline">\(-\frac{\sqrt{65}+1}{4}\approx -2.2656\)</span> and
+<span class="math inline">\(\frac{\sqrt{65}-1}{4}\approx
+1.7656\)</span>, and four poles, a repeated pole at the origin and poles
+at <span class="math inline">\(\pm 1\)</span>. The pole-zero sketch is
+as follows</p>
+<figure>
+<p><img src="figures/fig20_4.svg"
+alt="pole-zero sketch for example 3. See caption and text." /></p>
+<figcaption>Pole-Zero sketch for Example 3. Poles are crosses, Zeros are
+circles. Duplicity is indicated by the number of repetitions in
+parenthesis. The unit circle is shown for reference.</figcaption>
+</figure>
+<p>Since there are non-repeated poles on the unit circle and a repeated
+root at the origin, the system is marginally stable. Note the fact the
+zeros are outside the unit circle does not affect the
+stability.</p></li>
+<li><p><span class="math display">\[H(z) = \frac{K}{2z^2 + \frac{1}{2}z
++ 1}\]</span> has no zeros, and two poles at <span
+class="math inline">\(\frac{-1 \pm j\sqrt{31}}{8} \approx 0.1250 \pm
+0.6960j\)</span>, which lie on a circle of radius <span
+class="math inline">\(\approx 0.7071 &lt; 1\)</span>. The pole-zero
+sketch is as follows</p>
+<figure>
+<p><img src="figures/fig20_5.svg"
+alt="pole-zero sketch for example 4. See caption and text." /></p>
+<figcaption>Pole-Zero sketch for Example 4. Poles are crosses, Zeros are
+circles. Duplicity is indicated by the number of repetitions in
+parenthesis. The unit circle is shown for reference.</figcaption>
+</figure>
+<p>Since all the poles are inside the unit circle, the system is
+stable.</p></li>
+</ol>
+<h3 id="jury-stability-criteria">Jury Stability Criteria</h3>
+<p>There is a similar shortcut to determining the stability of DT
+systems, similar to the Routh-Horwitz criteria for CT systems. Again,
+this is only really necessary when there are unkown coefficients in the
+denominator polynomial. If you have numerical values for all the
+coefficients it is easier to just compute the pole locations, e.g. using
+<code>roots</code> in Matlab/Octave.</p>
+<p>Let <span class="math inline">\(H(z) = \frac{P(z)}{Q(z)}\)</span>
+where</p>
+<p><span class="math display">\[Q(z) = a_N z^B + a_{N-1} z^{N-1} +
+\cdots + a_1 z + a_0\]</span></p>
+<dl>
+<dt>Jury Test 1</dt>
+<dd>
+<p><span class="math inline">\(Q(1) &gt; 0\)</span>. Evaluate <span
+class="math inline">\(Q(z)\)</span> at <span
+class="math inline">\(z=1\)</span>. If this is negative, the system is
+unstable.</p>
+</dd>
+<dt>Jury Test 2</dt>
+<dd>
+<p><span class="math inline">\((-1)^N\, Q(-1) &gt; 0\)</span>. Evaluate
+<span class="math inline">\(Q(z)\)</span> at <span
+class="math inline">\(z=-1\)</span> and negate if <span
+class="math inline">\(N\)</span> is odd. If this is negative, the system
+is unstable.</p>
+</dd>
+<dt>Jury Test 3</dt>
+<dd>
+<p><span class="math inline">\(|a_o| &lt; |a_N|\)</span>. The last
+coefficient must be less than the first when ordered from highest power,
+else the system is unstable.</p>
+</dd>
+</dl>
+<p>If all of the above tests pass, the final test uses the Jury
+array</p>
+<div class="center">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">row</th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: center;"><span
+class="math inline">\(a_0\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(a_1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\cdots\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(a_N\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: center;"><span
+class="math inline">\(a_N\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(a_{N-1}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(\cdots\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(a_0\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: center;"><span
+class="math inline">\(b_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(b_1\)</span>
+<span class="math inline">\(\cdots\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(b_{N-1}\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: center;"><span
+class="math inline">\(b_{N-1}\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(b_{N-2}\)</span> <span
+class="math inline">\(\cdots\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(b_0\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: center;"><span class="math inline">\(c_0\)</span>
+<span class="math inline">\(\cdots\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(c_{N-2}\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: center;"><span
+class="math inline">\(c_{N-2}\)</span> <span
+class="math inline">\(\cdots\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(c_0\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(\vdots\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span
+class="math inline">\(2N-3\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(v_0\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(v_1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(v_3\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In this array each even row is the reversed version of the odd row
+above it. and each pair of rows decreases in length by one each
+time.</p>
+<p>If the first and last colum of all odd rows satisfies</p>
+<p><span class="math display">\[|b_0| &gt; |b_{N-1}|, \; |c_0| &gt;
+|c_{N-2}|, \; \ldots\; |v_0| &gt; |v_{3}|\]</span> then the system is
+stable. Note, as with Routh-Hortwitz, you can stop checking rows as soon
+as any test fails.</p>
+<p>To find the values for rows greater than two</p>
+<p><span class="math display">\[b_k = \left\lVert \begin{array}{cc}
+  a_0 &amp; a_{N-k}\\
+  a_N &amp; a_k
+\end{array}\right\rVert = a_0\cdot a_k - a_N\cdot a_{N-k} \quad\mbox{
+for } k = 0,1,\ldots, N-1\]</span></p>
+<p><span class="math display">\[c_k = \left\lVert \begin{array}{cc}
+  b_0 &amp; b_{N-k-1}\\
+  b_{N=1} &amp; b_k
+\end{array}\right\rVert = b_0\cdot b_k - b_{N-1}\cdot b_{N-k-1}
+\quad\mbox{ for } k = 0,1,\ldots, N-2\]</span></p>
+<p>continuing the pattern for every other row.</p>
+<p><strong>Examples:</strong></p>
+<ol>
+<li><p><span class="math display">\[H(z) = \frac{z^2 -z + 1}{4z^2 -
+1}\]</span> <span class="math display">\[Q(z) = 4z^2 - 1 = 4z^2 + 0\cdot
+z - 1 = a_2 z^2 + a_1 z + a_0\]</span> Test 1: <span
+class="math display">\[Q(1) = 4 - 1 = 3 &gt; 0\]</span> Test 2: <span
+class="math display">\[(-1)^2 Q(-1) = 4 - 1 = 3 &gt; 0\]</span> Test 3:
+<span class="math display">\[|-1| &lt; |4|\]</span> Since it is only a
+quadratic there is just one row in the Jury array (last one with three
+entries) and the first-last column test is equivalent to Test 3. Since
+all the tests pass it is stable.</p></li>
+<li><p><span class="math display">\[H(z) = \frac{1}{4z^2 +\frac{17}{2}z
++ 1}\]</span> <span class="math display">\[Q(z) = 4z^2 +\frac{17}{2}z +
+1 = a_2 z^2 + a_1 z + a_0\]</span> Test 1: <span
+class="math display">\[Q(1) = 4 + \frac{17}{2} + 1 = \frac{27}{2} &gt;
+0\]</span> Test 2: <span class="math display">\[(-1)^2 Q(-1) = 4 -
+\frac{17}{2} + 1 = -\frac{7}{2} &lt; 0\]</span> Since Test 2 fails, the
+system is unstable.</p></li>
+<li><p><span class="math display">\[H(z) = \frac{3z^2 + z -
+\frac{1}{4}}{24z^3 + 26z^2 + 9z + 1}\]</span> <span
+class="math display">\[Q(z) = 24z^3 + 26z^2 + 9z + 1 = a_3 z^3 + a_2 z^2
++ a_1 z + a_0\]</span> Test 1: <span class="math display">\[Q(1) = 24z^3
++ 26z^2 + 9z + 1 = 60 &gt; 0\]</span> Test 2: <span
+class="math display">\[(-1)^3 Q(-1) = -1 \cdot (-24 + 26 - 9 + 1) = 6
+&gt; 0\]</span> Test 3: <span class="math display">\[|1| &lt;
+|24|\]</span> All the above tests pass, so we need to construct the Jury
+array:</p>
+<div class="center">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">26</td>
+<td style="text-align: center;">24</td>
+</tr>
+<tr>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">26</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">b_0</td>
+<td style="text-align: center;">b_1</td>
+<td style="text-align: center;">b_2</td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>where <span class="math display">\[b_0 = \left\lVert
+\begin{array}{cc}
+  1 &amp; 24\\
+  24 &amp; 1
+  \end{array}\right\rVert = 1\cdot 1 - 24\cdot 24 = -575\]</span> <span
+class="math display">\[b_1 = \left\lVert \begin{array}{cc}
+  1 &amp; 26\\
+  24 &amp; 9
+  \end{array}\right\rVert = 1\cdot 9 - 24\cdot 26 = -615\]</span> <span
+class="math display">\[b_3 = \left\lVert \begin{array}{cc}
+  1 &amp; 9\\
+  24 &amp; 26
+  \end{array}\right\rVert = 1\cdot 26 - 24\cdot 9 = -190\]</span> Since
+<span class="math inline">\(|b_0| &gt; |b_{2}|\)</span> (<span
+class="math inline">\(|-575| &gt; |-190|\)</span>) the system is
+stable.</p></li>
+</ol>
+<h2 id="relationship-of-z-transform-to-dtft">Relationship of z-Transform
+to DTFT</h2>
+<p>Recall for a causal system the trasfer function is <span
+class="math inline">\(H(z)\)</span> for ROC <span
+class="math inline">\(|z| &gt; r\)</span>. If the system is also stable
+then <span class="math inline">\(r &lt; 1\)</span> and the ROC includes
+the unit circle <span class="math inline">\(x=e^{j\omega}\)</span> for
+<span class="math inline">\(\omega \in \mathbb{R}\)</span>. Evaluating
+the transfer function on the unit circle then give the DT Fourier
+Transform of the impulse response, i.e. the <em>Frequency
+Response</em>.</p>
+<p><span class="math display">\[H\left(e^{j\omega}\right) = \left. H(z)
+\right|_{z=e^{j\omega}}\]</span></p>
+<h2 id="inverse-systems">Inverse Systems</h2>
+<p>As with Laplace, the Z-transform gives us a simple, pricipled
+approach to find and inverse system.</p>
+<figure>
+<p><img src="figures/fig20_1.svg"
+alt="block diagram for inverse systems" /></p>
+<figcaption>Block Diagram for a given system <span
+class="math inline">\(H_1\)</span> and it’s inverse <span
+class="math inline">\(H_2\)</span>.</figcaption>
+</figure>
+<p>Suppose <span class="math inline">\(H_1(z) =
+\frac{P(z)}{Q(z)}\)</span>, then the inverse relationship above
+implies</p>
+<p><span class="math display">\[H_2(z) = H_1^{-1}(z) =
+\frac{Q(z)}{P(z)}\]</span></p>
+<p>The zeros of <span class="math inline">\(H_1\)</span> become the
+poles of <span class="math inline">\(H_2\)</span> (and poles of <span
+class="math inline">\(H_1\)</span> become the zeros of <span
+class="math inline">\(H_2\)</span>). Thus the inverse is stable only if
+the original system has zeros inside the unit circle.</p>
 </main>
 
 <footer>
