@@ -18,7 +18,7 @@ date: Fall 2025
 10. [Inverse Laplace Transform](lecture10.html) [[pdf](lecture10.pdf)]
 11. [Properties of the Laplace Transform](lecture11.html) [[pdf](lecture11.pdf)]
 12. [Solving LCCDE using Laplace](lecture12.html) [[pdf](lecture12.pdf)]
-13. [CT System Analysis and Design using Laplace](lecture13.html) [[pdf](lecture13.pdf)]
+13. [CT System Analysis and Realization using Laplace](lecture13.html) [[pdf](lecture13.pdf)]
 14. [Bode Plots and Linear System ID](lecture14.html) [[pdf](lecture14.pdf)]
 15. Midterm Exam
 16. [Filter Design in CT](lecture16.html) [[pdf](lecture16.pdf)]
