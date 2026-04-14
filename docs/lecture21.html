@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-03-05" />
+  <meta name="dcterms.date" content="2026-04-14" />
   <title>Lecture 21 DT System Analysis using Z-Transform</title>
   <style>
     /* Default styles provided by pandoc.
@@ -27,6 +27,9 @@
     }
   </style>
   <link rel="stylesheet" href="style.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
 </head>
 <body>
 <nav id="header-nav" role="navigation" title="site navigation">
@@ -38,9 +41,432 @@
 <h1 class="title">Lecture 21<br />
 DT System Analysis using Z-Transform</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-03-05</p>
+<p class="date">2026-04-14</p>
 </header>
-<p>TODO</p>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+<li><a href="#dt-system-analysis" id="toc-dt-system-analysis">DT System
+Analysis</a>
+<ul>
+<li><a href="#example-1" id="toc-example-1">Example 1</a></li>
+</ul></li>
+<li><a href="#analyzing-block-diagrams"
+id="toc-analyzing-block-diagrams">Analyzing Block Diagrams</a>
+<ul>
+<li><a href="#example-2" id="toc-example-2">Example 2</a></li>
+</ul></li>
+</ul>
+</nav>
+<h2 id="introduction">Introduction</h2>
+<p>The transfer function gives us a 4th way to represent DT LTI
+systems:</p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_1.svg"
+alt="relationship between the different system representations and the various forms of the transfer function. See caption." /></p>
+<figcaption>Illustration of using the transfer function as the gateway
+to analysis. </figcaption>
+</figure>
+<p>Recall a few important results from the last lecture and related
+consequences:</p>
+<ul>
+<li><p>The values of <span class="math inline">\(z\)</span> for which
+<span class="math inline">\(H(z) = 0\)</span> are called the zeros,
+<span class="math inline">\(\beta_k\)</span>.</p></li>
+<li><p>The singularities of <span class="math inline">\(H(z)\)</span>
+are called the poles, <span
+class="math inline">\(\alpha_k\)</span>.</p></li>
+<li><p>The pole-zero structure is typically plotted or sketched relative
+to the unit circle, with zeros indicated by a small circle, poles by a
+small cross, and duplicate/repeated roots indicated by an integer in
+parenthesis (#). We saw several examples last time.</p></li>
+<li><p>If a system is causal, <span class="math inline">\(M \leq
+N\)</span> and the ROC of the transfer function is of the form <span
+class="math inline">\(|z| &gt; \gamma\)</span>, then all poles will be
+inside the circle of radius <span class="math inline">\(\gamma\)</span>,
+i.e. the outermost pole is at radius <span class="math inline">\(\gamma
+= \underset{k}{\operatorname{argmax}} |\alpha_k|\)</span>.</p></li>
+<li><p>If the system is stable, the ROC includes the unit circle. This
+implies <span class="math inline">\(\gamma &lt; 1\)</span> and all poles
+are inside the unit circle.</p></li>
+<li><p>If a system is stable, then it has a frequency response <span
+class="math display">\[H\left( e^{j\omega}\right) = \left. H(z)
+\right|_{z = e^{j\omega}}\]</span> the transfer function evaluated on
+the unit circle.</p></li>
+</ul>
+<h2 id="dt-system-analysis">DT System Analysis</h2>
+<p>As indicated in the figure above, DT system analysis revolves around
+the transfer function. Given an LCCDE, impulse response, or block
+diagram, we can convert it to an equivalent transfer function and, if
+stable, to a frequency response. We can then proceed depending on the
+given components of a problem and the desired outputs.</p>
+<p>We have several analysis methods for DT systems at this point. Below
+is a decision tree I recommend. Note, this only indicates which
+technique is generally most efficient. Multiple analysis methods are
+often possible, with the bilateral z-transform and convolution being the
+most generally applicable, but often cumbersome to employ.</p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_8.svg" alt="" /></p>
+<figcaption>A decision tree for DT system analysis. The decision of
+which analysis technique to use depends on the system and input
+characteristics. <span class="math inline">\(\mathcal{Z}_1\)</span>
+indicates one-sided (unilateral) z-transform analysis, <span
+class="math inline">\(\mathcal{Z}_2\)</span> indicates two-sided
+(bilateral) z-transform analysis, <span
+class="math inline">\(\mathcal{F}\)</span> indicates Fourier
+analysis.</figcaption>
+</figure>
+<p>The sweet spot for using the z-transform is causal systems with
+causal inputs, since the one-sided transform can be used and the ROC
+does not impact the procedure. Equally straightforward is analysis of
+causal and stable systems with sinusoidal inputs via the transfer
+function to frequency response transformation. In general, when the
+system is non-causal and/or the input is non-causal and not sinusoidal,
+you are forced to use either bilateral Z-transforms and keep careful
+track of the ROC, or just use convolution. However, if the system is
+non-causal but stable and the input (causal or not) has a Fourier
+transform, you can use Fourier transform techniques. This has the
+advantage of not requiring careful treatment of the ROC.</p>
+<p>Let look at some examples to get a feel for how the decision tree
+works.</p>
+<h3 id="example-1">Example 1</h3>
+<p>Given the LCCDE with zero auxiliary conditions:</p>
+<p><span class="math display">\[y[n] = -\frac{1}{8}y[n-2] +
+\frac{1}{4}y[n-1] + x[n] - x[n-1]\]</span></p>
+<p>Find the transfer function, sketch the pole-zero plot, and determine
+if the system is stable. If they exist, find the outputs when the inputs
+are:</p>
+<ol>
+<li><p><span class="math inline">\(x_1[n] = \left(\frac{3}{4}\right)^n\,
+u[n]\)</span></p></li>
+<li><p><span class="math inline">\(x_2[n] = \cos\left(\frac{\pi}{6}\,
+n\right)\)</span></p></li>
+<li><p><span class="math inline">\(x_3[n] =
+\cos\left(\frac{\pi}{6}n\right)\, u[n]\)</span></p></li>
+</ol>
+<p>If they do not exist, indicate why.</p>
+<h4 id="solution-part-i">Solution Part I</h4>
+<p>To find the transfer function we can take the z-transform and use the
+index shift property from last lecture.</p>
+<p><span class="math display">\[\begin{align*}
+  Y(z) &amp;= -\frac{1}{8}z^{-2}\, Y(z) + \frac{1}{4}z^{-1}\, Y(z) +
+X(z) - z^{-1}\, X(z)\\
+  \left(1 - \frac{1}{4}z^{-1} + \frac{1}{8}z^{-2}\right)\, Y(z) &amp;=
+\left(1- z^{-1}\right)\, X(z) \\
+  H(z) = \frac{Y(z)}{X(z)} &amp;= \frac{1- z^{-1}}{1 - \frac{1}{4}z^{-1}
++ \frac{1}{8}z^{-2}} = \frac{z(z-1)}{z^2 - \frac{1}{4}z + \frac{1}{8}}
+\end{align*}\]</span></p>
+<p>Since <span class="math inline">\(Q(z) = z^2 - \frac{1}{4}z +
+\frac{1}{8}\)</span> has complex roots <span
+class="math inline">\(\frac{1}{8} \pm j \frac{\sqrt{7}}{8}\)</span>, the
+poles are at those locations. The pole-zero plot then looks like</p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_9.svg"
+alt="pole-zero plot for a example system. See caption." /></p>
+<figcaption>Pole-zero plot for the example DT system. The zeros are the
+roots of the numerator <span class="math inline">\(z(z-1)\)</span>,
+<span class="math inline">\(z=0\)</span> and <span
+class="math inline">\(z=1\)</span>. The poles are the roots of the
+denominator <span class="math inline">\(z^2 - \frac{1}{4}z +
+\frac{1}{8}\)</span>, <span class="math inline">\(z = \frac{1}{8} \pm
+j\frac{\sqrt{7}}{8}\)</span>, whose numerical values are <span
+class="math inline">\(z \approx 0.125 \pm j0.33\)</span>.</figcaption>
+</figure>
+<p>The magnitude of the poles (radius in complex plane) is <span
+class="math inline">\(\lvert \frac{1}{8} \pm j \frac{\sqrt{7}}{8} \rvert
+\approx 0.3535 &lt; 1\)</span>, thus the system is clearly stable.
+Therefore, in the decision tree, we are dealing with a causal, stable
+system.</p>
+<h4 id="solution-part-ii">Solution Part II</h4>
+<p>Now, we need to find the outputs, given the inputs. Input 1, <span
+class="math inline">\(x_1[n] = \left(\frac{3}{4}\right)^n\,
+u[n]\)</span>, is casual and has finite energy, thus has both a
+one-sided z-transform and a Fourier transform. We could use either to do
+the analysis, but lets use the z-transform. The Fourier approach is very
+similar. Since both system and inputs are causal, the output is causal
+and we can drop the ROC.</p>
+<p>Using the table <span class="math inline">\(X_1(z) =
+\frac{z}{z-\frac{3}{4}}\)</span>. From the convolution property then</p>
+<p><span class="math display">\[Y_1(z) = H(z)\cdot X_1(z) =
+\frac{z(z-1)}{z^2 - \frac{1}{4}z + \frac{1}{8}} \cdot
+\frac{z}{z-\frac{3}{4}} = \frac{z^2(z-1)}{\left(z-\frac{3}{4} \right)
+\left( z^2 - \frac{1}{4}z + \frac{1}{8} \right)}\]</span></p>
+<p>to find <span class="math inline">\(y_1[n]\)</span> we need to take
+the one-sided, inverse z-transform of <span
+class="math inline">\(Y_1(z)\)</span>. Using the partial fraction
+expansion</p>
+<p><span class="math display">\[\frac{Y_1(z)}{z} =
+\frac{A}{z-\frac{3}{4}} + \frac{Bz + C}{z^2 - \frac{1}{4}z +
+\frac{1}{8}}\]</span> where</p>
+<p><span class="math display">\[A = \left. \frac{z(z-1)}{z^2 -
+\frac{1}{4}z + \frac{1}{8}} \right\rvert_{z = \frac{3}{4}} =
+\frac{\frac{3}{4}(\frac{3}{4}-1)}{\frac{9}{16} - \frac{3}{16} +
+\frac{2}{16}} = \frac{-\frac{3}{16}}{\frac{8}{16}} =
+-\frac{3}{8}\]</span></p>
+<p>To find <span class="math inline">\(C\)</span>, let <span
+class="math inline">\(z= 0\)</span></p>
+<p><span class="math display">\[\frac{A}{-\frac{3}{4}} +
+\frac{C}{\frac{1}{8}} = \frac{0(0-1)}{\left(0-\frac{3}{4} \right) \left(
+0 - \frac{1}{4}0 + \frac{1}{8} \right)} = 0\]</span></p>
+<p>Solving this equation for <span class="math inline">\(C\)</span> and
+substituting for <span class="math inline">\(A\)</span> gives <span
+class="math inline">\(C = -\frac{1}{16}\)</span>. To find <span
+class="math inline">\(B\)</span> consider <span
+class="math inline">\(Y_1(z)\)</span> as <span class="math inline">\(z
+\rightarrow \infty\)</span>. Rewrite in negative powers of <span
+class="math inline">\(z\)</span></p>
+<p><span class="math display">\[Y_1(z) = \frac{A}{1-\frac{3}{4}z^{-1}} +
+\frac{B + Cz^{-1}}{1 - \frac{1}{4}z^{-1} + \frac{1}{8}z^{-2}} =
+\frac{1(1-z^{-1})}{\left(1-\frac{3}{4}z^{-1} \right) \left( 1 -
+\frac{1}{4}z^{-1} + \frac{1}{8}z^{-2} \right)}\]</span> and taking the
+limit, we obtain <span class="math inline">\(A + B = 1\)</span>. Solving
+for <span class="math inline">\(B\)</span> and substituting gives <span
+class="math inline">\(B = 1-A = 1+\frac{3}{8} =
+\frac{11}{8}\)</span>.</p>
+<p>We can now employ the table to do the inverse transform. The first
+term is already in a form that corresponds to the table when combined
+with the linearity property:</p>
+<p><span class="math display">\[\mathcal{Z}_1^{-1}\left\{
+\frac{-\frac{3}{8}z}{z-\frac{3}{4}} \right\} = -\frac{3}{8}\left(
+\frac{3}{4}\right)^n\, u[n]\]</span></p>
+<p>To match the second term to a table entry, we can write it as</p>
+<p><span class="math display">\[\frac{z(Dz + E)}{z^2 + 2az +
+|\gamma|^2}\]</span> where <span
+class="math inline">\(D=\frac{11}{8}\)</span>, <span
+class="math inline">\(E=-\frac{1}{16}\)</span>, <span
+class="math inline">\(a=-\frac{1}{8}\)</span>, <span
+class="math inline">\(|\gamma|^2 = \frac{1}{8}\)</span>. Then <span
+class="math inline">\(\mathcal{Z}_1^{-1}\)</span> for the second term is
+a damped causal sinsuoid.</p>
+<p><span class="math display">\[r |\gamma|^n \cos(\omega_0 n + \theta)
+u[n]\]</span> where</p>
+<p><span class="math display">\[r = \left[\frac{D^2|\gamma |^2 +
+E^2-2DaE}{|\gamma |^2 - a^2}\right]^{\frac{1}{2}},\quad \omega_0 =
+\cos^{-1}\left(\frac{-a}{|\gamma |} \right), \quad \theta =
+\tan^{-1}\left(\frac{Da-E}{D(|\gamma
+|^2-a^2)^{\frac{1}{2}}}\right)\]</span></p>
+<p>Another approach is to write the second term as</p>
+<p><span class="math display">\[\mathcal{Z}_1 \left\{
+F|\gamma|^n\cos(\omega_0 n)\, u[n] +  G|\gamma|^n\sin(\omega_0 n)\,
+u[n]\right\} = \frac{Fz(z-|\gamma |\cos(\omega_0))}{z^2 -2|\gamma
+|\cos(\omega_0)\, z + |\gamma |^2} + \frac{G |\gamma
+|\sin(\omega_0)z}{z^2 -2|\gamma |\cos(\omega_0)\, z + |\gamma
+|^2}\]</span> Comparing this to</p>
+<p><span class="math display">\[\frac{\frac{11}{8}z^2
+-\frac{1}{16}z}{z^2 - \frac{1}{4}z + \frac{1}{8}}\]</span> we obtain the
+equations</p>
+<p><span class="math display">\[\begin{align*}
+  F &amp;= \frac{11}{8}\\
+    |\gamma | &amp;= \frac{1}{2\sqrt{2}}\\
+  \cos(\omega_0) &amp;= \frac{\sqrt{2}}{4}\\
+  \sin(\omega_0) &amp;= \frac{\sqrt{7}}{2\sqrt{2}}\\
+  G &amp;= \frac{-\frac{1}{16} + F|\gamma | \cos(\omega_0)}{|\gamma |
+\sin(\omega_0)} = \frac{7}{8 \sqrt{7}}
+\end{align*}\]</span></p>
+<p>We can of course also use the definition of the inverse with the
+residue theorem to obtain</p>
+<p><span class="math display">\[y_1[n] = -\frac{3}{8}\left(
+\frac{3}{4}\right)^n\, u[n] + H\left(\frac{1}{8} + j
+\frac{\sqrt{7}}{8}\right)^n\, u[n] + I \left(\frac{1}{8} - j
+\frac{\sqrt{7}}{8}\right)^n\, u[n]\]</span> where <span
+class="math inline">\(H\)</span> and <span
+class="math inline">\(I\)</span> are the residues for the complex
+singularities.</p>
+<p><span class="math display">\[H = \left.
+\frac{z(z-1)}{\left(z-\frac{3}{4}\right)\cdot \left(z-\left(\frac{1}{8}
+- j \frac{\sqrt{7}}{8}\right)\right)} \right|_{z=\left(\frac{1}{8} + j
+\frac{\sqrt{7}}{8}\right)} = \frac{7 + j\cdot 3\cdot\sqrt(7)}{7 + j\cdot
+5\cdot\sqrt(7)} \approx 0.6785 - j\cdot 0.1654\]</span></p>
+<p><span class="math display">\[I = \left.
+\frac{z(z-1)}{\left(z-\frac{3}{4}\right)\cdot \left(z-\left(\frac{1}{8}
++ j \frac{\sqrt{7}}{8}\right)\right)} \right|_{z=\left(\frac{1}{8} - j
+\frac{\sqrt{7}}{8}\right)} = \frac{-7 + j\cdot 3\cdot\sqrt(7)}{-7 +
+j\cdot 5\cdot\sqrt(7)} \approx 0.6785 + j\cdot 0.1654\]</span></p>
+<p>While it might not be apparent, all three of these solutions for
+<span class="math inline">\(y_1[n]\)</span> are mathematically
+equivalent:</p>
+<p><span class="math display">\[\begin{align*}
+  y_1[n] &amp;= -\frac{3}{8}\left( \frac{3}{4}\right)^n\, u[n] + r
+|\gamma|^n \cos(\omega_0 n + \theta) u[n]\\
+  y_1[n] &amp;= -\frac{3}{8}\left( \frac{3}{4}\right)^n\, u[n] +
+F|\gamma|^n\cos(\omega_0 n)\, u[n] +  G|\gamma|^n\sin(\omega_0 n)\,
+u[n]\\
+  y_1[n] &amp;= -\frac{3}{8}\left( \frac{3}{4}\right)^n\, u[n] +
+H\left(\frac{1}{8} + j \frac{\sqrt{7}}{8}\right)^n\, u[n] + I
+\left(\frac{1}{8} - j \frac{\sqrt{7}}{8}\right)^n\, u[n] \\
+\end{align*}\]</span></p>
+<p>What about when the input is <span class="math inline">\(x_2[n] =
+\cos\left( \frac{\pi}{6}n\right)\)</span>? This is a non-causal
+sinusoidal input. Since the system is stable, it has a frequency
+response. This means we can use Fourier sinusoidal analysis to find
+<span class="math inline">\(y_2[n]\)</span>:</p>
+<p><span class="math display">\[y_2[n] = \left| H\left( e^{j\omega}
+\right) \right|_{\omega = \frac{\pi}{6}} \cdot \cos\left( \frac{\pi}{6}n
++ \theta\right)\]</span> where</p>
+<p><span class="math display">\[\left| H\left( e^{j\omega} \right)
+\right|_{\omega = \frac{\pi}{6}} = \left|
+\frac{e^{j\frac{\pi}{6}}\left(e^{j\frac{\pi}{6}} -
+1\right)}{e^{j\frac{\pi}{3}} - \frac{1}{4}e^{j\frac{\pi}{6}}+
+\frac{1}{8}}\right| \approx 0.6118\]</span> and <span
+class="math display">\[\theta = \left. \angle H\left( e^{j\omega}
+\right) \right|_{\omega = \frac{\pi}{6}} = \left. \angle H\left(
+e^{j\omega} \right) \right|_{\omega = \frac{\pi}{6}} = \angle
+\frac{e^{j\frac{\pi}{6}}\left(e^{j\frac{\pi}{6}} -
+1\right)}{e^{j\frac{\pi}{3}} - \frac{1}{4}e^{j\frac{\pi}{6}} +
+\frac{1}{8}}  \approx 1.289 \mbox{ rad}\]</span></p>
+<p>Note how much easier this is than blindly using the z-transform. What
+if the system were unstable?, then the solution would not exist.
+Equivalently in the time domain, the convolution sum would diverge.</p>
+<p>What about when the input is <span class="math inline">\(x_3[n] =
+\cos\left(\frac{\pi}{6}n\right)\, u[n]\)</span>. This seemingly similar
+signal is a <em>causal</em> sinusoidal input. We can use either the
+Z-transform or the Fourier Transform to solve for <span
+class="math inline">\(y_3[n]\)</span>, the later because the system is
+stable.</p>
+<p><span class="math display">\[y_3[n] = \mathcal{Z}^{-1}\left\{
+H(z)\cdot X_3(z)\right\}\]</span> where <span
+class="math inline">\(X_3(z) =
+\frac{z\left(z-\cos\left(\frac{\pi}{6}\right)\right)}{z^2 -
+2\cos\left(\frac{\pi}{6}\right)\, z + 1}\)</span>, or using Fourier
+<span class="math display">\[y_3[n] = \mathcal{F}^{-1}\left\{
+H\left(e^{j\omega}\right)\cdot
+X_3\left(e^{j\omega}\right)\right\}\]</span> although the z-transform
+approach has fewer terms. If the system were unstable we could only use
+the z-transform. The key issue is that both the system and input are
+causal, thus only one-sided Z-transforms are required.</p>
+<h2 id="analyzing-block-diagrams">Analyzing Block Diagrams</h2>
+<p>Recall from ECE 2714 the basic motifs of DT block diagrams. These are
+simplified using the concept of the transfer function.</p>
+<ul>
+<li><p>A single block.<br />
+</p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_2.svg"
+alt="block diagram for a single DT system block in z-domain. See caption." /></p>
+<figcaption>Block diagram for a single DT system block in z-domain.
+Using the convolution property, the output is just the product of the
+transfer function and the input.</figcaption>
+</figure></li>
+<li><p>A <span><em>series</em></span> connection of two blocks<br />
+</p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_3.svg"
+alt="block diagram for a series connection of DT system blocks in z-domain. See caption." /></p>
+<figcaption>Block diagram for a series connection of DT system blocks in
+z-domain. Using the convolution property, the overall transfer function
+is the product of the individual transfer functions.</figcaption>
+</figure></li>
+<li><p>A <span><em>parallel</em></span> connection of two blocks<br />
+</p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_4.svg"
+alt="block diagram for a parallel connection of DT system blocks in z-domain. See caption." /></p>
+<figcaption>Block diagram for a parallel connection of DT system blocks
+in z-domain. Using the convolution property, the overall transfer
+function is the sum of the individual transfer functions.</figcaption>
+</figure></li>
+<li><p>A <span><em>feedback</em></span> connection<br />
+</p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_5.svg"
+alt="block diagram for a feedback connection of DT system blocks in z-domain. See caption." /></p>
+<figcaption>Block diagram for a feedback connection of DT system blocks
+in z-domain. Using the convolution property one can derive the overall
+transfer function as <span class="math inline">\(H(z) = \frac{H_1(z)}{1
++ H_1(z)\cdot H_2(z)}\)</span>.</figcaption>
+</figure>
+<p>Note the feedback is negative (the minus sign on the feedback
+summation input). This is significantly easier in the z-domain compared
+to the time domain since convolution is now multiplication and inverse
+systems are division.</p></li>
+</ul>
+<p>As in CT, these can be used in various combinations. The most common
+building blocks are the gain/multiplier by a constant <span
+class="math inline">\(K\)</span>, with transfer function <span
+class="math inline">\(H(z) = K\)</span></p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_6.svg"
+alt="block diagram for a gain/multiplier DT system block in z-domain. See caption." /></p>
+<figcaption>Equivalent block diagrams for a gain/multiplier DT system
+block. It is typically drawn in the simplified fashion on the
+right.</figcaption>
+</figure>
+<p>and the unit delay <span class="math inline">\(H(z) =
+z^{-1}\)</span>.</p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_7.svg"
+alt="block diagram for a unit delay DT system block in z-domain. See caption." /></p>
+<figcaption>Equivalent block diagrams for a unit delay DT system
+block.</figcaption>
+</figure>
+<p>We will use these building blocks extensively when discussing the
+implementation of digital filters.</p>
+<h3 id="example-2">Example 2</h3>
+<p>Given the block diagram</p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_10.svg"
+alt="block diagram for example 2 system. See caption." /></p>
+<figcaption>Block diagrams for the example system. </figcaption>
+</figure>
+<ol>
+<li><p>Find the transfer function <span
+class="math inline">\(H(z)\)</span>.</p></li>
+<li><p>Determine if the system is stable.</p></li>
+<li><p>Find <span class="math inline">\(y[n]\)</span> if <span
+class="math inline">\(x[n] = \left(\frac{1}{3}\right)^n\,
+u[n]\)</span>.</p></li>
+</ol>
+<p>There are multiple ways to find <span
+class="math inline">\(H(z)\)</span>. Lets combine the feedback blocks
+into a single feedback block,</p>
+<figure data-latex-placement="ht">
+<p><img src="figures/fig21_11.svg"
+alt="block diagram for intermediate transformation of block diagram. See caption." /></p>
+<figcaption>Block diagrams for the example system after combining the
+feedback blocks into one: <span class="math inline">\(H_2(z) = z^{-1} +
+\frac{2}{9}\, z^{-2}\)</span>.</figcaption>
+</figure>
+<p>The overall transfer function, using the feedback motif, is then:
+<span class="math display">\[H(z) = \frac{1}{1 + H_2(z)} = \frac{1}{1 +
+z^{-1} + \frac{2}{9}\, z^{-2}} = \frac{z^2}{z^2 + z +
+\frac{2}{9}}\]</span></p>
+<p>To determine the stability we examine the roots of <span
+class="math inline">\(Q(z) = z^2 + z + \frac{2}{9} = \left(z+\frac{2}{3}
+\right)\cdot \left(z+\frac{1}{3} \right)\)</span> to find the poles
+<span class="math inline">\(-\frac{2}{3}\)</span> and <span
+class="math inline">\(-\frac{1}{3}\)</span>, whose magnitude is less
+than 1. Thus the system is stable. Since the output only depends on the
+current input and the two precious outputs, it is casual as well.</p>
+<p>Now the input is the causal signal <span class="math inline">\(x[n] =
+\left(\frac{1}{3}\right)^n\, u[n]\)</span>. Thus, in our decision tree
+we are in the sweet spot for one-sided z-transform analysis. From the
+table of transforms <span class="math display">\[X(z) =
+\frac{z}{z-\frac{1}{3}}\]</span> Thus <span class="math display">\[Y(z)
+= H(z)\cdot X(z) = \frac{z^2}{z^2 + z + \frac{2}{9}} \cdot
+\frac{z}{z-\frac{1}{3}} = \frac{z^3}{\left(z+\frac{2}{3}\right)\cdot
+\left(z+\frac{1}{3}\right) \cdot
+\left(z-\frac{1}{3}\right)}\]</span></p>
+<p>To find <span class="math inline">\(y[n]\)</span> we do the partial
+fraction expansion</p>
+<p><span class="math display">\[\frac{Y(z)}{z} = \frac{A}{z+\frac{2}{3}}
++ \frac{B}{z+\frac{1}{3}} + \frac{C}{z-\frac{1}{3}} =
+\frac{z^2}{\left(z+\frac{2}{3}\right)\cdot \left(z+\frac{1}{3}\right)
+\cdot \left(z-\frac{1}{3}\right)}\]</span> where</p>
+<p><span class="math display">\[A = \left.
+\frac{z^2}{\left(z+\frac{1}{3}\right) \cdot \left(z-\frac{1}{3}\right)}
+\right|_{z= -\frac{2}{3}} = \frac{4}{3}\]</span></p>
+<p><span class="math display">\[B = \left.
+\frac{z^2}{\left(z+\frac{2}{3}\right)\cdot \left(z-\frac{1}{3}\right)}
+\right|_{z= -\frac{1}{3}} = -\frac{1}{2}\]</span></p>
+<p><span class="math display">\[C = \left.
+\frac{z^2}{\left(z+\frac{2}{3}\right)\cdot \left(z+\frac{1}{3}\right)}
+\right|_{z=\frac{1}{3}} = \frac{1}{6}\]</span></p>
+<p>Then using linearity and the table we get</p>
+<p><span class="math display">\[y[n] = A\left(-\frac{2}{3}\right)^n\,
+u[n] + B\left(-\frac{1}{3}\right)^n\, u[n] +
+C\left(\frac{1}{3}\right)^n\, u[n]\]</span></p>
+<p>Note we could not use Fourier analysis in this case since the input
+does not have a DT Fourier transform.</p>
 </main>
 
 <footer>
