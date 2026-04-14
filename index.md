@@ -28,7 +28,7 @@ date: Fall 2025
 20. [Analyzing LCCDE Systems Using Z Transform](lecture20.html) [[pdf](lecture20.pdf)]
 21. [DT System Analysis using Z-Transform](lecture21.html) [[pdf](lecture21.pdf)]
 22. [Filter Design in DT](lecture22.html) [[pdf](lecture22.pdf)]
-23. [Implementing DT Filters](lecture23.html) [[pdf](lecture23.pdf)]
+23. [Realization of DT Filters](lecture23.html) [[pdf](lecture23.pdf)]
 24. [State Space Techniques in CT](lecture24.html) [[pdf](lecture24.pdf)]
 24. [State Space Techniques in DT](lecture25.html) [[pdf](lecture25.pdf)]
 24. [Numerical Integration Methods](lecture26.html) [[pdf](lecture26.pdf)]

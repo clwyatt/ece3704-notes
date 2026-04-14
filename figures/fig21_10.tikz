@@ -1,0 +1,55 @@
+\documentclass{standalone}
+\usepackage{amsmath,tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
+\usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+
+    \node [input, name=input] at (0,0) {};
+    \node [sum, name=sum1] at (2,0) {$\Sigma$};
+    \node [sum, name=sum2] at (2,-2) {$\Sigma$};
+    \node [block, name=delay1] at (4,-1) {$z^{-1}$};
+    \node [block, name=delay2] at (4,-3) {$z^{-1}$};
+    \node [output, name=conn] at (4,0) {};
+    \node [output, name=output] at (6,0) {};
+
+    \draw[->] (input) -- (sum1);
+    \draw[->] (sum1) -- (output);
+    \draw[->] (conn) -- (delay1);
+    \draw[->] (delay1) -- (delay2);
+    %\draw[->] (delay1) |- (sum2);
+    \draw[->] (sum2) -- node[pos=0.95] {$-$} (sum1);
+    \draw[-] (delay2) -- (4,-4);
+
+    \begin{scope}[decoration={
+          markings,
+          mark=at position 0.7 with {\arrow{>}}}
+      ] 
+      \draw[->, postaction={decorate}] (delay1) |- (sum2);
+    \end{scope}
+
+    \begin{scope}[decoration={
+          markings,
+          mark=at position 0.3 with {\arrow{>}}}
+      ] 
+      \draw[->, postaction={decorate}] (4,-4) -| (sum2);
+    \end{scope}
+    
+    \node at (-0.5,0) {$x[n]$};
+    \node at (6.5,0) {$y[n]$};
+    \node at (6.5,0) {$y[n]$};
+    \node at (3,-3.6) {$\frac{2}{9}$};
+    \node at (3.15,-1.7) {$1$};
+    
+\end{tikzpicture}
+\end{document}

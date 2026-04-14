@@ -1,0 +1,35 @@
+\documentclass{standalone}
+\usepackage{amsmath,tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+    \node [input, name=input] {};
+    \node [block, right of=input] (system) {$z^{-1}$};
+    \node [output, right of=system] (output) {};
+    \draw [draw,->] (input) -- node {$X(z)$} (system);
+    \draw [->] (system) -- node[pos=1.5] {$Y(z) = z^{-1} \cdot X(z)$} (output);
+\end{tikzpicture}
+
+\hspace{1cm}
+
+\begin{tikzpicture}[auto, node distance=2cm,>=latex',scale=1, every node/.style={transform shape}]
+    \node [input, name=input] {};
+    \node [block, right of=input] (system) {$\frac{1}{z}$};
+    \node [output, right of=system] (output) {};
+    \draw [draw,->] (input) -- node {$X(z)$} (system);
+    \draw [->] (system) -- node[pos=1.5] {$Y(z) = \frac{1}{z} \cdot X(z)$} (output);
+\end{tikzpicture}
+
+
+\end{document}
