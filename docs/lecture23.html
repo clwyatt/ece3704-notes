@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-03-05" />
+  <meta name="dcterms.date" content="2026-04-21" />
   <title>Lecture 23 Implementing DT Filters</title>
   <style>
     /* Default styles provided by pandoc.
@@ -27,6 +27,9 @@
     }
   </style>
   <link rel="stylesheet" href="style.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
 </head>
 <body>
 <nav id="header-nav" role="navigation" title="site navigation">
@@ -38,9 +41,331 @@
 <h1 class="title">Lecture 23<br />
 Implementing DT Filters</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-03-05</p>
+<p class="date">2026-04-21</p>
 </header>
-<p>TODO</p>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+<li><a href="#frequency-domain-implementations"
+id="toc-frequency-domain-implementations">Frequency Domain
+Implementations</a></li>
+<li><a href="#time-domain-implementations"
+id="toc-time-domain-implementations">Time Domain Implementations</a>
+<ul>
+<li><a href="#direct-form-i" id="toc-direct-form-i">Direct Form
+I</a></li>
+<li><a href="#direct-form-ii" id="toc-direct-form-ii">Direct Form
+II</a></li>
+<li><a href="#direct-form-ii-transposed"
+id="toc-direct-form-ii-transposed">Direct Form II Transposed</a></li>
+<li><a href="#cascade-of-second-order-stages"
+id="toc-cascade-of-second-order-stages">Cascade of second order
+stages</a></li>
+<li><a href="#parallel-form" id="toc-parallel-form">Parallel
+Form</a></li>
+<li><a href="#why-so-many-forms" id="toc-why-so-many-forms">Why so many
+forms?</a></li>
+</ul></li>
+</ul>
+</nav>
+<h2 id="introduction">Introduction</h2>
+<p>Given an transfer function <span class="math inline">\(H(z)\)</span>
+that corresponds to a filter, how do we implement a computational system
+that performs the filtering of an arbitrary input signal? Broadly, there
+are two approaches:</p>
+<ul>
+<li><p>frequency domain implementation of FIR filters using FFT (covered
+in depth in 4624);</p></li>
+<li><p>time domain implementation of FIR or IIR filters using variations
+on a recursive LCCDE (covered in depth in 4624).</p></li>
+</ul>
+<h2 id="frequency-domain-implementations">Frequency Domain
+Implementations</h2>
+<p>Recall from ECE 2714, given a finite-length sequence of real or
+complex numbers <span class="math inline">\(x[n]\)</span>, indexed from
+<span class="math inline">\(0\)</span> to <span
+class="math inline">\(N-1\)</span>, the <em>Discrete Fourier
+Transform</em> or DFT is given by, <span class="math display">\[X[k] =
+\sum_{n = 0}^{N-1}  x[n] e^{-j \frac{2\pi}{N}k n}\]</span> and
+corresponds to the DT Fourier transform of a finite length signal. It
+has a fast implementing (several actually) called the Fast Fourier
+Transform or FFT.</p>
+<p>Consider a finite impulse response (FIR) filter whose impulse
+response is <span class="math display">\[h[n] = \sum\limits_{m =
+0}^{M-1} a_m\, \delta[n-m]\]</span> and whose corresponding transfer
+function is <span class="math display">\[H(z) = \sum\limits_{m =
+0}^{M-1} a_m\, z^{-m} \; .\]</span> Since all FIR systems (with finite
+coefficients) are stable, the system also has a frequency response <span
+class="math display">\[H\left(e^{j\omega}\right) = \sum\limits_{m =
+0}^{M-1} a_m\, e^{-j\omega m} \; .\]</span> Define the frequency M-point
+sampled version of the frequency response as <span
+class="math display">\[H_M[k] = \left. H\left(e^{j\omega}\right)
+\right|_{\omega = \frac{2\pi k}{M}} = \sum\limits_{m = 0}^{M-1} a_m\,
+e^{-j\frac{2\pi k m}{M}} \; .\]</span> This is the M-point DFT of <span
+class="math inline">\(h[n]\)</span> and can be precomputed.</p>
+<p>Now, suppose <span class="math inline">\(X_M[k]\)</span> is the <span
+class="math inline">\(M\)</span>-point DFT of a finite-length input
+signal. Then <span class="math display">\[Y_M[k] = H_M[k]\cdot
+X_M[k]\]</span> is the DFT of the corresponding finite-length output.
+Taking the inverse DFT gives us the finite-length sequence that
+corresponds to a time domain output <span
+class="math inline">\(y_M[k]\)</span>. This gives us an approach to
+implement FIR filters given a finite-length input of same length <span
+class="math inline">\(M\)</span>.</p>
+<p>Some issues:</p>
+<ul>
+<li><p>What do we do if the lengths of the input and filter impulse
+response are not the same?</p></li>
+<li><p>A related issue is, when is <span
+class="math inline">\(y_M[k]\)</span> the same as convolution of the FIR
+filter with the input?</p></li>
+<li><p>Can we implement at filter in real-time this way? In what
+sense?</p></li>
+<li><p>What if the input is not finite length, or more realistically, is
+too long to fit into memory?</p></li>
+<li><p>What is the effect of quantization of values and finite-bit
+arithmetic?</p></li>
+<li><p>What do we do if the system does not have floating point
+hardware?</p></li>
+</ul>
+<p>These are all addressed in ECE 4624. However the first two can be
+easily resolved. Consider an FIR filter with impulse response</p>
+<p><span class="math display">\[h[n] = \sum\limits_{m = 0}^{N-1}
+a_m\delta[m-m]\]</span> with the <span class="math inline">\(N\)</span>
+non-zero samples denoted <span
+class="math inline">\(h_N[n]\)</span>.</p>
+<p><span class="math display">\[h[n] = \left\{ \begin{array}{cc}
+h_N[n] &amp; 0 \leq n &lt; N\\
+0 &amp; \text{else}
+\end{array}\right.\]</span></p>
+<p>Further consider an input <span class="math inline">\(x[n]\)</span>
+so that</p>
+<p><span class="math display">\[y[n] = h[n] * x[n]
+\stackrel{\mathcal{F}}{\longleftrightarrow}
+H\left(e^{j\omega}\right)\cdot X\left(e^{j\omega}\right)\]</span></p>
+<p>Suppose the input is of finite length, i.e</p>
+<p><span class="math display">\[x[n] = \left\{ \begin{array}{cc}
+x_N[n] &amp; 0 \leq n &lt; N\\
+0 &amp; \text{else}
+\end{array}\right.\]</span> Then define the finite length signal <span
+class="math display">\[y_N[n] = \operatorname{IDFT}\left\{H_N[k]\cdot
+X_N[k]\right\}\]</span></p>
+<p>Is this the output of the system <span class="math display">\[y[n] =
+\left\{ \begin{array}{cc}
+y_N[n] &amp; 0 \leq n &lt; N\\
+0 &amp; \text{else}
+\end{array}\right. \quad ?\]</span></p>
+<p>No. To see this consider the definition of <em>circular</em>
+convolution that is consistent with <span
+class="math inline">\(\operatorname{IDFT}\left\{H_N[k]\cdot
+X_N[k]\right\}\)</span></p>
+<p><span class="math display">\[y_N[n] = \sum\limits_{m=0}^{N-1}
+x_N[m]\cdot h_N[(n-m) \% N] \equiv x_N[n] \underset{N}{\circledast}
+h_N[n]\]</span></p>
+<p>where the signed modulus operator is defined as</p>
+<p><span class="math display">\[n \% N = \operatorname{remainder}
+\frac{|n|}{N}\]</span></p>
+<p>So in general <span class="math inline">\(x_N[n]
+\underset{N}{\circledast} h_N[n] \neq x[n] \ast h[n]\)</span>. This
+makes sense given that circular convolution in essence assumes a
+periodic extension of the input and output signals via the index modulus
+operation, while regular convolution includes the effect of the
+finite=length signal turning on and off (transient responses).</p>
+<p>To make them equivalent can define the <em>zero-padded</em> or
+zero-extended, but finite length, signals. Consider the finite-length
+sequences <span class="math inline">\(x_L[n]\)</span> and <span
+class="math inline">\(h_M[n]\)</span> and let <span
+class="math inline">\(N = L + M - 1\)</span>, so that</p>
+<p><span class="math display">\[x_N[n] = \left\{ \begin{array}{cc}
+x_L[n] &amp; 0 \leq n &lt; L\\
+0 &amp; L \leq n &lt; N
+\end{array}\right.\]</span></p>
+<p>and</p>
+<p><span class="math display">\[h_N[n] = \left\{ \begin{array}{cc}
+h_M[n] &amp; 0 \leq n &lt; M\\
+0 &amp; M \leq n &lt; N
+\end{array}\right.\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[y_N[n] = x_N[n]
+\underset{N}{\circledast} h_N[n] = x[n] \ast h[n] = y[n]\]</span></p>
+<p>and</p>
+<p><span class="math display">\[y[n] =
+\operatorname{IDFT}\left\{H_N[k]\cdot X_N[k]\right\}\]</span></p>
+<p>Note this is an offline approach to filtering, assuming that the
+entire input length is available for computation, i.e taking DFT of
+input, index-wise multiplication, then taking the inverse DFT (the DFT
+of the filter impulse response could be precomputed).</p>
+<h2 id="time-domain-implementations">Time Domain Implementations</h2>
+<p>As in CT there are several ways we can implement, or realize, a
+transfer function. Consider a general DT transfer function in delay
+form</p>
+<p><span class="math display">\[H(z) = \frac{\sum\limits_{k = 0}^{M}
+b_k\, z^{-k}}{\sum\limits_{k = 0}^{N} a_k\, z^{-k}}\]</span> This
+corresponds to the recursive LCCDE</p>
+<p><span class="math display">\[y[n] = -\sum\limits_{k = 1}^{N}
+\frac{a_k}{a_0}\, y[n-k] + \sum\limits_{k = 0}^{M} \frac{b_k}{a_0}\,
+x[n-k] \; .\]</span> Note the numerator indices run from zero to <span
+class="math inline">\(M\)</span>, meaning that the output is a linear
+function of the current input and past <span
+class="math inline">\(M\)</span> inputs, while the denominator indices
+run from one to <span class="math inline">\(N\)</span> after dividing
+through by <span class="math inline">\(a_0\)</span>, meaning that the
+output is a linear function of the past <span
+class="math inline">\(N\)</span> outputs. When factored, the numerator
+corresponds to the zeros, while the denominator corresponds to the
+poles.</p>
+<p>Consider a factoring of the transfer function into two, <span
+class="math inline">\(H(z) = H_1(z)\cdot H_2(z)\)</span>, where <span
+class="math inline">\(H_1(z)\)</span> implements the zeros and <span
+class="math inline">\(H_2\)</span> implements the poles:</p>
+<p><span class="math display">\[H_1(z) = \sum\limits_{k = 0}^{M} b_k\,
+z^{-k}\]</span></p>
+<p><span class="math display">\[H_2(z) = \frac{1}{\sum\limits_{k =
+0}^{N} a_k\, z^{-k}}\]</span></p>
+<p>Implementing <span class="math inline">\(H_1(z)\)</span> directly
+gives a block diagram</p>
+<figure data-latex-placement="h!">
+<p><img src="figures/fig23_1.svg"
+alt="block diagram for h one. see text." /></p>
+<figcaption>Block diagram implementing zeros portion of the filter,
+<span class="math inline">\(H_1(z)\)</span>.</figcaption>
+</figure>
+<p>Implementing <span class="math inline">\(H_2(z)\)</span> directly
+gives a block diagram</p>
+<figure data-latex-placement="h!">
+<p><img src="figures/fig23_2.svg"
+alt="block diagram for h two. see text." /></p>
+<figcaption>Block diagram implementing poles portion of the filter,
+<span class="math inline">\(H_2(z)\)</span>.</figcaption>
+</figure>
+<h3 id="direct-form-i">Direct Form I</h3>
+<p>If we put <span class="math inline">\(H_1\)</span> before <span
+class="math inline">\(H_2\)</span>, i.e. <span
+class="math inline">\(H(z) = H_1(z)\cdot H_2(z)\)</span>, we obtain the
+Direct Form I realization of the system</p>
+<figure data-latex-placement="h!">
+<p><img src="figures/fig23_3.svg"
+alt="block diagram for direct form one. see text." /></p>
+<figcaption>Block diagram implementation in Direct Form I.</figcaption>
+</figure>
+<p>To compute each output Direct Form I requires <span
+class="math inline">\(M+N\)</span> memory locations, <span
+class="math inline">\(M+N-1\)</span> multiplies, and <span
+class="math inline">\(M+N\)</span> additions.</p>
+<h3 id="direct-form-ii">Direct Form II</h3>
+<p>If we put <span class="math inline">\(H_2\)</span> before <span
+class="math inline">\(H_1\)</span>, i.e. <span
+class="math inline">\(H(z) = H_2(z)\cdot H_1(z)\)</span>, and eliminate
+duplicate delay blocks, we obtain the Direct Form II realization of the
+system</p>
+<figure data-latex-placement="h!">
+<p><img src="figures/fig23_4.svg"
+alt="block diagram for direct form two. see text." /></p>
+<figcaption>Block diagram implementation in Direct Form II. As shown the
+values of <span class="math inline">\(M\)</span> and <span
+class="math inline">\(N\)</span> are the same.</figcaption>
+</figure>
+<p>To compute each output Direct Form II requires <span
+class="math inline">\(\mbox{max}(M,N)\)</span> memory locations, <span
+class="math inline">\(M+N-1\)</span> multiplies, and <span
+class="math inline">\(M+N\)</span> additions. This can, and often does,
+result in half the memory required.</p>
+<h3 id="direct-form-ii-transposed">Direct Form II Transposed</h3>
+<p>A result from graph theory can be used to arrive at yet another form.
+This theorem says that if we reverse the direction of all arrows in a
+graph and swap input and output, we get the same graph. Since graphs can
+be represented by adjacency matrices, and the aforementioned graph
+operation corresponds to taking the transpose of the adjacency matrix,
+this is called the graph transpose.</p>
+<p>Given block diagrams are equivalent to graphs (signal flow graphs,
+typically covered in ECE 4624), we can apply this to the direct form II
+to obtain the transposed direct form II form. We reverse the direction
+of all the arrows, but leave any multiplicative terms alone. Summation
+nodes become branches and vice-versa.</p>
+<figure data-latex-placement="h!">
+<p><img src="figures/fig23_6.svg"
+alt="block diagram for transposed direct form two. see text." /></p>
+<figcaption>Block diagram implementation in Transposed Direct Form II.
+As shown the values of <span class="math inline">\(M\)</span> and <span
+class="math inline">\(N\)</span> are the same.</figcaption>
+</figure>
+<h3 id="cascade-of-second-order-stages">Cascade of second order
+stages</h3>
+<p>The Direct forms are an example of a serial connection of two stages,
+also called a cascade. You can have more than two stages, each of its
+own order. The most common form of this type is called a cascade of
+second order stages (SOS), where each stage implements a first-order, or
+second-order system. To implement a transfer function in this form, we
+use the factored form</p>
+<p><span class="math display">\[H(z) = \frac{P(z)}{\prod\limits_{i =
+1}^{S} a_{i,0} z^2 + a_{i,1} z + a_{i,2} }\]</span></p>
+<p>where <span class="math inline">\(S= \lceil \frac{N}{2}
+\rceil\)</span> is the number of stages. All complex poles are grouped
+together. Pairs of real poles are grouped together based on distance
+(closest together). Thus each stage is a second-order systems with
+coefficients for stage <span class="math inline">\(i\)</span>, <span
+class="math inline">\(a_{i,0}, a_{i,1}, a_{i,2}\)</span>. Note, one
+stage must be first-order if the overall system is of an odd-order. The
+zeros specified by the numerator polynomial are grouped with their
+closest poles. This process can be automated using the
+<code>tf2sos</code> function in Matlab or the Python library
+<code>scipy.signal</code>.</p>
+<p>After factoring, each stage is implemented using one of the other
+forms, often Direct Form II or it’s transposed version. Below is what
+the resulting block diagram looks like in the general case</p>
+<figure data-latex-placement="h!">
+<p><img src="figures/fig23_5.svg"
+alt="block diagram for cascade of second order, direct form two, blocks. see text." /></p>
+<figcaption>Block diagram implementation for cascade of second-order
+stages, each in Direct Form II.</figcaption>
+</figure>
+<h3 id="parallel-form">Parallel Form</h3>
+<p>The parallel form uses partial fraction expansion to factor the
+transfer function into <span class="math inline">\(S\)</span> parallel
+stages</p>
+<p><span class="math display">\[H(z) = \sum\limits_{i=1}^{S}
+\frac{P_i(z)}{Q_i(z)}\]</span></p>
+<p>where <span class="math inline">\(Q_i(z)\)</span> is first order for
+real poles and second order for complex poles. This process can be
+automated using the <code>residue</code> function in Matlab or the
+Python library <code>scipy.signal</code>. I will leave the corresponding
+block diagram as an exercise for the reader.</p>
+<h3 id="why-so-many-forms">Why so many forms?</h3>
+<p>Each of the above realization uses combinations of just three
+hardware components: memory (delay line), additions, and
+multiplications. If the filters above are implemented using floating
+point arithmetic, and memory or computation time is not constrained,
+there is little to no difference in which form is used. However if
+memory and computation time are important, the direct form I realization
+is clearly inferior. When the filters are implemented using fixed point
+arithmetic, which is common due to lack of an FPU on low-end systems and
+more importantly the number and unpredictability of cycle count for
+floating point, the forms chosen become important for reducing error and
+improving stability. Here are some trade-offs to consider:</p>
+<ul>
+<li><p>Direct Form I is the easiest to implement since it is a direct
+conversion of the recursive LCCDE to code. However, as indicated above
+it is memory inefficient, requiring two delay lines. It is only a good
+choice for quick testing on a general-purpose computer.</p></li>
+<li><p>Direct Form II removes the redundant delay line, but is
+susceptible to internal overflow. The output of each delay block can
+grow much larger than the input or output, potentially clipping the
+signal in fixed-point systems, depending on the fixed-point format used
+and compiler optimizations.</p></li>
+<li><p>Transposed Direct Form II is often preferred because it can have
+better numerical stability and reduced quantization noise. It allows for
+better pipelining in hardware because there isn’t a long chain of
+additions before the delay blocks. However for higher order systems
+direct forms are sensitive to coefficient quantization effects.</p></li>
+<li><p>Cascaded Second-Order Stages have better stability for higher
+order systems are are the most common way to realize a filter.</p></li>
+<li><p>The Parallel Form has the lowest latency since each branch
+processes the input simultaneously and the total calculation time can be
+reduced with parallel hardware. It also allows control over quantization
+noise. However, it is generally less common than SOS cascades for
+filtering in generic micro-controllers, but is popular when the hardware
+is parallel (some DSPs and FPGAs).</p></li>
+</ul>
 </main>
 
 <footer>
