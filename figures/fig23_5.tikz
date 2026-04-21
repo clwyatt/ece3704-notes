@@ -1,0 +1,130 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+
+\begin{tikzpicture}[auto,>=latex',scale=1, every node/.style={transform shape}]
+  
+  
+  \node[sum] at (2,0) (sum1) {$\Sigma$};
+  \node[sum] at (2,-4) (sum2) {$\Sigma$};
+  \node[sum] at (2,-8) (sum3) {$\Sigma$};
+  \node[sum] at (6,0) (sum4) {$\Sigma$};
+  \node[sum] at (6,-4) (sum5) {$\Sigma$};
+  \node[sum] at (6,-8) (sum6) {$\Sigma$};
+  \node[block] at (4,-2) (block1) {$z^{-1}$};
+  \node[block] at (4,-6) (block2) {$z^{-1}$};
+
+  \node at (8,0) (stagecont) {$\cdots$};
+  
+  \node[sum] at (10,0) (sum7) {$\Sigma$};
+  \node[sum] at (10,-4) (sum8) {$\Sigma$};
+  \node[sum] at (10,-8) (sum9) {$\Sigma$};
+  \node[sum] at (14,0) (sum10) {$\Sigma$};
+  \node[sum] at (14,-4) (sum11) {$\Sigma$};
+  \node[sum] at (14,-8) (sum12) {$\Sigma$};
+  \node[block] at (12,-2) (block3) {$z^{-1}$};
+  \node[block] at (12,-6) (block4) {$z^{-1}$};
+  
+  \node [input, name=input] at (0,0) {};
+  \node [input, name=output] at (16,0) {};
+  \node at (-0.5,0) {$x[n]$};
+  \node at (16.5,0) {$y[n]$};
+
+  \draw[->] (input) -- (sum1);
+  \draw[->] (sum1) -| (block1);
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above] {$\frac{b_{1,0}}{a_{1,0}}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (sum1) -- (sum4);
+  \end{scope}
+  \draw[->] (sum2) -- (sum1);
+  \draw[->] (sum3) -- (sum2);
+  \draw[->] (sum5) -- (sum4);
+  \draw[->] (sum6) -- (sum5);
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above,rotate=180] {$-\frac{a_{1,1}}{a_{1,0}}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block1) |- (sum2);
+  \end{scope}
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above] {$\frac{b_{1,1}}{b_{1,0}}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block1) |- (sum5);
+  \end{scope}
+  \draw[->] (block1) -- (block2);
+
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above,rotate=180] {$-\frac{a_{1,2}}{a_{1,0}}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block2) |- (sum3);
+  \end{scope}
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above] {$\frac{b_{1,2}}{b_{1,0}}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block2) |- (sum6);
+  \end{scope}
+
+  \draw[->] (sum4) -- (stagecont);
+  \draw[->] (stagecont) -- (sum7);
+
+  %%%
+  \draw[->] (sum7) -| (block3);
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above] {$\frac{b_{S,0}}{a_{S,0}}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (sum7) -- (sum10);
+  \end{scope}
+  \draw[->] (sum8) -- (sum7);
+  \draw[->] (sum9) -- (sum8);
+  \draw[->] (sum11) -- (sum10);
+  \draw[->] (sum12) -- (sum11);
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above,rotate=180] {$-\frac{a_{S,1}}{a_{S,0}}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block3) |- (sum8);
+  \end{scope}
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above] {$\frac{b_{S,1}}{b_{S,0}}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block4) |- (sum11);
+  \end{scope}
+  \draw[->] (block3) -- (block4);
+
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above,rotate=180] {$-\frac{a_{S,2}}{a_{S,0}}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block4) |- (sum9);
+  \end{scope}
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above] {$\frac{b_{S,2}}{b_{S,0}}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block4) |- (sum12);
+  \end{scope}
+
+  \draw[->] (sum10) -- (output);
+\end{tikzpicture}
+
+\end{document}

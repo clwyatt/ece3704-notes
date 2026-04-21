@@ -1,0 +1,86 @@
+%% Gemini Prompt: Now do the same but for H2 followed by H1, removing any redundant delay blocks.
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+
+\tikzstyle{block} = [draw, fill=gray!20, rectangle, minimum height=2em, minimum width=3em]
+\tikzstyle{sum} = [draw, fill=gray!20, circle]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+
+\begin{document}
+
+\begin{tikzpicture}[auto, >=latex', scale=1, every node/.style={transform shape}]
+
+  % --- Central Delay Chain ---
+  \node[block] at (3,-2) (z1) {$z^{-1}$}; 
+  \node[block] at (3,-4) (z2) {$z^{-1}$}; [cite: 2, 16]
+  \node at (3,-5.5) (zcont) {$\vdots$}; [cite: 2, 16]
+  \node[block] at (3,-7.5) (zM) {$z^{-1}$}; [cite: 2, 16]
+
+  % --- Branch Points (The requested single output points) ---
+  \coordinate (br0) at (3, -0.75);
+  \coordinate (br1) at (3, -3);
+  \coordinate (br2) at (3, -5);
+  \coordinate (brM) at (3, -8.5);
+
+  % --- Left Side: Feedback Summation (H2 Poles) ---
+  \node [input, name=input] at (0,0) {}; [cite: 4, 18]
+  \node at (-0.5,0) {$x[n]$}; [cite: 14, 26]
+  
+  \node[sum] at (1,0) (s1_p) {$\Sigma$}; [cite: 3, 16]
+  \node[sum] at (1,-3) (s2_p) {$\Sigma$}; [cite: 3, 17]
+  \node[sum] at (1,-5) (s3_p) {$\Sigma$}; [cite: 3, 17]
+  \node at (1,-6.5) (sc_p) {$\vdots$}; [cite: 3, 17]
+  \node[sum] at (1,-8.5) (s4_p) {$\Sigma$}; [cite: 3, 17]
+
+  \draw[->] (input) -- (s1_p); [cite: 18]
+  \draw[->] (s1_p) -- (3,0) -- (z1); 
+
+  % Feedback connections from branch points
+  \draw[->] (br1) -- (s2_p) node[pos=0.5, above] {$-\frac{a_1}{a_0}$}; [cite: 20]
+  \draw[->] (br2) -- (s3_p) node[pos=0.5, above] {$-\frac{a_2}{a_0}$}; [cite: 22]
+  \draw[->] (brM) -- (s4_p) node[pos=0.5, above] {$-\frac{a_N}{a_0}$}; [cite: 24]
+
+  \draw[->] (s4_p) -- (sc_p); [cite: 13, 25]
+  \draw[->] (sc_p) -- (s3_p); [cite: 13, 25]
+  \draw[->] (s3_p) -- (s2_p); [cite: 13, 25]
+  \draw[->] (s2_p) -- (s1_p); [cite: 13, 25]
+
+  % --- Right Side: Feedforward Summation (H1 Zeros) ---
+  \node[sum] at (5,0) (s1_z) {$\Sigma$}; [cite: 3]
+  \node[sum] at (5,-3) (s2_z) {$\Sigma$}; [cite: 3]
+  \node[sum] at (5,-5) (s3_z) {$\Sigma$}; [cite: 3]
+  \node at (5,-6.5) (sc_z) {$\vdots$}; [cite: 3]
+  \node[sum] at (5,-8.5) (s4_z) {$\Sigma$}; [cite: 3]
+
+  % Feedforward connections from branch points
+  \draw[->] (3,0) -- (s1_z) node[pos=0.5, above] {$\frac{b_0}{a_0}$}; [cite: 5]
+  \draw[->] (br1) -- (s2_z) node[pos=0.5, above] {$\frac{b_1}{a_0}$}; [cite: 8]
+  \draw[->] (br2) -- (s3_z) node[pos=0.5, above] {$\frac{b_2}{a_0}$}; [cite: 10]
+  \draw[->] (brM) -- (s4_z) node[pos=0.5, above] {$\frac{b_M}{a_0}$}; [cite: 12]
+
+  \draw[->] (s4_z) -- (sc_z); [cite: 13]
+  \draw[->] (sc_z) -- (s3_z); [cite: 13]
+  \draw[->] (s3_z) -- (s2_z); [cite: 13]
+  \draw[->] (s2_z) -- (s1_z); [cite: 13]
+
+  % --- Output ---
+  \node [input, name=output] at (6.5,0) {}; [cite: 4, 18]
+  \draw[->] (s1_z) -- (output); [cite: 13, 25]
+  \node at (7,0) {$y[n]$}; [cite: 14, 26]
+
+  % Internal delay connections passing through branch points
+  \draw (z1) -- (br1); 
+  \draw[->] (br1) -- (z2); [cite: 7, 19]
+  \draw (z2) -- (br2);
+  \draw[->] (br2) -- (3,-5.25); % To dots [cite: 11, 23]
+  \draw (3,-7) -- (zM); 
+  \draw (zM) -- (brM);
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,64 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+
+\tikzstyle{block} = [draw, fill=gray!20, rectangle, minimum height=2em, minimum width=3em]
+\tikzstyle{sum} = [draw, fill=gray!20, circle]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+
+\begin{document}
+
+\begin{tikzpicture}[auto, >=latex', scale=1, every node/.style={transform shape}]
+
+  % --- Input and Scaling ---
+  \node [input, name=input] at (-1,0) {};
+  \node at (-1.5,0) {$x[n]$};
+  
+  % Central spine summation nodes (where delays are placed between)
+  \node[sum] at (3,0) (s0) {$\Sigma$};
+  \node[sum] at (3,-2) (s1) {$\Sigma$};
+  \node[sum] at (3,-4) (s2) {$\Sigma$};
+  \node at (3,-5.5) (s_cont) {$\vdots$};
+  \node[sum] at (3,-7.5) (sM) {$\Sigma$};
+
+  % --- Central Delay Chain (Reversed flow: moving UP) ---
+  \node[block] at (3,-1) (z1) {$z^{-1}$};
+  \node[block] at (3,-3) (z2) {$z^{-1}$};
+  \node[block] at (3,-6.5) (zM) {$z^{-1}$};
+
+  % Connections for the spine
+  \draw[->] (z1) -- (s0);
+  \draw[->] (s1) -- (z1);
+  \draw[->] (z2) -- (s1);
+  \draw[->] (s2) -- (z2);
+  \draw[->] (zM) -- (3,-5.75);
+  \draw[->] (3,-5.25) -- (s2);
+  \draw[->] (sM) -- (zM);
+
+  % --- Output and Global Feedback Point ---
+  \coordinate (out_branch) at (5,0);
+  \draw[->] (s0) -- (out_branch) -- (6.5,0) node[right] {$y[n]$};
+  \node[input] at (5,0) (fb_node) {};
+
+  % --- Feedforward Paths (Left Side: b coefficients) ---
+  % These now branch from the input x[n]
+  \coordinate (in_branch) at (1,0);
+  \draw[-] (input) -- (in_branch);
+  \draw[->] (in_branch) -- (s0) node[pos=0.5, above] {$\frac{b_0}{a_0}$};
+  \draw[->] (in_branch) |- (s1) node[pos=0.75, above] {$\frac{b_1}{a_0}$};
+  \draw[->] (in_branch) |- (s2) node[pos=0.75, above] {$\frac{b_2}{a_0}$};
+  \draw[->] (in_branch) |- (sM) node[pos=0.75, above] {$\frac{b_M}{a_0}$};
+
+  % --- Feedback Paths (Right Side: a coefficients) ---
+  % These branch from the output and feed back into the spine sums
+  \draw[->] (fb_node) |- (s1) node[pos=0.75, above] {$-\frac{a_1}{a_0}$};
+  \draw[->] (fb_node) |- (s2) node[pos=0.75, above] {$-\frac{a_2}{a_0}$};
+  \draw[->] (fb_node) |- (sM) node[pos=0.75, above] {$-\frac{a_N}{a_0}$};
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,72 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\usepackage{pgfplots}
+ \pgfplotsset{compat=1.13}
+ \usepackage{transparent}
+
+\begin{document}
+
+\begin{tikzpicture}[auto,>=latex',scale=1, every node/.style={transform shape}]
+  
+  \node[block] at (4,-2) (block1) {$z^{-1}$};
+  \node[block] at (4,-4) (block2) {$z^{-1}$};
+  \node at (4,-6) (blockcont) {$\vdots$};
+  \node[block] at (4,-8) (block4) {$z^{-1}$};
+  
+  \node[sum] at (2,0) (sum1) {$\Sigma$};
+  \node[sum] at (2,-3) (sum2) {$\Sigma$};
+  \node[sum] at (2,-5) (sum3) {$\Sigma$};
+  \node at (2,-7) (sumcont) {$\vdots$};
+  \node[sum] at (2,-9) (sum4) {$\Sigma$};
+
+  \node [input, name=input] at (0,0) {};
+  \node [input, name=output] at (6,0) {};
+
+  \draw[->] (input) |- (sum1);
+
+  \draw [->] (sum1) -| (block1);
+  \draw [->] (block1) -- (block2);
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above,rotate=180] {$-\frac{a_1}{a_0}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block1) |- (sum2);
+  \end{scope}
+  %%\draw[->] (block1) |- (sum2);
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above,rotate=180] {$-\frac{a_2}{a_0}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block2) |- (sum3);
+  \end{scope}
+  %%\draw[->] (block2) |- (sum3);
+  \draw[->] (block2) -- (blockcont);
+  \draw[->] (blockcont) -- (block4);
+  \begin{scope}[decoration={
+        markings,
+        mark=at position 0.8 with {\arrow{>}, \node[above,rotate=180] {$-\frac{a_N}{a_0}$}; }}
+    ] 
+    \draw[->, postaction={decorate}] (block4) |- (sum4);
+  \end{scope}
+  %%\draw[->] (block4) |- (sum4);
+  \draw[->] (sum4) -- (sumcont);
+  \draw[->] (sumcont) -- (sum3);
+  \draw[->] (sum3) -- (sum2);
+  \draw[->] (sum2) -- (sum1);
+  \draw[->] (sum1) -- (output);
+
+  \node at (-0.5,0) {$x[n]$};
+  \node at (6.5,0) {$y[n]$};
+
+\end{tikzpicture}
+
+\end{document}

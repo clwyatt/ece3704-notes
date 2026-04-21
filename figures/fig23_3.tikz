@@ -1,0 +1,88 @@
+%% Gemini Prompt: Consider the latex file fig23_1.tikz that has a block diagram implementing
+%% a transfer function H1 and a file fig23_2.tikz that has a block diagram implementing a
+%% transfer function H2. Write a latex file implementing the serial combination of H1 followed by H2. 
+
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,decorations.markings}
+
+\tikzstyle{block} = [draw, fill=gray!20, rectangle]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+
+\begin{document}
+
+\begin{tikzpicture}[auto, >=latex', scale=1, every node/.style={transform shape}]
+
+  % --- H1 Section (Zeros) ---
+  \node [input, name=in_h1] at (0,0) {};
+  \node at (-0.5,0) {$x[n]$};
+
+  \node[block] at (1.5,-2) (b1_z) {$z^{-1}$};
+  \node[block] at (1.5,-4) (b2_z) {$z^{-1}$};
+  \node at (1.5,-6) (bc_z) {$\vdots$};
+  \node[block] at (1.5,-8) (b4_z) {$z^{-1}$};
+  
+  \node[sum] at (3,0) (s1_z) {$\Sigma$};
+  \node[sum] at (3,-3) (s2_z) {$\Sigma$};
+  \node[sum] at (3,-5) (s3_z) {$\Sigma$};
+  \node at (3,-7) (sc_z) {$\vdots$};
+  \node[sum] at (3,-9) (s4_z) {$\Sigma$};
+
+  \draw[->] (in_h1) -- (s1_z) node[pos=0.8, above] {$\frac{b_0}{a_0}$};
+  \draw[->] (in_h1) -| (b1_z);
+  \draw[->] (b1_z) -- (b2_z);
+  \draw[->] (b2_z) -- (bc_z);
+  \draw[->] (bc_z) -- (b4_z);
+
+  \draw[->] (b1_z) |- (s2_z) node[pos=0.8, above] {$\frac{b_1}{a_0}$};
+  \draw[->] (b2_z) |- (s3_z) node[pos=0.8, above] {$\frac{b_2}{a_0}$};
+  \draw[->] (b4_z) |- (s4_z) node[pos=0.8, above] {$\frac{b_M}{a_0}$};
+
+  \draw[->] (s4_z) -- (sc_z);
+  \draw[->] (sc_z) -- (s3_z);
+  \draw[->] (s3_z) -- (s2_z);
+  \draw[->] (s2_z) -- (s1_z);
+
+  % --- Connection ---
+  \coordinate (mid) at (4.5,0);
+  \draw[->] (s1_z) -- (mid);
+
+  % --- H2 Section (Poles) ---
+  \node[sum] at (6,0) (s1_p) {$\Sigma$};
+  \node[sum] at (6,-3) (s2_p) {$\Sigma$};
+  \node[sum] at (6,-5) (s3_p) {$\Sigma$};
+  \node at (6,-7) (sc_p) {$\vdots$};
+  \node[sum] at (6,-9) (s4_p) {$\Sigma$};
+
+  \node[block] at (7.5,-2) (b1_p) {$z^{-1}$};
+  \node[block] at (7.5,-4) (b2_p) {$z^{-1}$};
+  \node at (7.5,-6) (bc_p) {$\vdots$};
+  \node[block] at (7.5,-8) (b4_p) {$z^{-1}$};
+
+  \draw[->] (mid) -- (s1_p);
+  \draw[->] (s1_p) -| (b1_p);
+  \draw[->] (b1_p) -- (b2_p);
+  \draw[->] (b2_p) -- (bc_p);
+  \draw[->] (bc_p) -- (b4_p);
+
+  \draw[->] (b1_p) |- (s2_p) node[pos=0.8, above] {$-\frac{a_1}{a_0}$};
+  \draw[->] (b2_p) |- (s3_p) node[pos=0.8, above] {$-\frac{a_2}{a_0}$};
+  \draw[->] (b4_p) |- (s4_p) node[pos=0.8, above] {$-\frac{a_N}{a_0}$};
+
+  \draw[->] (s4_p) -- (sc_p);
+  \draw[->] (sc_p) -- (s3_p);
+  \draw[->] (s3_p) -- (s2_p);
+  \draw[->] (s2_p) -- (s1_p);
+
+  \node [input, name=out_h2] at (9,0) {};
+  \draw[->] (s1_p) -- (out_h2);
+  \node at (9.5,0) {$y[n]$};
+
+\end{tikzpicture}
+
+\end{document}
