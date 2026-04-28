@@ -47,8 +47,7 @@ docs/%.pdf: %.tex
 preview: all
 # this does not reload
 # cd docs && python3 -m http.server
-
-# this does not seem to work either
+# this sometimes seems to work, but does not know what to reload when figures change
 	cd docs; browser-sync start --server --files "*.html, figures/*"
 
 clean:
