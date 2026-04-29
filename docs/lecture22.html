@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-04-21" />
+  <meta name="dcterms.date" content="2026-04-29" />
   <title>Lecture 22 Filter Design in DT</title>
   <style>
     /* Default styles provided by pandoc.
@@ -27,6 +27,9 @@
     }
   </style>
   <link rel="stylesheet" href="style.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
 </head>
 <body>
 <nav id="header-nav" role="navigation" title="site navigation">
@@ -38,9 +41,404 @@
 <h1 class="title">Lecture 22<br />
 Filter Design in DT</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-04-21</p>
+<p class="date">2026-04-29</p>
 </header>
-<p>TODO</p>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+<li><a href="#filter-specification" id="toc-filter-specification">Filter
+Specification</a></li>
+<li><a href="#fir-filter-design" id="toc-fir-filter-design">FIR Filter
+Design</a>
+<ul>
+<li><a href="#fir-design-by-windowing"
+id="toc-fir-design-by-windowing">FIR Design by Windowing</a></li>
+<li><a href="#fir-design-my-frequency-sampling"
+id="toc-fir-design-my-frequency-sampling">FIR Design my Frequency
+Sampling</a></li>
+</ul></li>
+<li><a href="#iir-filter-design" id="toc-iir-filter-design">IIR Filter
+Design</a>
+<ul>
+<li><a href="#iir-design-by-sampling-lccde"
+id="toc-iir-design-by-sampling-lccde">IIR Design by sampling
+LCCDE</a></li>
+<li><a href="#iir-design-by-sampling-impulse-response"
+id="toc-iir-design-by-sampling-impulse-response">IIR Design by sampling
+impulse response</a></li>
+<li><a href="#iir-design-using-bilinear-transform"
+id="toc-iir-design-using-bilinear-transform">IIR Design using bilinear
+transform</a></li>
+</ul></li>
+<li><a href="#filter-design-examples"
+id="toc-filter-design-examples">Filter Design Examples</a>
+<ul>
+<li><a href="#example-fir-filter-design"
+id="toc-example-fir-filter-design">Example FIR Filter Design</a></li>
+<li><a href="#example-iir-filter-design"
+id="toc-example-iir-filter-design">Example IIR Filter Design</a></li>
+</ul></li>
+</ul>
+</nav>
+<h2 id="introduction">Introduction</h2>
+<p>Today I give an introduction to DT filter design, with a practical
+rather than theory focus. If you find this content interesting, this
+material is covered deeper in theory and practice in ECE 4624. We cover
+only the basic approaches to filter design as a way to illustrate and
+emphasize the usefulness of the theory. In the next lecture we will see
+how to implement such filters.</p>
+<p>Recall from ECE 2714 that realizable filters must be causal if
+implemented in real-time. The canonical example is the ideal DT low-pass
+filter with cutoff frequency <span
+class="math inline">\(\omega_c\)</span>, which has a frequency
+response:</p>
+<p><span class="math display">\[H(\omega) = \left\{\begin{array}{cc}
+1 &amp; 2\pi\, k-\omega_c &lt; \omega &lt; 2\pi\, k+\omega_c\\
+0 &amp; \mbox{else}
+\end{array}  \right. \quad k = 0,1,\cdots\]</span></p>
+<p>The corresponding impulse response is</p>
+<p><span class="math display">\[h[n] = \frac{1}{2\pi}
+\int\limits_{-\omega_c}^{\omega_c} e^{j\omega\, n}\; d\omega =
+\frac{1}{\pi\, n} \sin(\omega_c\, n)\]</span> which is not causal and
+thus not realizable in real-time, or exactly off-line since the
+anti-causal component extends infinitely into the past. We will see
+shortly that it can be approximated in an off-line setting.</p>
+<p>As in CT realizable filters must meet the Paley-Wiener conditions</p>
+<ol>
+<li><p>the frequency response, <span
+class="math inline">\(H\left(e^{j\omega}\right)\)</span>, can be zero at
+only a finite number of frequencies;</p></li>
+<li><p>the frequency response, <span
+class="math inline">\(H\left(e^{j\omega}\right)\)</span>, cannot be zero
+over any finite interval of frequencies;</p></li>
+<li><p>the transition between bands cannot have zero width;</p></li>
+<li><p>cannot choose the magnitude and phase of the frequency response
+independently.</p></li>
+</ol>
+<p>Although offline, non-causal filters can be implemented in DT, here
+we consider causal filters and restrict our designs to those described
+by a stable LCCDE:</p>
+<p><span class="math display">\[y[n] = -\sum\limits_{k=1}^{N} a_k\,
+y[n-k] + \sum\limits_{k=0}^{M} b_k\, x[n-k]\]</span> which has a
+transfer function: <span class="math display">\[H(z) =
+\frac{\sum\limits_{k=0}^{M} b_k\, z^{-k}}{1 + \sum\limits_{k=1}^{N}
+a_k\, z^{-k}}\]</span> and, if stable, has a frequency response. Letting
+<span class="math inline">\(z=e^{j\omega}\)</span>: <span
+class="math display">\[H\left(e^{j\omega}\right) =
+\frac{\sum\limits_{k=0}^{M} b_k\, e^{-jk\omega}}{1 +
+\sum\limits_{k=1}^{N} a_k\, e^{-jk\omega}}\]</span></p>
+<p>The two major class of DT filters are finite-length impulse response
+(FIR) filters and infinite-length impulse response (IIR) filters. Recall
+a finite-length signal is one which has a finite number of non-zero
+values in a finite range of samples.</p>
+<p>FIR filters have all <span class="math inline">\(a_k = 0\)</span>.
+Their attraction is that they can have linear phase and are always
+stable. They can have efficient implementations and have a finite
+startup time. However, generally they require a higher order to get the
+same performance as an IIR filter.</p>
+<p>IIR filters cannot have (exact) linear phase, but generally require a
+lower order system to reach the same filter performance. This lower
+complexity translates to faster processing and thus higher sample rates
+in a online setting.</p>
+<h2 id="filter-specification">Filter Specification</h2>
+<p>Recall practical DT filters are specified by several parameters. This
+is similar to the CT case, but the frequency axis is not plotted on a
+logarithmic scale, but instead on a linear axis from zero to <span
+class="math inline">\(\pi\)</span> with units of radians/sample, or in
+normalized units <span
+class="math inline">\(\frac{\omega}{2\pi}\)</span>. This is because the
+DT frequency response is periodic in <span
+class="math inline">\(2\pi\)</span> and the magnitude and phase are
+even/odd functions for real impulse response values. Thus, all the
+action of the filter happens in the rage of frequencies zero to <span
+class="math inline">\(\pi\)</span> radians/sample. When specified in
+normalized units frequencies are typically in the range zero to 0.5.</p>
+<p>Here is an illustration for a low-pass DT filter.</p>
+<figure>
+<p><img src="figures/fig22_1.svg"
+alt="magnitude of frequency response showing DT low-pass filter parameters" /></p>
+<figcaption>Illustration of low-pass DT filter design
+parameters.</figcaption>
+</figure>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline">\(G_p\)</span> is the pass-band gain
+(often unity);</p></li>
+<li><p><span class="math inline">\(\delta_p\)</span> is the pass-band
+ripple;</p></li>
+<li><p><span class="math inline">\(\omega_p\)</span> is the pass-band
+edge frequency, also known as the filter bandwidth or cut-off frequency
+<span class="math inline">\(\omega_c\)</span>;</p></li>
+<li><p><span class="math inline">\(G_s\)</span> is the stop-band
+gain;</p></li>
+<li><p><span class="math inline">\(\delta_s\)</span> is the stop-band
+ripple;</p></li>
+<li><p><span class="math inline">\(\omega_s\)</span> is the stop-band
+edge frequency;</p></li>
+<li><p>and <span class="math inline">\(\omega_s - \omega_p\)</span> is
+the transition bandwidth.</p></li>
+</ul>
+<p>Generally, <span class="math inline">\(G_p\)</span>, <span
+class="math inline">\(\delta_p\)</span>, <span
+class="math inline">\(G_s\)</span>, and <span
+class="math inline">\(\delta_s\)</span> are specified in dB or unit-less
+gain, and the edge frequencies, <span
+class="math inline">\(\omega_p\)</span> and <span
+class="math inline">\(\omega_s\)</span>, in radians/sample or in
+normalized units.</p>
+<p>For other filter types, the parameters are similar, with band-pass
+and band-stop filters needing to specify a lower and upper set of
+parameters for each transition band.</p>
+<h2 id="fir-filter-design">FIR Filter Design</h2>
+<p>FIR filters are designed by algorithm (a computational approach). We
+specify a desired frequency response <span
+class="math inline">\(H_d\left(e^{j\omega} \right)\)</span> and compute
+the <span class="math inline">\(b_k\)</span> approximate that desired
+response. We can express the frequency response as a polynomial in <span
+class="math inline">\(z^{-1} = e^{-j\omega}\)</span></p>
+<p><span class="math display">\[H\left(e^{j\omega} \right) =
+\sum\limits_{k=0}^{M} b_k\, e^{-jk\omega} = \sum\limits_{k=0}^{M} b_k\,
+\left(z^{-1}\right)^k\]</span></p>
+<p>The design tasks is then to choose the polynomial coefficients such
+that <span class="math inline">\(H\left(e^{j\omega} \right) \approx
+H_d\left(e^{j\omega} \right)\)</span>. We consider here two major
+strategies</p>
+<ul>
+<li><p>windowing</p></li>
+<li><p>frequency sampling</p></li>
+</ul>
+<p>and leave other approaches, like the Chebyshev approximation, to
+later courses.</p>
+<h3 id="fir-design-by-windowing">FIR Design by Windowing</h3>
+<ol>
+<li><p>Given a desired frequency response, <span
+class="math inline">\(H_d\left(e^{j\omega} \right)\)</span>, we use the
+IDFT to obtain the corresponding impulse response, <span
+class="math inline">\(h_d[n]\)</span>.</p></li>
+<li><p>We then choose the value of <span
+class="math inline">\(M\)</span>, the number of filter coefficients,
+<span class="math inline">\(b_k\)</span>.</p></li>
+<li><p>Then we truncate the impulse response and apply a multiplicative
+<em>windowing function</em>, <span class="math inline">\(w[n]\)</span>:
+<span class="math display">\[h[n] = h_d[n] \cdot w[n]\]</span> or in the
+frequency domain <span class="math display">\[H\left(e^{j\omega} \right)
+= H_d\left(e^{j\omega} \right) * W\left(e^{j\omega}
+\right)\]</span></p></li>
+<li><p>Let <span class="math inline">\(b_k = h[k]\)</span>.</p></li>
+</ol>
+<p>The window function should be zero outside <span
+class="math inline">\([0, M-1]\)</span>. The simplest is the rectangular
+window <span class="math inline">\(w[n] = u[n] - u[n-M]\)</span>, but it
+leads to ringing. There are other heuristically chosen alternative
+windowing functions, e.g. Blackman, Hamming, Hanning that reduce ringing
+artifacts.</p>
+<p>Windowing is a simple design procedure, but does not give us direct
+control of the filter parameters (<span
+class="math inline">\(\omega_p\)</span>, <span
+class="math inline">\(\omega_s\)</span>, <span
+class="math inline">\(\delta_p\)</span>, <span
+class="math inline">\(\delta_s\)</span>, etc.). We can only choose <span
+class="math inline">\(M\)</span> and <span
+class="math inline">\(w[n]\)</span>.</p>
+<p>As an example, consider the non-realizable ideal low-pass filter.
+Consider a <span class="math inline">\(d&gt; 0\)</span> sample delayed
+version</p>
+<p><span class="math display">\[h[n] = \frac{1}{\pi\, (n-d)}
+\sin(\omega_c\, (n-d))\]</span> This moves some of the anti-causal
+portions into the causal window. We can then choose the delay <span
+class="math inline">\(d\)</span>, filter length <span
+class="math inline">\(M\)</span> and multiply by the chosen windowing
+function to obtain the filter coefficients</p>
+<p><span class="math display">\[b_k = \frac{1}{\pi\, (k-d)}
+\sin(\omega_c\, (k-d))\, w[k]\]</span> for <span
+class="math inline">\(k\in [0,M)\)</span>. This gives us a casual
+approximation of the (delayed) ideal filter. in an offline setting we
+can advance the input signal by <span class="math inline">\(d\)</span>
+to obtain the non-delayed, but still truncated ideal filter.</p>
+<h3 id="fir-design-my-frequency-sampling">FIR Design my Frequency
+Sampling</h3>
+<p>In this approach we sample the desired frequency response at equally
+spaced frequencies, <span class="math inline">\(\omega_k =
+\frac{2\pi}{M}(k+\alpha)\)</span>, where <span
+class="math inline">\(\alpha = 0\)</span> or <span
+class="math inline">\(\frac{1}{2}\)</span> and <span
+class="math inline">\(k = 0,1,\ldots, \frac{M-1}{2}\)</span> if <span
+class="math inline">\(M\)</span> is odd, and <span
+class="math inline">\(k = 0,1,\ldots, \frac{M}{2}-1\)</span> if <span
+class="math inline">\(M\)</span> is even. We can then fit a
+polynomial</p>
+<p><span class="math display">\[\sum\limits_{k=0}^{M} b_k\,
+z^{-k}\]</span> to those samples.</p>
+<p>The drawback to this approach is that of any unconstrained
+optimization over polynomials. While the fit is good at the sample
+points, between the samples, the fit can vary greatly. This means we
+have no way to limit the ripple. To mitigate this you can add a penalty
+function and move to a constrained optimization. However, this is
+outside the course scope.</p>
+<h2 id="iir-filter-design">IIR Filter Design</h2>
+<p>IIR filters can be designed by converting an analog filter. Analog
+filters have had several decades of theory and practice devoted to them,
+are often a target for replacement by a DSP, and in some cases are the
+natural design space (analog vs digital control). Thus, adapting analog
+to to digital filters is a good strategy. The overall approach is to
+find a mapping from the s-plane to the z-plane.</p>
+<p>Recall a causal, stable CT system has a transfer function</p>
+<p><span class="math display">\[H(s) = \frac{P(s)}{Q(s)} =
+\frac{\sum\limits_{k = 0}^{M}\beta_k\, s^k}{\sum\limits_{k =
+0}^{N}\alpha_k\, s^k} \mbox{ for } \mbox{Re}(s) &gt; \gamma \mbox{ and }
+\gamma &lt; 0\]</span></p>
+<p>Equivalently the impulse response is <span class="math inline">\(h(t)
+= \mathcal{L}_1^{-1}\left\{ H(s) \right\}\)</span> and the LCCDE is of
+the form</p>
+<p><span class="math display">\[\sum\limits_{k = 0}^{N}\alpha_k\,
+D^{(k)}\, y(t) = \sum\limits_{k = 0}^{M}\beta_k\, D^{(k)}\,
+x(t)\]</span></p>
+<p>Given such a stable CT system, implementing a filter, we can convert
+it to a DT filter using the transfer function, impulse response, or
+LCCDE.</p>
+<h3 id="iir-design-by-sampling-lccde">IIR Design by sampling LCCDE</h3>
+<p>This approach uses finite-difference approximations to the derivative
+to obtain a mapping from the Laplace-domain to the z-domain.</p>
+<p>Consider the backward difference approximation to the derivative</p>
+<p><span class="math display">\[\frac{dy}{dt} \approx \frac{y(t) - y(t
+-nT}{T}\]</span></p>
+<p>where <span class="math inline">\(T\)</span> is the sample time.
+Sampling the time-axis at this rate gives</p>
+<p><span class="math display">\[\frac{dy}{dt}(nT) \approx \frac{y(nT) -
+y(nT-T)}{T} = \frac{y[n]-y[n-1]}{T}\]</span></p>
+<p>Comparing the transfer functions between CT</p>
+<p><span class="math display">\[\mathcal{L}\left\{ \frac{dy}{dt}\right\}
+= s Y(s)\]</span></p>
+<p>and DT</p>
+<p><span class="math display">\[\mathcal{Z}\left\{ \frac{y[n]-y[n-1]}{T}
+\right\} = \frac{1-z^{-1}}{T} Y(z)\]</span></p>
+<p>we see the transformation <span class="math inline">\(s
+\longrightarrow \frac{1-z^{-1}}{T}\)</span>. Thus, given an analog
+filter with transfer function <span class="math inline">\(H(s)\)</span>
+we can use the transformation to arrive at a DT transfer function</p>
+<p><span class="math display">\[H(z) = \left. H(s) \right|_{s
+\longrightarrow \frac{1-z^{-1}}{T}}\]</span></p>
+<p>This maps the left-hand s-plane to a circle in the z-plane, centered
+at <span class="math inline">\(\frac{1}{2}\)</span> with radius <span
+class="math inline">\(\frac{1}{2}\)</span> since <span
+class="math inline">\(z = \frac{1}{1-sT}\)</span>. Thus, if the analog
+filter is stable (all poles in LHP) then the DT filter will be as well
+(all poles inside specified circle, a subset of unit circle).</p>
+<h3 id="iir-design-by-sampling-impulse-response">IIR Design by sampling
+impulse response</h3>
+<p>In this approach we sample the CT impulse response to obtain a DT
+impulse response and obtain a mapping from the Laplace (s-domain) to the
+z-domain. Let <span class="math inline">\(h(t)\)</span> be the impulse
+response of a CT filter. Ideally sample (from ECE 2714) this signal to
+get a DT impulse response</p>
+<p><span class="math display">\[h[n] = h{nT} = h(t) * \sum\limits_{k =
+-\infty}^{\infty} \delta(t-nT)\]</span> where aliasing occurs if <span
+class="math inline">\(2*\omega_{\mbox{max}} &gt; \frac{2\pi}{T}\)</span>
+(Nyquist criteria). Comparing the Riemann approximation of the Laplace
+transform to the z-transform:</p>
+<p><span class="math display">\[H(s) = \int\limits_{0}^{\infty} h(t)\,
+s^{-st}\; dt \approx T \sum\limits_{0}^{\infty} h(nT)\, s^{-snT} = T
+\sum\limits_{0}^{\infty} h[n]\, z^{-n} = H(z)\]</span> implies the
+transformation <span class="math inline">\(z = e^{sT}\)</span>. This
+maps the left-hand side of the s-plane to the inside of the unit circle,
+and the right-hand side of the s-plane to outside the unit circle. Thus
+any poles of the analog filter <span class="math inline">\(p_k\)</span>
+become poles of the DT filter, <span class="math inline">\(z_k = e^{p_k
+T}\)</span>. If the analog filter is stable (all poles in LHP) then the
+DT filter will be as well (all poles inside unit circle).</p>
+<h3 id="iir-design-using-bilinear-transform">IIR Design using bilinear
+transform</h3>
+<p>Both of the previous approaches mapping the s-plane to the z-plane
+have drawbacks. An important ones is that they are not conformal, there
+is no unique inverse map from the z-plane back to the s-plane. If
+instead of a backward difference approximation to the derivative, we use
+a trapezoidal approximation, we can obtain the mapping (details
+omitted)</p>
+<p><span class="math display">\[s = \frac{2}{T}\frac{1-z^{-1}}{1+z^{-1}}
+= \frac{2}{T}\frac{z-1}{z+1}`; ,\]</span> the bilinear mapping. This
+maps all real analog frequencies into a discrete range from <span
+class="math inline">\(-\pi\)</span> to <span
+class="math inline">\(\pi\)</span> and vice-versa, by compressing or
+warping them. To design an IIR filter using this technique we simply
+let</p>
+<p><span class="math display">\[H(z) = \left. H(s) \right|_{s =
+\frac{2}{T}\frac{z-1}{z+1}}\]</span> where again, <span
+class="math inline">\(T\)</span> is the sample spacing.</p>
+<h2 id="filter-design-examples">Filter Design Examples</h2>
+<p>To end this lecture we will design two example filters, one FIR, the
+other IIR using one of the techniques above.</p>
+<h3 id="example-fir-filter-design">Example FIR Filter Design</h3>
+<p>Recall the delayed and windowed low-pass ideal filter from earlier.
+It had coefficients <span class="math display">\[b_k = \frac{1}{\pi\,
+(k-d)} \sin(\omega_c\, (k-d))\, w[k]\]</span> for <span
+class="math inline">\(k\in [0,M)\)</span>. Suppose <span
+class="math inline">\(\omega_c = \frac{\pi}{2}\)</span> radians/sample,
+<span class="math inline">\(M = 51\)</span>, <span
+class="math inline">\(d = 25\)</span>, and we use the Hanning window
+function</p>
+<p><span class="math display">\[w[k] = \left\{ \begin{array}{cc}
+  \frac{1}{2}\left(1 - \cos(2\pi k/M)\right) &amp; 0 \leq k &lt; M\\
+  0 &amp; \mbox{else}
+  \end{array}\right.\]</span></p>
+<p>Then the filter frequency response is</p>
+<p><span class="math display">\[H\left(e^{j\omega} \right) =
+\sum\limits_{k=0}^{M} \frac{1}{2\pi\, (k-d)} \sin(\omega_c\,
+(k-d))\left(1 - \cos(2\pi k/M)\right) \, e^{-jk\omega}\]</span></p>
+<p>If we plot the frequency response above we see the shape is as
+expected, however the band-pass gain is not unity. We need to scale by a
+gain factor <span class="math inline">\(K = \frac{1}{H(1)}\)</span>.
+Doing this gives the frequency response below. Note the phase is
+linear.</p>
+<figure>
+<p><img src="examples/lecture22_2.svg"
+alt="frequency response magnitude for FIR filter low-pass example. See design in text above and description below." /></p>
+<figcaption>Frequency response of FIR filter example.</figcaption>
+</figure>
+<h3 id="example-iir-filter-design">Example IIR Filter Design</h3>
+<p>Consider a third-order low-pass Butterworth analog filter with cutoff
+frequency of <span class="math inline">\(\omega_c\)</span>. It has a
+transfer function</p>
+<p><span class="math display">\[H(s) =
+\frac{\omega_c^3}{(s-p_1)(s-p_2)(s-p_3)}\]</span> with <span
+class="math inline">\(p_1 = \omega_c\, e^{j\frac{2\pi}{3}}\)</span>,
+<span class="math inline">\(p_2 = \omega_c\)</span>, <span
+class="math inline">\(p_1 = \omega_c\, e^{-j\frac{2\pi}{3}}\)</span>.
+Using the bilinear transform with sample spacing <span
+class="math inline">\(T\)</span> we can derive the DT transfer
+function</p>
+<p><span class="math display">\[H(z) =
+\frac{\omega_c^3}{\left(\frac{2}{T}\frac{z-1}{z+1}-p_1\right)\left(\frac{2}{T}\frac{z-1}{z+1}-p_2\right)\left(\frac{2}{T}\frac{z-1}{z+1}-p_3\right)}\]</span></p>
+<p>To make the example more concrete, assume a sample time <span
+class="math inline">\(T = \frac{2\pi}{1000}\)</span> (roughly twice the
+effective bandwidth of 500 rad/s at -40 dB), <span
+class="math inline">\(\omega_c = 100\)</span>. The transfer function can
+be simplified to make the DT poles clearer</p>
+<p><span class="math display">\[H(z) = K \cdot
+\frac{(z+1)^3}{(z-\alpha_1)(z-\alpha_2)(z-\alpha_3)}\]</span> where</p>
+<p><span class="math display">\[K= \frac{\left(\frac{T\cdot\omega_c}{2}
+\right)^3}{\left(1-p_1\frac{T}{2}\right)\left(1-p_2\frac{T}{2}\right)\left(1-p_3\frac{T}{2}\right)}\]</span>
+and <span class="math inline">\(|\alpha_1| =
+\left|\frac{1+p_1\frac{T}{2}}{1-p_1\frac{T}{2}}\right| \approx
+0.745\)</span>, <span class="math inline">\(|\alpha_2| =
+\left|\frac{1+p_2\frac{T}{2}}{1-p_2\frac{T}{2}}\right| \approx
+0.5219\)</span>, and <span class="math inline">\(|\alpha_3| = \left|
+\frac{1+p_3\frac{T}{2}}{1-p_3\frac{T}{2}}\right| \approx 0.745\)</span>.
+Since all the poles are inside the unit circle the system is stable, as
+expected.</p>
+<p>We can compare the analog and DT magnitude frequency responses:</p>
+<figure>
+<p><img src="examples/lecture22_1.svg"
+alt="frequency response magnitude for Butterworth filter low-pass example and its discrete time equivalent. See design in text above and description below." /></p>
+<figcaption>Magnitude of the analog filter example and its DT
+equivalent.</figcaption>
+</figure>
+<p>We can see both are clearly low-pass filters. The corner frequency of
+the analog filter is 100 rad/s as expected. The corner frequency of the
+IIR filter is about 0.6 radians/sample. This is where the analog corner
+frequency maps to under the bilinear warping <span
+class="math inline">\(2\cdot \tan^{-1}\left( \frac{\omega_c \cdot
+T}{2}\right)\)</span>. If we were to plot the phase of the DT filter we
+would see it is not linear, as expected for an IIR filter.</p>
 </main>
 
 <footer>

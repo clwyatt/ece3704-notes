@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-04-21" />
+  <meta name="dcterms.date" content="2026-04-23" />
   <title>Lecture 23 Implementing DT Filters</title>
   <style>
     /* Default styles provided by pandoc.
@@ -41,7 +41,7 @@
 <h1 class="title">Lecture 23<br />
 Implementing DT Filters</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-04-21</p>
+<p class="date">2026-04-23</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -349,9 +349,9 @@ it is memory inefficient, requiring two delay lines. It is only a good
 choice for quick testing on a general-purpose computer.</p></li>
 <li><p>Direct Form II removes the redundant delay line, but is
 susceptible to internal overflow. The output of each delay block can
-grow much larger than the input or output, potentially clipping the
-signal in fixed-point systems, depending on the fixed-point format used
-and compiler optimizations.</p></li>
+grow much larger than the input or output, potentially clipping or
+wrapping the signal in fixed-point systems, depending on the fixed-point
+format used and compiler optimizations.</p></li>
 <li><p>Transposed Direct Form II is often preferred because it can have
 better numerical stability and reduced quantization noise. It allows for
 better pipelining in hardware because there isn’t a long chain of
