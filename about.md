@@ -1,5 +1,6 @@
 ---
 title: "About the Notes"
+description: "About the notes."
 ---
 
 This is a set of supplementary notes and examples for ECE 3704. It is not a replacement for the textbook, but can act as a reference and guide your reading. These notes are not comprehensive -- often additional material and insights are covered during class.

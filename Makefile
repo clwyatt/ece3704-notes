@@ -39,7 +39,7 @@ docs/index.html: index.md $(CSS) $(HEADER) $(FOOTER)
 	pandoc $(OPTIONS) $< -o $@
 
 docs/%.html: %.tex $(CSS) $(HEADER) $(FOOTER)
-	pandoc $(OPTIONS) --toc=true $< -o $@
+	pandoc $(OPTIONS) --metadata-file=$(addsuffix .yaml, $(basename $< .tex)) --toc=true $< -o $@
 
 docs/%.pdf: %.tex
 	pandoc -s -t latex --default-image-extension=pdf $< --template=template.tex -o $@

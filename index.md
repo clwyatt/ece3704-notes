@@ -2,6 +2,7 @@
 title: "Supplementary Notes for ECE 3704"
 author: C.L Wyatt
 date: Fall 2025
+description: "A set of supplementary notes for ECE 3704."
 ---
 
 ## Lectures
