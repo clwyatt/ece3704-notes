@@ -5,7 +5,8 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="C.L. Wyatt" />
-  <meta name="dcterms.date" content="2026-04-21" />
+  <meta name="dcterms.date" content="2026-05-12" />
+  <meta name="description" content="Lecture 24 notes, in which we introduce the use of state-space methods for CT systems." />
   <title>Lecture 24 State Space Techniques in CT</title>
   <style>
     /* Default styles provided by pandoc.
@@ -27,6 +28,9 @@
     }
   </style>
   <link rel="stylesheet" href="style.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
 </head>
 <body>
 <nav id="header-nav" role="navigation" title="site navigation">
@@ -38,9 +42,95 @@
 <h1 class="title">Lecture 24<br />
 State Space Techniques in CT</h1>
 <p class="author">C.L. Wyatt</p>
-<p class="date">2026-04-21</p>
+<p class="date">2026-05-12</p>
 </header>
-<p>TODO</p>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+</ul>
+</nav>
+<h2 id="introduction">Introduction</h2>
+<p>Thus far we have only considered single-input, single-output (SISO)
+CT systems. These can be described by an N-th order LCCDE, inpulse
+response <span class="math inline">\(h(t)\)</span>, or transfer function
+<span class="math inline">\(H(s)\)</span>, and, if stable, via the
+frequency response <span class="math inline">\(H(j\omega)\)</span>. In
+more complex systems we may be interested in multiple inputs, multiple
+outputs, and signals internal to the system.</p>
+<p>Another term for signal is <em>state</em> and we actually have had
+multiple states in our systems, however we have removed them for
+analysis by reducing the system description to a SISO inpulse response
+or transfer function. To see this, consider a second-order LCCDE</p>
+<p><span class="math display">\[a\, \frac{d^2y}{dt^2}(t) +
+b\,\frac{dy}{dt}(t) + c\, y(t) = x(t)\]</span></p>
+<p>Recall from your differential equations course that this can also be
+represented by two, first-order LCCDEs. Let <span
+class="math inline">\(u_1(t) = y(t)\)</span> and <span
+class="math inline">\(u_2(t) = \frac{dy}{dt} =
+\frac{du_1(t)}{dt}\)</span>. Then <span
+class="math inline">\(\frac{du_2}{dt} = \frac{d^2y}{dt^2}\)</span> and
+the LCCDE is</p>
+<p><span class="math display">\[a\, \frac{du_2}{dt^2}(t) + b\,u_2(t) +
+c\, u_1(t) = x(t)\]</span></p>
+<p>Solving for <span class="math inline">\(\frac{du_2}{dt}\)</span></p>
+<p><span class="math display">\[\frac{du_2}{dt} = -\frac{b}{a}\, u_2(t)
+- \frac{c}{a}\, u_1(t) + \frac{1}{a}\, x(t)\]</span></p>
+<p>Noting <span class="math inline">\(\frac{du_1}{dt} = u_2\)</span>
+gives the system of ODEs. Switching to dot notation for derivatives as
+is tradition (since we will only be dealing with first derivatives), we
+obtain the system of equations:</p>
+<p><span class="math display">\[\begin{align*}
+  \dot{u}_1 (t) &amp;= u_2(t) \\
+  \dot{u}_2 (t) &amp;= -\frac{b}{a}\, u_2(t) - \frac{c}{a}\, u_1(t) +
+\frac{1}{a}\, x(t)
+\end{align*}\]</span></p>
+<p>Collecting <span class="math inline">\(u_1\)</span> and <span
+class="math inline">\(u_2\)</span> into a vector</p>
+<p><span class="math display">\[\left[ \begin{array}{c}
+  u_1 \\
+  u_2
+\end{array}\right]\]</span></p>
+<p>we can write the system as</p>
+<p><span class="math display">\[\begin{align*}
+\dot{u} &amp;= \left[ \begin{array}{cc}
+  0 &amp; 1 \\
+  -\frac{c}{a} &amp; -\frac{b}{a}
+\end{array}\right]\, u + \left[ \begin{array}{c}
+  0 \\
+  \frac{1}{a}
+  \end{array}\right]\, x\\
+&amp;= A\, u + B\, x
+\end{align*}\]</span> where <span class="math inline">\(A\)</span> is
+the 2x2 matrix and <span class="math inline">\(B\)</span> is a 2x1
+matrix. This form, relating first derivatives of the state to a linear
+combinations of the states and inputs, is called a <em>state
+equation</em>. Solving the state equation gives is the state/signal for
+both <span class="math inline">\(u_1\)</span> and <span
+class="math inline">\(u_2\)</span>. To get the same result as solving
+the original LCCDE, we need the <em>observation equation</em>, in this
+case a single output</p>
+<p><span class="math display">\[y = [1 \; 0]\, u = C\, u\]</span></p>
+<p>where <span class="math inline">\(C\)</span> is a 1x2 matrix.</p>
+<p>To see where these internal states have been hiding consider the
+direct form I implementation of this system</p>
+<p><span class="math display">\[a\int\int y + b\int y + cy =
+x\]</span></p>
+<p>solving for <span class="math inline">\(y\)</span></p>
+<p><span class="math display">\[y = -\frac{a}{c}\int\int y -
+\frac{b}{c}\int y + \frac{1}{c}\, x\]</span></p>
+<p>Converting to the Laplace domain (assuming zero initial
+conditions</p>
+<p><span class="math display">\[Y(s) = -\frac{a}{c}\frac{1}{s^2} Y(s) -
+\frac{b}{c}\frac{1}{s} Y(s) + \frac{1}{c}\, X(s)\]</span></p>
+<p>As a block diagram this looks like</p>
+<figure data-latex-placement="h!">
+<p><img src="figures/fig24_1.svg"
+alt="block diagram for the example. see text." /></p>
+<figcaption>Block diagram for the example system.</figcaption>
+</figure>
+<p>The output of the integrator blocks correspond to the internal state
+variables.</p>
+<p>TODO RESTART HERE</p>
 </main>
 
 <footer>
